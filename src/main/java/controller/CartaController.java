@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -51,6 +52,7 @@ public class CartaController implements Initializable {
         jtfdia.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
         jtfmes.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
         jtfanio.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
+        actualizarEstado();
     }
 
     void setStagePrincipall(Stage aThis) {
@@ -286,5 +288,17 @@ public class CartaController implements Initializable {
         jtfobra.setText("");
         jtfimporte.setText("");
     }
+    //funcion importante 
+    void actualizarEstado(){
+                List<Carta> olistAlarma = App.jpa.createQuery("select p from Carta p where estado = 'VIGENTE'  and fechavencimiento  <='"+LocalDate.now()+"'"
+                           ).getResultList();
+                for (Carta carta : olistAlarma) {
+                    carta.setEstado("VENCIDO");
+                    App.jpa.getTransaction().begin();
+                    App.jpa.persist(carta);
+                    App.jpa.getTransaction().commit();
+            
+        }
 
+    }
 }
