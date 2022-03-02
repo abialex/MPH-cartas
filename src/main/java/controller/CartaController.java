@@ -14,6 +14,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -107,7 +109,7 @@ public class CartaController implements Initializable {
         scene.getStylesheets().add(DetalleController.class.getResource("/css/bootstrap3.css").toExternalForm());;
         Stage stage = new Stage();//creando la base vací
         stage.initStyle(StageStyle.UNDECORATED);
-       // stage.initOwner(stagePrincipal);
+        // stage.initOwner(stagePrincipal);
         stage.setScene(scene);
         DetalleController oDetalleController = (DetalleController) loader.getController(); //esto depende de (1)
         oDetalleController.setController(this);
@@ -126,7 +128,7 @@ public class CartaController implements Initializable {
             }
         });
         stage.show();
-        
+
         cerrar();
         //((Stage) ap.getScene().getWindow()).close();//cerrando la ventanada anterior
     }
@@ -139,7 +141,7 @@ public class CartaController implements Initializable {
         scene.getStylesheets().add(EstadoController.class.getResource("/css/bootstrap3.css").toExternalForm());;
         Stage stage = new Stage();//creando la base vací
         stage.initStyle(StageStyle.UNDECORATED);
-       // stage.initOwner(stagePrincipal);
+        // stage.initOwner(stagePrincipal);
         stage.setScene(scene);
         EstadoController oDetalleController = (EstadoController) loader.getController(); //esto depende de (1)
         oDetalleController.setController(this);
@@ -158,9 +160,39 @@ public class CartaController implements Initializable {
             }
         });
         stage.show();
-        
+
         cerrar();
         //((Stage) ap.getScene().getWindow()).close();//cerrando la ventanada anterior
+    }
+
+    @FXML
+    void mostrarAviso(List<Carta> list) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(EstadoController.class.getResource("Aviso.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);//instancia el controlador (!)
+        scene.getStylesheets().add(EstadoController.class.getResource("/css/bootstrap3.css").toExternalForm());;
+        Stage stage = new Stage();//creando la base vací
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initOwner(stagePrincipal);
+        stage.setScene(scene);
+        EstadoController oDetalleController = (EstadoController) loader.getController(); //esto depende de (1)
+        oDetalleController.setController(this);
+        root.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                x = event.getX();
+                y = event.getY();
+            }
+        });
+        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                stage.setX(event.getScreenX() - x);
+                stage.setY(event.getScreenY() - y);
+            }
+        });
+        stage.show();
     }
 
     @FXML
@@ -190,7 +222,7 @@ public class CartaController implements Initializable {
                     jtfobra.getText().trim(),
                     jtfimporte.getText().trim(),
                     "VIGENTE");
-                    
+
             App.jpa.getTransaction().begin();
             App.jpa.persist(oCarta);
             App.jpa.getTransaction().commit();
@@ -288,16 +320,25 @@ public class CartaController implements Initializable {
         jtfobra.setText("");
         jtfimporte.setText("");
     }
+
     //funcion importante 
-    void actualizarEstado(){
-                List<Carta> olistAlarma = App.jpa.createQuery("select p from Carta p where estado = 'VIGENTE'  and fechavencimiento  <='"+LocalDate.now()+"'"
-                           ).getResultList();
-                for (Carta carta : olistAlarma) {
-                    carta.setEstado("VENCIDO");
-                    App.jpa.getTransaction().begin();
-                    App.jpa.persist(carta);
-                    App.jpa.getTransaction().commit();
-            
+    void actualizarEstado() {
+        List<Carta> olistAlarma = App.jpa.createQuery("select p from Carta p where estado = 'VIGENTE'  and fechavencimiento  <='" + LocalDate.now() + "'"
+        ).getResultList();
+        
+        for (Carta carta : olistAlarma) {
+            carta.setEstado("VENCIDO");
+            App.jpa.getTransaction().begin();
+            App.jpa.persist(carta);
+            App.jpa.getTransaction().commit();
+
+        }
+        if(!olistAlarma.isEmpty()){
+            try {
+                mostrarAviso(olistAlarma);
+            } catch (IOException ex) {
+                Logger.getLogger(CartaController.class.getName()+"error en el Aviso").log(Level.SEVERE, null, ex);
+            }
         }
 
     }
