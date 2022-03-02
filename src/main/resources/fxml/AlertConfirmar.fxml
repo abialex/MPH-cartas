@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane id="AnchorPane" fx:id="ap" prefHeight="186.0" prefWidth="334.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="emergente.AlertConfirmarController">
+   <children>
+      <BorderPane layoutX="2.0" layoutY="2.0" prefHeight="210.0" prefWidth="395.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <HBox fx:id="hboxAlert" prefHeight="28.0" prefWidth="397.0" style="-fx-background-color: #bee8c4;" BorderPane.alignment="CENTER" />
+         </top>
+         <center>
+            <GridPane BorderPane.alignment="CENTER">
+               <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="220.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="112.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="126.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label fx:id="lblmensaje" text="GUARDARDO EXITOSO!" />
+                  <ImageView fx:id="jimg" fitHeight="80.0" fitWidth="84.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
+         </center>
+         <bottom>
+            <GridPane prefHeight="45.0" prefWidth="393.0" BorderPane.alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <JFXButton fx:id="jbtnNO" onAction="#cerrar" prefHeight="31.0" prefWidth="105.0" style="-fx-background-color: #e0a8a8;" text="NO" GridPane.columnIndex="1" />
+                  <JFXButton fx:id="jbtnSI" onAction="#confirmar" prefHeight="31.0" prefWidth="105.0" style="-fx-background-color: #bee8c4;" text="SI" />
+               </children>
+            </GridPane>
+         </bottom>
+      </BorderPane>
+   </children>
+</AnchorPane>
