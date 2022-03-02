@@ -132,5 +132,6 @@ public class AgregarProveedorController implements Initializable {
     void initTableView() {
         columnId.setCellValueFactory(new PropertyValueFactory<Proveedor, Integer>("id"));
         columnNombreProveedor.setCellValueFactory(new PropertyValueFactory<Proveedor, String>("nombreProveedor"));
+        //prueba
     }
 }
