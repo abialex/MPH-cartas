@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -93,9 +94,13 @@ public class EstadoController implements Initializable {
     @FXML
     void updateListaComprobante() {
         List<Carta> olistAlarma = App.jpa.createQuery("select p from Carta p where estado = 'VIGENTE' ORDER BY fechavencimiento asc").getResultList();
+        List<Carta> listFilter=new ArrayList<Carta>();
         listCarta.clear();
         for (Carta oCarta : olistAlarma) {
-            listCarta.add(oCarta);
+            if(oCarta.getFechaVencimiento().minusDays(3+1).isBefore(LocalDate.now())){
+                listCarta.add(oCarta);
+            }
+            
         }
     }
 
