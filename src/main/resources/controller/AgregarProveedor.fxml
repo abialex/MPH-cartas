@@ -32,7 +32,7 @@
                <children>
                   <GridPane>
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="0.0" prefWidth="10.0" />
+                      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="144.0" minWidth="0.0" prefWidth="10.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="250.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" prefWidth="10.0" />
                     </columnConstraints>
@@ -40,14 +40,25 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <JFXTextField fx:id="jtfProveedor" labelFloat="true" onKeyReleased="#updateListaProveedor" promptText="Proveedor" GridPane.columnIndex="1" />
-                        <ImageView fitHeight="31.0" fitWidth="46.0" onMouseClicked="#agregarProveedor" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                        <JFXTextField fx:id="jtfProveedor" labelFloat="true" onKeyReleased="#updateListaProveedor" promptText="Proveedor" GridPane.columnIndex="1">
+                           <GridPane.margin>
+                              <Insets left="5.0" right="5.0" />
+                           </GridPane.margin></JFXTextField>
+                        <ImageView fx:id="imguser" fitHeight="31.0" fitWidth="46.0" onMouseClicked="#agregarProveedor" onMouseExited="#imaguserFuera" onMouseMoved="#imaguserDentro" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
                            <image>
-                              <Image url="@../images/medical.png" />
+                              <Image url="@../images/add-user.png" />
                            </image>
                            <GridPane.margin>
                               <Insets left="5.0" />
                            </GridPane.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <ImageView fitHeight="31.0" fitWidth="46.0" onMouseClicked="#agregarProveedor" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/find.png" />
+                           </image>
                         </ImageView>
                      </children>
                   </GridPane>

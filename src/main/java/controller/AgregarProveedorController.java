@@ -18,6 +18,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -41,7 +43,9 @@ public class AgregarProveedorController implements Initializable {
     private TableColumn<Proveedor, Integer> columnId;
     @FXML
     private TableColumn<Proveedor, String> columnNombreProveedor;
-
+    @FXML
+    private ImageView imguser;
+    
     AlertController oAlert = new AlertController();
     CartaController cartaController;
     DetalleController oDetalleController;
@@ -133,5 +137,13 @@ public class AgregarProveedorController implements Initializable {
         columnId.setCellValueFactory(new PropertyValueFactory<Proveedor, Integer>("id"));
         columnNombreProveedor.setCellValueFactory(new PropertyValueFactory<Proveedor, String>("nombreProveedor"));
         //prueba
+    }
+    @FXML
+    void imaguserDentro(){
+        imguser.setImage(new Image(getClass().getResource("/images/add-user-2.png").toExternalForm()));
+    }
+    @FXML
+    void imaguserFuera(){
+        imguser.setImage(new Image(getClass().getResource("/images/add-user.png").toExternalForm()));
     }
 }
