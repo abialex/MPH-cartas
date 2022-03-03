@@ -22,6 +22,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -42,6 +43,8 @@ public class CartaController implements Initializable {
     private JFXTextField jtfproveedor, jtfdia, jtfmes, jtfanio, jtfnumCarta, jtfreferencia, jtfobra, jtfimporte;
     @FXML
     private AnchorPane ap;
+    @FXML
+    private Label lblnumVencido;
     private Stage stagePrincipal;
     private Proveedor oProveedor;
     private double x = 0;
@@ -54,7 +57,7 @@ public class CartaController implements Initializable {
         jtfdia.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
         jtfmes.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
         jtfanio.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
-        actualizarEstado();
+        actualizarPorVencer();
     }
 
     void setStagePrincipall(Stage aThis) {
@@ -132,6 +135,7 @@ public class CartaController implements Initializable {
         cerrar();
         //((Stage) ap.getScene().getWindow()).close();//cerrando la ventanada anterior
     }
+
     @FXML
     void mostrarEstado() throws IOException {
         FXMLLoader loader = new FXMLLoader();
@@ -166,9 +170,9 @@ public class CartaController implements Initializable {
     }
 
     @FXML
-    void mostrarAviso(List<Carta> list) throws IOException {
+    void mostrarAviso() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(EstadoController.class.getResource("Aviso.fxml"));
+        loader.setLocation(AvisoController.class.getResource("Aviso.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);//instancia el controlador (!)
         scene.getStylesheets().add(EstadoController.class.getResource("/css/bootstrap3.css").toExternalForm());;
@@ -176,8 +180,8 @@ public class CartaController implements Initializable {
         stage.initStyle(StageStyle.UNDECORATED);
         stage.initOwner(stagePrincipal);
         stage.setScene(scene);
-        EstadoController oDetalleController = (EstadoController) loader.getController(); //esto depende de (1)
-        oDetalleController.setController(this);
+        AvisoController oAvisocontroller = (AvisoController) loader.getController(); //esto depende de (1)
+        oAvisocontroller.setController(this);
         root.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -322,24 +326,9 @@ public class CartaController implements Initializable {
     }
 
     //funcion importante 
-    void actualizarEstado() {
-        List<Carta> olistAlarma = App.jpa.createQuery("select p from Carta p where estado = 'VIGENTE'  and fechavencimiento  <='" + LocalDate.now() + "'"
-        ).getResultList();
-        
-        for (Carta carta : olistAlarma) {
-            carta.setEstado("VENCIDO");
-            App.jpa.getTransaction().begin();
-            App.jpa.persist(carta);
-            App.jpa.getTransaction().commit();
-
-        }
-        if(!olistAlarma.isEmpty()){
-            try {
-                mostrarAviso(olistAlarma);
-            } catch (IOException ex) {
-                Logger.getLogger(CartaController.class.getName()+"error en el Aviso").log(Level.SEVERE, null, ex);
-            }
-        }
-
+    void actualizarPorVencer() {
+        List<Carta> olistCartaVencida = App.jpa.createQuery(""
+                + "select p from Carta p where estado = 'VIGENTE'  and fechavencimiento  <='" + LocalDate.now() + "'").getResultList();
+        lblnumVencido.setText(olistCartaVencida.size() + "");
     }
 }

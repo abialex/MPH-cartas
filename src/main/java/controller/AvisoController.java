@@ -6,7 +6,10 @@ package controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -18,9 +21,23 @@ public class AvisoController implements Initializable {
     /**
      * Initializes the controller class.
      */
+    @FXML
+    private AnchorPane ap;
+    CartaController oCartaController;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
-    
+
+    void setController(CartaController aThis) {
+        this.oCartaController=aThis;
+       
+    }
+    @FXML
+    void getposicion(){
+       Stage s= ((Stage) ap.getScene().getWindow());
+       
+        System.out.println("x: "+s.getX()+" y: "+s.getY());
+        
+    }    
 }
