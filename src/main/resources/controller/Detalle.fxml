@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="ap" prefHeight="742.0" prefWidth="1140.0" style="-fx-border-color: #000000; -fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DetalleController">
+<AnchorPane id="AnchorPane" fx:id="ap" prefHeight="742.0" prefWidth="1262.0" style="-fx-border-color: #000000; -fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DetalleController">
     <children>
         <BorderPane layoutX="187.0" layoutY="83.0" prefHeight="742.0" prefWidth="1182.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <center>
@@ -28,10 +28,10 @@
                                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints maxHeight="198.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="198.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="373.0" minHeight="10.0" prefHeight="321.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="234.0" minHeight="0.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="198.0" minHeight="10.0" prefHeight="59.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="198.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="373.0" minHeight="10.0" prefHeight="215.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="234.0" minHeight="0.0" prefHeight="94.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
                                 <TableView fx:id="tableCarta" onMouseClicked="#getItem" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
@@ -42,6 +42,7 @@
                                         <TableColumn fx:id="columnReferencia" prefWidth="96.0" text="Referencia" />
                                         <TableColumn fx:id="columnObra" prefWidth="84.0" text="Obra" />
                                         <TableColumn fx:id="columnImporte" prefWidth="109.0" text="Importe" />
+                              <TableColumn fx:id="columnprueba" prefWidth="144.0" text="columnprueba" />
                                     </columns>
                                     <GridPane.margin>
                                         <Insets left="5.0" right="5.0" top="10.0" />
@@ -73,6 +74,11 @@
                                         <Font name="System Bold" size="39.0" />
                                     </font>
                                 </Label>
+                              <ImageView fitHeight="79.0" fitWidth="298.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
+                                  <image>
+                                      <Image url="@../images/logoMUNI-1.png" />
+                                  </image>
+                              </ImageView>
                             </children>
                         </GridPane>
                     </center>
@@ -109,32 +115,23 @@
                     </bottom>
                 </BorderPane>
             </center>
-            <left>
-                <GridPane prefHeight="740.0" prefWidth="398.0" style="-fx-background-color: #bee8c4;" BorderPane.alignment="CENTER">
+         <top>
+                <GridPane prefHeight="243.0" prefWidth="1138.0" style="-fx-background-color: #bee8c4;" BorderPane.alignment="CENTER">
                     <columnConstraints>
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <ImageView fitHeight="79.0" fitWidth="298.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../images/logoMUNI-1.png" />
-                            </image>
-                        </ImageView>
-                        <GridPane GridPane.rowIndex="1">
+                        <GridPane>
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="510.0" minWidth="10.0" prefWidth="357.0" />
-                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="294.0" minWidth="10.0" prefWidth="46.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="510.0" minWidth="10.0" prefWidth="270.0" />
+                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="294.0" minWidth="10.0" prefWidth="45.0" />
                             </columnConstraints>
                             <rowConstraints>
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -155,12 +152,12 @@
                                 </ImageView>
                             </children>
                         </GridPane>
-                        <JFXTextField fx:id="jtfnumCarta" labelFloat="true" promptText="N° DE CARTA F." GridPane.rowIndex="2">
+                        <JFXTextField fx:id="jtfnumCarta" labelFloat="true" promptText="N° DE CARTA F." GridPane.columnIndex="1">
                             <GridPane.margin>
                                 <Insets left="10.0" right="10.0" />
                             </GridPane.margin>
                         </JFXTextField>
-                        <GridPane GridPane.rowIndex="3">
+                        <GridPane GridPane.columnIndex="2">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="215.0" minWidth="185.0" prefWidth="196.0" />
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="121.0" minWidth="10.0" prefWidth="100.0" />
@@ -202,46 +199,22 @@
                                 </JFXTextField>
                             </children>
                         </GridPane>
-                        <JFXTextField fx:id="jtfreferencia" labelFloat="true" promptText="REFERENCIA" GridPane.rowIndex="4">
+                        <JFXTextField fx:id="jtfreferencia" labelFloat="true" promptText="REFERENCIA" GridPane.columnIndex="3">
                             <GridPane.margin>
                                 <Insets left="10.0" right="10.0" />
                             </GridPane.margin>
                         </JFXTextField>
-                        <JFXTextField fx:id="jtfobra" labelFloat="true" promptText="OBRA" GridPane.rowIndex="5">
+                        <JFXTextField fx:id="jtfobra" labelFloat="true" promptText="OBRA" GridPane.rowIndex="1">
                             <GridPane.margin>
                                 <Insets left="10.0" right="10.0" />
                             </GridPane.margin>
                         </JFXTextField>
-                        <GridPane GridPane.rowIndex="6">
-                            <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="522.0" minWidth="10.0" prefWidth="37.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="563.0" minWidth="10.0" prefWidth="366.0" />
-                            </columnConstraints>
-                            <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            </rowConstraints>
-                            <children>
-                                <Label text="S/.">
-                                    <font>
-                                        <Font size="16.0" />
-                                    </font>
-                                    <GridPane.margin>
-                                        <Insets left="10.0" />
-                                    </GridPane.margin>
-                                </Label>
-                                <JFXTextField fx:id="jtfimporte" labelFloat="true" promptText="IMPORTE" GridPane.columnIndex="1">
-                                    <GridPane.margin>
-                                        <Insets right="30.0" />
-                                    </GridPane.margin>
-                                </JFXTextField>
-                            </children>
-                        </GridPane>
-                        <JFXComboBox fx:id="jcbestado" labelFloat="true" maxWidth="1.7976931348623157E308" promptText="ESTADO" GridPane.rowIndex="7">
+                        <JFXComboBox fx:id="jcbestado" labelFloat="true" maxWidth="1.7976931348623157E308" promptText="ESTADO" GridPane.columnIndex="2" GridPane.rowIndex="1">
                             <GridPane.margin>
                                 <Insets left="10.0" right="10.0" />
                             </GridPane.margin>
                         </JFXComboBox>
-                        <GridPane GridPane.rowIndex="8">
+                        <GridPane GridPane.columnIndex="3" GridPane.rowIndex="1">
                             <columnConstraints>
                                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -256,10 +229,15 @@
                         <JFXButton onAction="#agregar" prefWidth="130.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="AGREGAR" GridPane.columnIndex="1" />
                             </children>
                         </GridPane>
+                          <JFXTextField fx:id="jtfimporte" labelFloat="true" promptText="IMPORTE" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                  <Insets right="30.0" />
+                              </GridPane.margin>
+                          </JFXTextField>
                         
                     </children>
                 </GridPane>
-            </left>
+         </top>
         </BorderPane>
     </children>
 </AnchorPane>

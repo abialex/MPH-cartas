@@ -6,8 +6,11 @@ package controller;
 
 import Entidades.Carta;
 import Entidades.Proveedor;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import emergente.AlertController;
 import java.io.IOException;
 import java.net.URL;
@@ -21,16 +24,20 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -66,6 +73,9 @@ public class DetalleController implements Initializable {
     private TableColumn<Carta, String> columnImporte;
 
     @FXML
+    private TableColumn<Carta, String> columnprueba;
+
+    @FXML
     private JFXTextField jtfbuscar;
 
     @FXML
@@ -95,6 +105,7 @@ public class DetalleController implements Initializable {
     @FXML
     private JFXComboBox<String> jcbestado;
 
+    Stage stagePrincipal;
     CartaController cartaController;
     ObservableList<Carta> listCarta = FXCollections.observableArrayList();
     private double x = 0;
@@ -122,11 +133,13 @@ public class DetalleController implements Initializable {
 
     @FXML
     void updateListaComprobante() {
-        List<Carta> olistAlarma = App.jpa.createQuery("select p from Carta p where numCartaConfianza like '%" + jtfbuscar.getText().trim() + "%'"
+        List<Carta> olistCarta = App.jpa.createQuery("select p from Carta p where numCartaConfianza like '%" + jtfbuscar.getText().trim() + "%'"
                 + "order by id DESC").setMaxResults(10).getResultList();
         listCarta.clear();
-        for (Carta oalarma : olistAlarma) {
-            listCarta.add(oalarma);
+        for (Carta ocarta : olistCarta) {
+            
+           //ocarta.setObutton(new JFXButton());
+            listCarta.add(ocarta);
         }
 
     }
@@ -257,6 +270,55 @@ public class DetalleController implements Initializable {
         columnProveedor.setCellValueFactory(new PropertyValueFactory<Carta, Proveedor>("proveedor"));
         columNumCarta.setCellValueFactory(new PropertyValueFactory<Carta, String>("numCartaConfianza"));
         columnFecha.setCellValueFactory(new PropertyValueFactory<Carta, LocalDate>("fechaVencimiento"));
+       
+        
+         Callback<TableColumn<Carta, String>, TableCell<Carta, String>> cellFoctory = (TableColumn<Carta, String> param) -> {
+            // make cell containing buttons
+            final TableCell<Carta, String> cell = new TableCell<Carta, String>() {
+                @Override
+                public void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    //that cell created only on non-empty rows
+                    if (empty) {
+                        setGraphic(null);
+                        setText(null);
+
+                    } else {
+
+                        JFXButton deleteIcon = new JFXButton();
+                        deleteIcon.setText("n");
+                        JFXButton editIcon = new JFXButton();
+                        editIcon.setText("a");
+
+                        deleteIcon.setStyle(
+                                " -fx-cursor: hand ;"
+                                + "-glyph-size:28px;"
+                                + "-fx-fill:#ff1744;"
+                        );
+                        editIcon.setStyle(
+                                " -fx-cursor: hand ;"
+                                + "-glyph-size:28px;"
+                                + "-fx-fill:#00E676;"
+                        );
+                        
+
+                        HBox managebtn = new HBox(editIcon, deleteIcon);
+                        managebtn.setStyle("-fx-alignment:center");
+                        HBox.setMargin(deleteIcon, new Insets(2, 2, 0, 3));
+                        HBox.setMargin(editIcon, new Insets(2, 3, 0, 2));
+
+                        setGraphic(managebtn);
+
+                        setText(null);
+
+                    }
+                }
+
+            };
+
+            return cell;
+        };
+         columnprueba.setCellFactory(cellFoctory);
     }
 
     int selectItem() {
@@ -357,6 +419,10 @@ public class DetalleController implements Initializable {
         }
 
         return aux;
+    }
+
+    void setStagePrincipall(Stage aThis) {
+        this.stagePrincipal = aThis;
     }
 
 }

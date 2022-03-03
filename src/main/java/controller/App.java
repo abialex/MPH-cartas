@@ -22,18 +22,18 @@ public class App extends Application {
     public static EntityManager jpa = JPAUtil.getEntityManagerFactory().createEntityManager();
     private double x = 0;
     private double y = 0;
-    CartaController ocControlller;
+    DetalleController ocControlller;
     public static Stage stagePrincpal;
 
     @Override
     public void start(Stage stage) throws IOException {
         stagePrincpal = stage;
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("Carta.fxml"));
-        fxmlLoader.setLocation(App.class.getResource("Carta.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("Detalle.fxml"));
+        fxmlLoader.setLocation(App.class.getResource("Detalle.fxml"));
         Parent root = fxmlLoader.load();
         scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/css/bootstrap3.css").toExternalForm());
-        ocControlller = (CartaController) fxmlLoader.getController(); //esto depende de (1)
+        ocControlller = (DetalleController) fxmlLoader.getController(); //esto depende de (1)
         ocControlller.setStagePrincipall(stage);
 
         root.setOnMousePressed(new EventHandler<MouseEvent>() {
