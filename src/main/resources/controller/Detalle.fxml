@@ -247,11 +247,13 @@
                                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             </columnConstraints>
                             <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <JFXButton onAction="#eliminar" prefWidth="130.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="ELIMINAR" />
-                                <JFXButton onAction="#modificar" prefWidth="130.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="MODIFICAR" GridPane.columnIndex="1" />
+                                <JFXButton onAction="#eliminar" prefWidth="130.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="ELIMINAR" GridPane.rowIndex="1" />
+                                <JFXButton onAction="#modificar" prefWidth="130.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="MODIFICAR" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <JFXButton onAction="#agregar" prefWidth="130.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="AGREGAR" GridPane.columnIndex="1" />
                             </children>
                         </GridPane>
                         

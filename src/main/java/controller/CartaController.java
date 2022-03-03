@@ -23,6 +23,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -45,8 +46,10 @@ public class CartaController implements Initializable {
     private AnchorPane ap;
     @FXML
     private Label lblnumVencido;
+
     private Stage stagePrincipal;
     private Proveedor oProveedor;
+    private List<Carta> listCartaVencida;
     private double x = 0;
     private double y = 0;
 
@@ -182,6 +185,7 @@ public class CartaController implements Initializable {
         stage.setScene(scene);
         AvisoController oAvisocontroller = (AvisoController) loader.getController(); //esto depende de (1)
         oAvisocontroller.setController(this);
+        oAvisocontroller.sendListVencido(listCartaVencida);
         root.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -327,8 +331,8 @@ public class CartaController implements Initializable {
 
     //funcion importante 
     void actualizarPorVencer() {
-        List<Carta> olistCartaVencida = App.jpa.createQuery(""
+        listCartaVencida = App.jpa.createQuery(""
                 + "select p from Carta p where estado = 'VIGENTE'  and fechavencimiento  <='" + LocalDate.now() + "'").getResultList();
-        lblnumVencido.setText(olistCartaVencida.size() + "");
+        lblnumVencido.setText(listCartaVencida.size() + "");
     }
 }

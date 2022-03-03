@@ -9,8 +9,9 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="ap" prefHeight="330.0" prefWidth="457.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AvisoController">
+<AnchorPane id="AnchorPane" fx:id="ap" prefHeight="319.0" prefWidth="676.0" style="-fx-border-color: #000000; -fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AvisoController">
    <children>
       <BorderPane layoutX="85.0" layoutY="37.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
@@ -20,28 +21,31 @@
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="67.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="189.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="126.0" minHeight="10.0" prefHeight="57.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="215.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="126.0" minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <TableView fx:id="tableCarta" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                      <columns>
-                        <TableColumn fx:id="columnProveedor" prefWidth="261.0" text="Proveedor" />
-                        <TableColumn fx:id="columNumCarta" prefWidth="89.0" text="N° Carta F." />
-                        <TableColumn fx:id="columnFecha" prefWidth="87.0" text="Fecha" />
+                        <TableColumn fx:id="columnProveedor" prefWidth="246.0" text="Proveedor" />
+                        <TableColumn fx:id="columNumCarta" prefWidth="92.0" text="N° Carta F." />
+                        <TableColumn fx:id="columnFecha" prefWidth="75.0" text="Fecha" />
                      </columns>
                   </TableView>
                   <GridPane>
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="250.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Se venció las cartas" GridPane.columnIndex="1" />
+                        <Label text="CARTAS QUE SE VENCIERON" GridPane.columnIndex="1">
+                           <font>
+                              <Font name="System Bold" size="21.0" />
+                           </font></Label>
                      </children>
                   </GridPane>
                   <GridPane GridPane.rowIndex="2">
@@ -53,7 +57,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <JFXButton onAction="#getposicion" prefWidth="100.0" style="-fx-border-color: #000000; -fx-background-color: #ffffff;" text="OK" GridPane.columnIndex="1" />
+                        <JFXButton onAction="#cerrar" prefHeight="33.0" prefWidth="146.0" style="-fx-border-color: #000000; -fx-background-color: #ffffff;" text="ENTENDIDO" GridPane.columnIndex="1" />
                      </children>
                   </GridPane>
                </children>

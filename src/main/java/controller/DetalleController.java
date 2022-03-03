@@ -91,7 +91,7 @@ public class DetalleController implements Initializable {
 
     @FXML
     private JFXTextField jtfimporte;
-    
+
     @FXML
     private JFXComboBox<String> jcbestado;
 
@@ -111,7 +111,7 @@ public class DetalleController implements Initializable {
         jtfdia.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
         jtfmes.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
         jtfanio.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
-         ObservableList<String> ESTADO=FXCollections.observableArrayList("VIGENTE", "VENCIDO", "POR DEVOLVER","DEVUELTO", "SUSTITUIA POR RI");
+        ObservableList<String> ESTADO = FXCollections.observableArrayList("VIGENTE", "VENCIDO", "POR DEVOLVER", "DEVUELTO", "SUSTITUIA POR RI");
         jcbestado.setItems(ESTADO);
     }
 
@@ -123,7 +123,7 @@ public class DetalleController implements Initializable {
     @FXML
     void updateListaComprobante() {
         List<Carta> olistAlarma = App.jpa.createQuery("select p from Carta p where numCartaConfianza like '%" + jtfbuscar.getText().trim() + "%'"
-        +"order by id DESC").setMaxResults(10).getResultList();
+                + "order by id DESC").setMaxResults(10).getResultList();
         listCarta.clear();
         for (Carta oalarma : olistAlarma) {
             listCarta.add(oalarma);
@@ -141,7 +141,7 @@ public class DetalleController implements Initializable {
             jtfnumCarta.setText(listCarta.get(index).getNumCartaConfianza());
             jtfdia.setText(listCarta.get(index).getFechaVencimiento().getDayOfMonth() + "");
             jtfmes.setText(listCarta.get(index).getFechaVencimiento().getMonthValue() + "");
-            jtfanio.setText((listCarta.get(index).getFechaVencimiento().getYear()-2000) + "");
+            jtfanio.setText((listCarta.get(index).getFechaVencimiento().getYear() - 2000) + "");
             jtfreferencia.setText(listCarta.get(index).getReferencia());
             jtfobra.setText(listCarta.get(index).getObra());
             jtfimporte.setText(listCarta.get(index).getImporte());
@@ -154,7 +154,7 @@ public class DetalleController implements Initializable {
             jtfdia.setText("");
             jtfmes.setText("");
             jtfanio.setText("");
-             jtfreferencia.setText("");
+            jtfreferencia.setText("");
             jtfobra.setText("");
             jtfimporte.setText("");
 
@@ -162,14 +162,34 @@ public class DetalleController implements Initializable {
     }
 
     @FXML
+    void agregar() throws IOException {
+        if (isCompleto()) {
+            Carta oCarta = new Carta();
+            oCarta.setProveedor(oProveedor);
+            oCarta.setNumCartaConfianza(jtfnumCarta.getText().trim());
+            oCarta.setFechaVencimiento(LocalDate.of(Integer.parseInt(jtfanio.getText().trim()) + 2000,
+                    Integer.parseInt(jtfmes.getText().trim()), Integer.parseInt(jtfdia.getText().trim())));
+            oCarta.setReferencia(jtfreferencia.getText().trim());
+            oCarta.setObra(jtfobra.getText().trim());
+            oCarta.setImporte(jtfimporte.getText().trim());
+            oCarta.setEstado(jcbestado.getSelectionModel().getSelectedItem());
+            App.jpa.getTransaction().begin();
+            App.jpa.persist(oCarta);
+            App.jpa.getTransaction().commit();
+            updateListaComprobante();
+            getItem();
+        }
+    }
+
+    @FXML
     void modificar() throws IOException {
         int index = selectItem();
         if (index != -1 && isCompleto()) {
-            
+
             Carta oCarta = listCarta.get(index);
             oCarta.setProveedor(oProveedor);
             oCarta.setNumCartaConfianza(jtfnumCarta.getText().trim());
-            oCarta.setFechaVencimiento(LocalDate.of(Integer.parseInt(jtfanio.getText().trim())+2000,
+            oCarta.setFechaVencimiento(LocalDate.of(Integer.parseInt(jtfanio.getText().trim()) + 2000,
                     Integer.parseInt(jtfmes.getText().trim()), Integer.parseInt(jtfdia.getText().trim())));
             oCarta.setReferencia(jtfreferencia.getText().trim());
             oCarta.setObra(jtfobra.getText().trim());
@@ -180,6 +200,7 @@ public class DetalleController implements Initializable {
             App.jpa.getTransaction().commit();
             listCarta.set(index, oCarta);
             updateListaComprobante();
+            getItem();
         }
     }
 
@@ -246,7 +267,8 @@ public class DetalleController implements Initializable {
         this.oProveedor = get;
         jtfproveedor.setText(oProveedor.getNombreProveedor());
     }
-     private void SoloNumerosEnteros(KeyEvent event) {
+
+    private void SoloNumerosEnteros(KeyEvent event) {
         JFXTextField o = (JFXTextField) event.getSource();
         char key = event.getCharacter().charAt(0);
         if (!Character.isDigit(key)) {
@@ -256,7 +278,8 @@ public class DetalleController implements Initializable {
             event.consume();
         }
     }
-     boolean isCompleto() throws IOException {
+
+    boolean isCompleto() throws IOException {
         boolean aux = true;
         if (oProveedor == null) {
             jtfproveedor.setStyle("-fx-border-color: #ff052b");
@@ -325,7 +348,7 @@ public class DetalleController implements Initializable {
 
         try {
             if (aux) {
-                LocalDate.of(Integer.parseInt(jtfanio.getText().trim()) , Integer.parseInt(jtfmes.getText().trim()), Integer.parseInt(jtfdia.getText().trim()));
+                LocalDate.of(Integer.parseInt(jtfanio.getText().trim()), Integer.parseInt(jtfmes.getText().trim()), Integer.parseInt(jtfdia.getText().trim()));
             }
         } catch (Exception e) {
             aux = false;
