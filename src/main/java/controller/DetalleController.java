@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,6 +32,8 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -73,7 +76,7 @@ public class DetalleController implements Initializable {
     private TableColumn<Carta, String> columnImporte;
 
     @FXML
-    private TableColumn<Carta, String> columnprueba;
+    private TableColumn<Carta, Integer> columnprueba;
 
     @FXML
     private JFXTextField jtfbuscar;
@@ -137,8 +140,8 @@ public class DetalleController implements Initializable {
                 + "order by id DESC").setMaxResults(10).getResultList();
         listCarta.clear();
         for (Carta ocarta : olistCarta) {
-            
-           //ocarta.setObutton(new JFXButton());
+
+            //ocarta.setObutton(new JFXButton());
             listCarta.add(ocarta);
         }
 
@@ -267,58 +270,83 @@ public class DetalleController implements Initializable {
     }
 
     void initTableView() {
+        columnprueba.setCellValueFactory(new PropertyValueFactory<Carta, Integer>("id"));
         columnProveedor.setCellValueFactory(new PropertyValueFactory<Carta, Proveedor>("proveedor"));
         columNumCarta.setCellValueFactory(new PropertyValueFactory<Carta, String>("numCartaConfianza"));
         columnFecha.setCellValueFactory(new PropertyValueFactory<Carta, LocalDate>("fechaVencimiento"));
-       
-        
-         Callback<TableColumn<Carta, String>, TableCell<Carta, String>> cellFoctory = (TableColumn<Carta, String> param) -> {
+        Callback<TableColumn<Carta, Integer>, TableCell<Carta, Integer>> cellFoctory = (TableColumn<Carta, Integer> param) -> {
             // make cell containing buttons
-            final TableCell<Carta, String> cell = new TableCell<Carta, String>() {
+            final TableCell<Carta, Integer> cell = new TableCell<Carta, Integer>() {
                 @Override
-                public void updateItem(String item, boolean empty) {
+                public void updateItem(Integer item, boolean empty) {
                     super.updateItem(item, empty);
-                    //that cell created only on non-empty rows
+                    //that cell created only on non-empty rows                    
                     if (empty) {
                         setGraphic(null);
                         setText(null);
-
                     } else {
-
                         JFXButton deleteIcon = new JFXButton();
-                        deleteIcon.setText("n");
-                        JFXButton editIcon = new JFXButton();
-                        editIcon.setText("a");
+                        deleteIcon.setUserData(item);
+                        deleteIcon.addEventHandler(ActionEvent.ACTION, event -> eliminar(event));
+                        deleteIcon.setText("Eliminar");
 
+                        JFXButton editIcon = new JFXButton();
+                        editIcon.setUserData(item);
+                        editIcon.addEventHandler(ActionEvent.ACTION, event -> modificar(event));
+                        editIcon.setText("Modificar");
                         deleteIcon.setStyle(
                                 " -fx-cursor: hand ;"
-                                + "-glyph-size:28px;"
-                                + "-fx-fill:#ff1744;"
+                                + "-fx-text-fill: #ffffff;"
+                                + "-fx-background-color: RED"
                         );
                         editIcon.setStyle(
                                 " -fx-cursor: hand ;"
-                                + "-glyph-size:28px;"
-                                + "-fx-fill:#00E676;"
+                                + "-fx-text-fill: #ffffff;"
+                                + "-fx-background-color: GREEN"
                         );
-                        
-
                         HBox managebtn = new HBox(editIcon, deleteIcon);
                         managebtn.setStyle("-fx-alignment:center");
-                        HBox.setMargin(deleteIcon, new Insets(2, 2, 0, 3));
+                        //  HBox.setMargin(deleteIcon, new Insets(2, 2, 0, 3));
                         HBox.setMargin(editIcon, new Insets(2, 3, 0, 2));
-
                         setGraphic(managebtn);
-
                         setText(null);
-
                     }
                 }
 
-            };
+                private void modificar(ActionEvent event) {
 
+                    JFXButton buton = (JFXButton) event.getSource();
+                    for (Carta carta : listCarta) {
+                        if (carta.getId() == (Integer) buton.getUserData()) {
+                            System.out.println(carta.getNumCartaConfianza());
+                            break;
+
+                        }
+                    }
+                }
+
+                private void eliminar(ActionEvent event) {
+                    JFXButton buton = (JFXButton) event.getSource();
+                    for (int i=0; i<listCarta.size() ; i++) {
+                        if (listCarta.get(i).getId() == (Integer) buton.getUserData()) {
+                            App.jpa.getTransaction().begin();
+                            App.jpa.remove(listCarta.get(i));
+                            App.jpa.getTransaction().commit();
+                            listCarta.remove(i);
+                            updateListaComprobante();
+                            //getitem para limpiar
+                            getItem();
+                            break;
+                        }
+                    }
+                }
+            };
             return cell;
         };
-         columnprueba.setCellFactory(cellFoctory);
+        columnprueba.setCellFactory(cellFoctory);
+    }
+
+    void asdasd() {
     }
 
     int selectItem() {
