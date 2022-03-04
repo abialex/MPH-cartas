@@ -6,6 +6,7 @@ package controller;
 
 import Entidades.Carta;
 import Entidades.Proveedor;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import emergente.AlertController;
 import java.io.IOException;
@@ -16,6 +17,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -46,7 +49,8 @@ public class CartaController implements Initializable {
     private AnchorPane ap;
     @FXML
     private Label lblnumVencido;
-
+    @FXML
+    private JFXComboBox<String> jcbestado;
     private Stage stagePrincipal;
     private Proveedor oProveedor;
     private Carta oCarta;
@@ -63,6 +67,8 @@ public class CartaController implements Initializable {
         jtfmes.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
         jtfanio.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
         actualizarPorVencer();
+        ObservableList<String> ESTADO = FXCollections.observableArrayList("VIGENTE", "VENCIDO", "POR DEVOLVER", "DEVUELTO", "SUSTITUIDA POR RI");
+        jcbestado.setItems(ESTADO);
     }
 
     void setStagePrincipall(Stage aThis) {
@@ -230,7 +236,7 @@ public class CartaController implements Initializable {
             oCarta.setReferencia(jtfreferencia.getText().trim());
             oCarta.setObra(jtfobra.getText().trim());
             oCarta.setImporte(jtfimporte.getText().trim());
-            //oCarta.setEstado(estado);
+            oCarta.setEstado(jcbestado.getSelectionModel().getSelectedItem());
             App.jpa.getTransaction().begin();
             App.jpa.persist(oCarta);
             App.jpa.getTransaction().commit();
@@ -352,6 +358,7 @@ public class CartaController implements Initializable {
         jtfreferencia.setText(carta.getReferencia());
         jtfobra.setText(carta.getObra());
         jtfimporte.setText(carta.getImporte());
+        jcbestado.getSelectionModel().select(carta.getEstado());
 
     }
 }

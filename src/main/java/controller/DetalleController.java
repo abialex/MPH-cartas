@@ -9,13 +9,10 @@ import Entidades.Proveedor;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import emergente.AlertController;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -34,7 +31,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -151,11 +147,8 @@ public class DetalleController implements Initializable {
                 + "order by id DESC").setMaxResults(10).getResultList();
         listCarta.clear();
         for (Carta ocarta : olistCarta) {
-
-            //ocarta.setObutton(new JFXButton());
             listCarta.add(ocarta);
         }
-
     }
 
     @FXML
@@ -184,7 +177,6 @@ public class DetalleController implements Initializable {
             jtfreferencia.setText("");
             jtfobra.setText("");
             jtfimporte.setText("");
-
         }
     }
 
@@ -244,7 +236,6 @@ public class DetalleController implements Initializable {
             //getitem para limpiar
             getItem();
         }
-
     }
 
     @FXML
@@ -466,7 +457,6 @@ public class DetalleController implements Initializable {
     }
 
     int selectItem() {
-        tableCarta.getSelectionModel().setSelectionMode(tableCarta.getSelectionModel().getSelectionMode());
         return listCarta.indexOf(tableCarta.getSelectionModel().getSelectedItem());
     }
 
@@ -547,12 +537,10 @@ public class DetalleController implements Initializable {
             oAlert.Mostrar("error", "Llene los cuadros en rojo");
         }
         aux = isfechavalid(auxfecha);
-
         return aux;
     }
 
     boolean isfechavalid(boolean aux) throws IOException {
-
         try {
             if (aux) {
                 LocalDate.of(Integer.parseInt(jtfanio.getText().trim()), Integer.parseInt(jtfmes.getText().trim()), Integer.parseInt(jtfdia.getText().trim()));
@@ -560,9 +548,7 @@ public class DetalleController implements Initializable {
         } catch (Exception e) {
             aux = false;
             oAlert.Mostrar("warning", "ingrese una fecha válida");
-
         }
-
         return aux;
     }
 
@@ -592,7 +578,6 @@ public class DetalleController implements Initializable {
 
     @FXML
     void test() {
-        
         System.out.println("Proveedor: " + columnProveedor.getWidth() + " carta f:" + columNumCarta.getWidth() + " fecha: " + columnFecha.getWidth());
         System.out.println("Prueba: " + columnprueba.getWidth() + " estado f:" + columnEstado.getWidth() + " importe: " + columnImporte.getWidth());
     }
