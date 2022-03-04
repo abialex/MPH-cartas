@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import emergente.AlertController;
+import java.awt.Button;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -112,7 +113,7 @@ public class DetalleController implements Initializable {
     private JFXComboBox<String> jcbestado;
 
     @FXML
-    private ImageView imgadd, imglimpiar;
+    private ImageView imgadd, imglimpiar, imagporexpirar, imageditar, imgvencido;
 
     Stage stagePrincipal;
     CartaController cartaController;
@@ -281,6 +282,11 @@ public class DetalleController implements Initializable {
         jtfobra.setText("");
         jtfimporte.setText("");
     }
+    
+    @FXML
+    void minimizar(){
+        ((Stage) ap.getScene().getWindow()).setIconified(true);
+    }
 
     void initTableView() {
         columnprueba.setCellValueFactory(new PropertyValueFactory<Carta, Integer>("id"));
@@ -307,6 +313,30 @@ public class DetalleController implements Initializable {
                         Label ola = new Label();
                         ola.setText("Sistem \n as de información \n ramani \n sincero");
                         ola.setStyle("-fx-font-size: 8");
+                        setGraphic(ola);
+                        setText(null);
+                    }
+                }
+            };
+
+            return cell;
+        });
+
+        columnReferencia.setCellFactory(column -> {
+            TableCell<Carta, String> cell = new TableCell<Carta, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        if (item.length() > 100) {
+
+                        }
+                        Label ola = new Label();
+                        ola.setText(item);
+                        ola.setStyle("-fx-font-size: 8; -fx-alignment: center; -fx-max-width:999;");
                         setGraphic(ola);
                         setText(null);
                     }
@@ -352,37 +382,39 @@ public class DetalleController implements Initializable {
                         setGraphic(null);
                         setText(null);
                     } else {
-                        JFXButton deleteIcon = new JFXButton();
+                        ImageView deleteIcon = new ImageView(new Image(getClass().getResource("/images/delete-1.png").toExternalForm()));
+                        deleteIcon.setFitHeight(35);
+                        deleteIcon.setFitWidth(35);
                         deleteIcon.setUserData(item);
-                        deleteIcon.addEventHandler(ActionEvent.ACTION, event -> eliminar(event));
-                        deleteIcon.setText("Eliminar");
-
-                        JFXButton editIcon = new JFXButton();
-                        editIcon.setUserData(item);
-                        editIcon.addEventHandler(ActionEvent.ACTION, event -> modificar(event));
-                        editIcon.setText("Modificar");
                         deleteIcon.setStyle(
-                                " -fx-cursor: hand ;"
-                                + "-fx-text-fill: #ffffff;"
-                                + "-fx-background-color: RED"
+                                " -fx-cursor: hand;"
                         );
+                        deleteIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> eliminar(event));
+                        deleteIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagEliminarMoved(event));
+                        deleteIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagEliminarFuera(event));
+                        //deleteIcon.setText("Eliminar");
+
+                        ImageView editIcon = new ImageView(new Image(getClass().getResource("/images/modify-1.png").toExternalForm()));
+                        editIcon.setFitHeight(35);
+                        editIcon.setFitWidth(35);
+                        editIcon.setUserData(item);
                         editIcon.setStyle(
                                 " -fx-cursor: hand ;"
-                                + "-fx-text-fill: #ffffff;"
-                                + "-fx-background-color: GREEN"
                         );
+                        editIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> modificar(event));
+                        editIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagModificarMoved(event));
+                        editIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
                         HBox managebtn = new HBox(editIcon, deleteIcon);
                         managebtn.setStyle("-fx-alignment:center");
-                        //  HBox.setMargin(deleteIcon, new Insets(2, 2, 0, 3));
-                        HBox.setMargin(editIcon, new Insets(2, 3, 0, 2));
+                        HBox.setMargin(deleteIcon, new Insets(0, 0, 0, 5));
+                        HBox.setMargin(editIcon, new Insets(0, 5, 0, 0));                
                         setGraphic(managebtn);
                         setText(null);
                     }
                 }
 
-                private void modificar(ActionEvent event) {
-
-                    JFXButton buton = (JFXButton) event.getSource();
+                private void modificar(MouseEvent event) {
+                    ImageView buton = (ImageView) event.getSource();
                     for (Carta carta : listCarta) {
                         if (carta.getId() == (Integer) buton.getUserData()) {
 
@@ -417,38 +449,56 @@ public class DetalleController implements Initializable {
                                     stage.setY(event.getScreenY() - y);
                                 }
                             });
-
                             stage.show();
                             //((Stage) ap.getScene().getWindow()).close();//cerrando la ventanada anterior
-
                             break;
-
                         }
                     }
                 }
 
-                private void eliminar(ActionEvent event) {
-                    JFXButton buton = (JFXButton) event.getSource();
+                private void eliminar(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
                     for (int i = 0; i < listCarta.size(); i++) {
-                        if (listCarta.get(i).getId() == (Integer) buton.getUserData()) {
+                        if (listCarta.get(i).getId() == (Integer) imag.getUserData()) {
 
                             Carta carta = listCarta.get(i);
                             //si lo que eliminan es igual a lo que está seleccionado: eliminar
-                            if (listCarta.get(selectItem()) == carta) {
-                                limpiar();
+                            if (selectItem() != -1) {
+                                if (listCarta.get(selectItem()) == carta) {
+                                    limpiar();
+                                }
                             }
                             App.jpa.getTransaction().begin();
                             App.jpa.refresh(carta);//recuperando enlace ORM
                             App.jpa.remove(carta);
                             App.jpa.getTransaction().commit();
                             listCarta.remove(i);
-
                             updateListaComprobante();
                             //getitem para limpiar
                             getItem();
                             break;
                         }
                     }
+                }
+
+                private void imagEliminarMoved(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    imag.setImage(new Image(getClass().getResource("/images/delete-2.png").toExternalForm()));
+                }
+
+                private void imagEliminarFuera(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    imag.setImage(new Image(getClass().getResource("/images/delete-1.png").toExternalForm()));
+                }
+
+                private void imagModificarMoved(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    imag.setImage(new Image(getClass().getResource("/images/modify-2.png").toExternalForm()));   
+                }
+
+                private void imagModificarFuera(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    imag.setImage(new Image(getClass().getResource("/images/modify-1.png").toExternalForm()));
                 }
             };
             return cell;
@@ -574,6 +624,41 @@ public class DetalleController implements Initializable {
     @FXML
     void imaglimpiarFuera() {
         imglimpiar.setImage(new Image(getClass().getResource("/images/limpiar-1.png").toExternalForm()));
+    }
+
+    @FXML
+    void imagPorexpirarDentro() {
+        imagporexpirar.setImage(new Image(getClass().getResource("/images/expired-2.png").toExternalForm()));
+    }
+
+    @FXML
+    void imagPorexpirarFuera() {
+        imagporexpirar.setImage(new Image(getClass().getResource("/images/expired-1.png").toExternalForm()));
+    }
+
+    @FXML
+    void imagEditarDentro() {
+        imageditar.setImage(new Image(getClass().getResource("/images/editar-2.png").toExternalForm()));
+    }
+
+    @FXML
+    void imagEditarFuera() {
+        imageditar.setImage(new Image(getClass().getResource("/images/editar-1.png").toExternalForm()));
+    }
+
+    @FXML
+    void imagVencidoDentro() {
+        imgvencido.setImage(new Image(getClass().getResource("/images/caution-2.png").toExternalForm()));
+    }
+
+    @FXML
+    void imagVencidoFuera() {
+        imgvencido.setImage(new Image(getClass().getResource("/images/caution-1.png").toExternalForm()));
+    }
+
+    @FXML
+    void cerrar() {
+        ((Stage) ap.getScene().getWindow()).close();//cerrando la ventanada anterior
     }
 
     @FXML

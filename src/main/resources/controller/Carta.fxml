@@ -184,7 +184,7 @@
                                         </ImageView>
                                         <ImageView fitHeight="32.0" fitWidth="35.0" onMouseClicked="#mostrarEstado" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
                                             <image>
-                                                <Image url="@../images/expired.png" />
+                                                <Image url="@../images/expired-1.png" />
                                             </image>
                                             <cursor>
                                                 <Cursor fx:constant="HAND" />
