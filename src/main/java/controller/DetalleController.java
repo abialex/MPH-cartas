@@ -77,6 +77,9 @@ public class DetalleController implements Initializable {
 
     @FXML
     private TableColumn<Carta, Integer> columnprueba;
+    
+    @FXML
+    private TableColumn<Carta, String> columnEstado;
 
     @FXML
     private JFXTextField jtfbuscar;
@@ -107,6 +110,9 @@ public class DetalleController implements Initializable {
 
     @FXML
     private JFXComboBox<String> jcbestado;
+    
+    @FXML
+    private ImageView imgadd;
 
     Stage stagePrincipal;
     CartaController cartaController;
@@ -115,6 +121,7 @@ public class DetalleController implements Initializable {
     private double y = 0;
     Proveedor oProveedor;
     AlertController oAlert = new AlertController();
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -125,8 +132,9 @@ public class DetalleController implements Initializable {
         jtfdia.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
         jtfmes.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
         jtfanio.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
-        ObservableList<String> ESTADO = FXCollections.observableArrayList("VIGENTE", "VENCIDO", "POR DEVOLVER", "DEVUELTO", "SUSTITUIA POR RI");
+        ObservableList<String> ESTADO = FXCollections.observableArrayList("VIGENTE", "VENCIDO", "POR DEVOLVER", "DEVUELTO", "SUSTITUIDA POR RI");
         jcbestado.setItems(ESTADO);
+        jcbestado.getSelectionModel().select("VIGENTE");
     }
 
     public void setController(CartaController cpc) {
@@ -274,6 +282,12 @@ public class DetalleController implements Initializable {
         columnProveedor.setCellValueFactory(new PropertyValueFactory<Carta, Proveedor>("proveedor"));
         columNumCarta.setCellValueFactory(new PropertyValueFactory<Carta, String>("numCartaConfianza"));
         columnFecha.setCellValueFactory(new PropertyValueFactory<Carta, LocalDate>("fechaVencimiento"));
+        columnReferencia.setCellValueFactory(new PropertyValueFactory<Carta, String>("referencia"));
+        columnObra.setCellValueFactory(new PropertyValueFactory<Carta, String>("obra"));  
+        columnImporte.setCellValueFactory(new PropertyValueFactory<Carta, String>("importe")); 
+        columnEstado.setCellValueFactory(new PropertyValueFactory<Carta, String>("estado")); 
+        
+        
         Callback<TableColumn<Carta, Integer>, TableCell<Carta, Integer>> cellFoctory = (TableColumn<Carta, Integer> param) -> {
             // make cell containing buttons
             final TableCell<Carta, Integer> cell = new TableCell<Carta, Integer>() {
@@ -327,10 +341,13 @@ public class DetalleController implements Initializable {
 
                 private void eliminar(ActionEvent event) {
                     JFXButton buton = (JFXButton) event.getSource();
-                    for (int i=0; i<listCarta.size() ; i++) {
+                    for (int i = 0; i < listCarta.size(); i++) {
                         if (listCarta.get(i).getId() == (Integer) buton.getUserData()) {
+                            System.out.println("x: " + listCarta.get(i).getNumCartaConfianza() + " : " + i);
+                            Carta carta = listCarta.get(i);
                             App.jpa.getTransaction().begin();
-                            App.jpa.remove(listCarta.get(i));
+                            App.jpa.refresh(carta);//recuperando enlace ORM
+                            App.jpa.remove(carta);                            
                             App.jpa.getTransaction().commit();
                             listCarta.remove(i);
                             updateListaComprobante();
@@ -451,6 +468,14 @@ public class DetalleController implements Initializable {
 
     void setStagePrincipall(Stage aThis) {
         this.stagePrincipal = aThis;
+    }
+    @FXML
+    void imagAddDentro(){
+        imgadd.setImage(new Image(getClass().getResource("/images/add-2.png").toExternalForm()));
+    }
+    @FXML
+    void imagAddFuera(){
+        imgadd.setImage(new Image(getClass().getResource("/images/add-1.png").toExternalForm()));
     }
 
 }
