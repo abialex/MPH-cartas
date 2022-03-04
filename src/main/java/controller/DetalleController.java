@@ -18,6 +18,8 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -114,7 +116,7 @@ public class DetalleController implements Initializable {
     private JFXComboBox<String> jcbestado;
 
     @FXML
-    private ImageView imgadd;
+    private ImageView imgadd, imglimpiar;
 
     Stage stagePrincipal;
     CartaController cartaController;
@@ -170,7 +172,7 @@ public class DetalleController implements Initializable {
             jtfreferencia.setText(listCarta.get(index).getReferencia());
             jtfobra.setText(listCarta.get(index).getObra());
             jtfimporte.setText(listCarta.get(index).getImporte());
-            jcbestado.getSelectionModel().select(listCarta.get(index).getEstado());
+            //jcbestado.getSelectionModel().select(listCarta.get(index).getEstado());
 
         } else {
             oProveedor = null;
@@ -254,7 +256,7 @@ public class DetalleController implements Initializable {
         scene.getStylesheets().add(AgregarProveedorController.class.getResource("/css/bootstrap3.css").toExternalForm());;
         Stage stage = new Stage();//creando la base vací
         stage.initStyle(StageStyle.UNDECORATED);
-        stage.initOwner((Stage) ap.getScene().getWindow());
+        stage.initOwner(stagePrincipal);
         stage.setScene(scene);
         AgregarProveedorController oVerController = (AgregarProveedorController) loader.getController(); //esto depende de (1)
         oVerController.setController(this);
@@ -276,6 +278,17 @@ public class DetalleController implements Initializable {
 
         stage.show();
         //((Stage) ap.getScene().getWindow()).close();//cerrando la ventanada anterior
+    }
+
+    @FXML
+    void limpiar() {
+        jtfnumCarta.setText("");
+        jtfdia.setText("");
+        jtfmes.setText("");
+        jtfanio.setText("");
+        jtfreferencia.setText("");
+        jtfobra.setText("");
+        jtfimporte.setText("");
     }
 
     void initTableView() {
@@ -320,13 +333,12 @@ public class DetalleController implements Initializable {
                         setGraphic(null);
                         setText("");
                     } else {
-                        String stilo="-fx-alignment:center; -fx-max-width:999;";
+                        String stilo = "-fx-alignment:center; -fx-max-width:999;";
                         Label ola = new Label();
                         if (item.equals("VENCIDO")) {
-                            ola.setStyle(stilo+" -fx-text-fill: RED;"  );      
-                        }
-                        else{
-                            ola.setStyle(stilo+ " -fx-text-fill: PURPLE");
+                            ola.setStyle(stilo + " -fx-text-fill: RED;");
+                        } else {
+                            ola.setStyle(stilo + " -fx-text-fill: PURPLE");
                         }
                         ola.setText(item);
                         setGraphic(ola);
@@ -382,7 +394,42 @@ public class DetalleController implements Initializable {
                     JFXButton buton = (JFXButton) event.getSource();
                     for (Carta carta : listCarta) {
                         if (carta.getId() == (Integer) buton.getUserData()) {
-                            System.out.println(carta.getNumCartaConfianza());
+
+                            FXMLLoader loader = new FXMLLoader();
+                            loader.setLocation(AgregarProveedorController.class.getResource("Carta.fxml"));
+                            Parent root = null;
+                            try {
+                                root = loader.load();
+                            } catch (IOException ex) {
+                                Logger.getLogger(CartaController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            Scene scene = new Scene(root);//instancia el controlador (!)
+                            scene.getStylesheets().add(CartaController.class.getResource("/css/bootstrap3.css").toExternalForm());;
+                            Stage stage = new Stage();//creando la base vací
+                            stage.initStyle(StageStyle.UNDECORATED);
+                            stage.initOwner(stagePrincipal);
+                            stage.setScene(scene);
+                            CartaController oDetalleController = (CartaController) loader.getController(); //esto depende de (1)
+                            oDetalleController.setController(DetalleController.this);
+                            oDetalleController.setCarta(carta);
+                            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent event) {
+                                    x = event.getX();
+                                    y = event.getY();
+                                }
+                            });
+                            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent event) {
+                                    stage.setX(event.getScreenX() - x);
+                                    stage.setY(event.getScreenY() - y);
+                                }
+                            });
+
+                            stage.show();
+                            //((Stage) ap.getScene().getWindow()).close();//cerrando la ventanada anterior
+
                             break;
 
                         }
@@ -393,13 +440,18 @@ public class DetalleController implements Initializable {
                     JFXButton buton = (JFXButton) event.getSource();
                     for (int i = 0; i < listCarta.size(); i++) {
                         if (listCarta.get(i).getId() == (Integer) buton.getUserData()) {
-                            System.out.println("x: " + listCarta.get(i).getNumCartaConfianza() + " : " + i);
+
                             Carta carta = listCarta.get(i);
+                            //si lo que eliminan es igual a lo que está seleccionado: eliminar
+                            if (listCarta.get(selectItem()) == carta) {
+                                limpiar();
+                            }
                             App.jpa.getTransaction().begin();
                             App.jpa.refresh(carta);//recuperando enlace ORM
                             App.jpa.remove(carta);
                             App.jpa.getTransaction().commit();
                             listCarta.remove(i);
+
                             updateListaComprobante();
                             //getitem para limpiar
                             getItem();
@@ -413,10 +465,8 @@ public class DetalleController implements Initializable {
         columnprueba.setCellFactory(cellFoctory);
     }
 
-    void asdasd() {
-    }
-
     int selectItem() {
+        tableCarta.getSelectionModel().setSelectionMode(tableCarta.getSelectionModel().getSelectionMode());
         return listCarta.indexOf(tableCarta.getSelectionModel().getSelectedItem());
     }
 
@@ -531,7 +581,18 @@ public class DetalleController implements Initializable {
     }
 
     @FXML
+    void imaglimpiarDentro() {
+        imglimpiar.setImage(new Image(getClass().getResource("/images/limpiar-2.png").toExternalForm()));
+    }
+
+    @FXML
+    void imaglimpiarFuera() {
+        imglimpiar.setImage(new Image(getClass().getResource("/images/limpiar-1.png").toExternalForm()));
+    }
+
+    @FXML
     void test() {
+        
         System.out.println("Proveedor: " + columnProveedor.getWidth() + " carta f:" + columNumCarta.getWidth() + " fecha: " + columnFecha.getWidth());
         System.out.println("Prueba: " + columnprueba.getWidth() + " estado f:" + columnEstado.getWidth() + " importe: " + columnImporte.getWidth());
     }

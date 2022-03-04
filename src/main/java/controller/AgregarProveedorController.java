@@ -45,7 +45,7 @@ public class AgregarProveedorController implements Initializable {
     private TableColumn<Proveedor, String> columnNombreProveedor;
     @FXML
     private ImageView imguser;
-    
+
     AlertController oAlert = new AlertController();
     CartaController cartaController;
     DetalleController oDetalleController;
@@ -73,7 +73,7 @@ public class AgregarProveedorController implements Initializable {
             App.jpa.getTransaction().begin();
             App.jpa.persist(oProveedor);
             App.jpa.getTransaction().commit();
-            oAlert.Mostrar("successful", "GUARDADO");
+            //oAlert.Mostrar("successful", "GUARDADO");
             jtfProveedor.setText("");
             updateListaProveedor();
 
@@ -93,8 +93,11 @@ public class AgregarProveedorController implements Initializable {
             App.jpa.getTransaction().commit();
             listProveedor.remove(index);
             updateListaProveedor();
-            cartaController.setProveedor(new Proveedor(""));
-            oDetalleController.setProveedor(new Proveedor(""));
+            if (cartaController != null) {
+                cartaController.setProveedor(new Proveedor(""));
+            } else {
+                oDetalleController.setProveedor(new Proveedor(""));
+            }
 
         }
 
@@ -138,12 +141,14 @@ public class AgregarProveedorController implements Initializable {
         columnNombreProveedor.setCellValueFactory(new PropertyValueFactory<Proveedor, String>("nombreProveedor"));
         //prueba
     }
+
     @FXML
-    void imaguserDentro(){
+    void imaguserDentro() {
         imguser.setImage(new Image(getClass().getResource("/images/add-user-2.png").toExternalForm()));
     }
+
     @FXML
-    void imaguserFuera(){
+    void imaguserFuera() {
         imguser.setImage(new Image(getClass().getResource("/images/add-user.png").toExternalForm()));
     }
 }

@@ -49,7 +49,9 @@ public class CartaController implements Initializable {
 
     private Stage stagePrincipal;
     private Proveedor oProveedor;
+    private Carta oCarta;
     private List<Carta> listCartaVencida;
+    private DetalleController oDetalleController;
     private double x = 0;
     private double y = 0;
 
@@ -82,7 +84,7 @@ public class CartaController implements Initializable {
         scene.getStylesheets().add(AgregarProveedorController.class.getResource("/css/bootstrap3.css").toExternalForm());;
         Stage stage = new Stage();//creando la base vací
         stage.initStyle(StageStyle.UNDECORATED);
-        stage.initOwner(stagePrincipal);
+        stage.initOwner(((Stage) ap.getScene().getWindow()));
         stage.setScene(scene);
         AgregarProveedorController oVerController = (AgregarProveedorController) loader.getController(); //esto depende de (1)
         oVerController.setController(this);
@@ -222,20 +224,19 @@ public class CartaController implements Initializable {
     @FXML
     void GuardarCarta() throws IOException {
         if (isCompleto()) {
-            Carta oCarta = new Carta(
-                    oProveedor,
-                    jtfnumCarta.getText().trim(),
-                    LocalDate.of(Integer.parseInt(jtfanio.getText().trim()) + 2000, Integer.parseInt(jtfmes.getText().trim()), Integer.parseInt(jtfdia.getText().trim())),
-                    jtfreferencia.getText().trim(),
-                    jtfobra.getText().trim(),
-                    jtfimporte.getText().trim(),
-                    "VIGENTE");
-
+            oCarta.setProveedor(oProveedor);
+            oCarta.setNumCartaConfianza(jtfnumCarta.getText().trim());
+            oCarta.setFechaVencimiento(LocalDate.of(Integer.parseInt(jtfanio.getText().trim()) + 2000, Integer.parseInt(jtfmes.getText().trim()), Integer.parseInt(jtfdia.getText().trim())));
+            oCarta.setReferencia(jtfreferencia.getText().trim());
+            oCarta.setObra(jtfobra.getText().trim());
+            oCarta.setImporte(jtfimporte.getText().trim());
+            //oCarta.setEstado(estado);
             App.jpa.getTransaction().begin();
             App.jpa.persist(oCarta);
             App.jpa.getTransaction().commit();
-            oAlert.Mostrar("successful", "Guardado");
-            limpiar();
+            oDetalleController.updateListaComprobante();
+            oAlert.Mostrar("successful", "Modificado");
+            cerrar();
         }
     }
 
@@ -334,5 +335,23 @@ public class CartaController implements Initializable {
         listCartaVencida = App.jpa.createQuery(""
                 + "select p from Carta p where estado = 'VIGENTE'  and fechavencimiento  <='" + LocalDate.now() + "'").getResultList();
         lblnumVencido.setText(listCartaVencida.size() + "");
+    }
+
+    void setController(DetalleController aThis) {
+        this.oDetalleController = aThis;
+    }
+
+    void setCarta(Carta carta) {
+        this.oCarta = carta;
+        oProveedor = carta.getProveedor();
+        jtfproveedor.setText(carta.getProveedor().getNombreProveedor());
+        jtfnumCarta.setText(carta.getNumCartaConfianza());
+        jtfdia.setText(carta.getFechaVencimiento().getDayOfMonth() + "");
+        jtfmes.setText(carta.getFechaVencimiento().getMonthValue() + "");
+        jtfanio.setText((carta.getFechaVencimiento().getYear() - 2000) + "");
+        jtfreferencia.setText(carta.getReferencia());
+        jtfobra.setText(carta.getObra());
+        jtfimporte.setText(carta.getImporte());
+
     }
 }
