@@ -28,9 +28,11 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -77,7 +79,7 @@ public class DetalleController implements Initializable {
 
     @FXML
     private TableColumn<Carta, Integer> columnprueba;
-    
+
     @FXML
     private TableColumn<Carta, String> columnEstado;
 
@@ -110,7 +112,7 @@ public class DetalleController implements Initializable {
 
     @FXML
     private JFXComboBox<String> jcbestado;
-    
+
     @FXML
     private ImageView imgadd;
 
@@ -121,7 +123,6 @@ public class DetalleController implements Initializable {
     private double y = 0;
     Proveedor oProveedor;
     AlertController oAlert = new AlertController();
-    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -283,11 +284,60 @@ public class DetalleController implements Initializable {
         columNumCarta.setCellValueFactory(new PropertyValueFactory<Carta, String>("numCartaConfianza"));
         columnFecha.setCellValueFactory(new PropertyValueFactory<Carta, LocalDate>("fechaVencimiento"));
         columnReferencia.setCellValueFactory(new PropertyValueFactory<Carta, String>("referencia"));
-        columnObra.setCellValueFactory(new PropertyValueFactory<Carta, String>("obra"));  
-        columnImporte.setCellValueFactory(new PropertyValueFactory<Carta, String>("importe")); 
-        columnEstado.setCellValueFactory(new PropertyValueFactory<Carta, String>("estado")); 
-        
-        
+        columnObra.setCellValueFactory(new PropertyValueFactory<Carta, String>("obra"));
+        columnImporte.setCellValueFactory(new PropertyValueFactory<Carta, String>("importe"));
+        columnEstado.setCellValueFactory(new PropertyValueFactory<Carta, String>("estado"));
+
+        columnObra.setCellFactory(column -> {
+            TableCell<Carta, String> cell = new TableCell<Carta, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        if (item.length() > 100) {
+
+                        }
+                        Label ola = new Label();
+                        ola.setText("Sistem \n as de información \n ramani \n sincero");
+                        ola.setStyle("-fx-font-size: 8");
+                        setGraphic(ola);
+                        setText(null);
+                    }
+                }
+            };
+
+            return cell;
+        });
+        columnEstado.setCellFactory(column -> {
+            TableCell<Carta, String> cell = new TableCell<Carta, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        String stilo="-fx-alignment:center; -fx-max-width:999;";
+                        Label ola = new Label();
+                        if (item.equals("VENCIDO")) {
+                            ola.setStyle(stilo+" -fx-text-fill: RED;"  );      
+                        }
+                        else{
+                            ola.setStyle(stilo+ " -fx-text-fill: PURPLE");
+                        }
+                        ola.setText(item);
+                        setGraphic(ola);
+                        setText(null);
+                    }
+                }
+            };
+
+            return cell;
+        });
+
         Callback<TableColumn<Carta, Integer>, TableCell<Carta, Integer>> cellFoctory = (TableColumn<Carta, Integer> param) -> {
             // make cell containing buttons
             final TableCell<Carta, Integer> cell = new TableCell<Carta, Integer>() {
@@ -347,7 +397,7 @@ public class DetalleController implements Initializable {
                             Carta carta = listCarta.get(i);
                             App.jpa.getTransaction().begin();
                             App.jpa.refresh(carta);//recuperando enlace ORM
-                            App.jpa.remove(carta);                            
+                            App.jpa.remove(carta);
                             App.jpa.getTransaction().commit();
                             listCarta.remove(i);
                             updateListaComprobante();
@@ -469,13 +519,21 @@ public class DetalleController implements Initializable {
     void setStagePrincipall(Stage aThis) {
         this.stagePrincipal = aThis;
     }
+
     @FXML
-    void imagAddDentro(){
+    void imagAddDentro() {
         imgadd.setImage(new Image(getClass().getResource("/images/add-2.png").toExternalForm()));
     }
+
     @FXML
-    void imagAddFuera(){
+    void imagAddFuera() {
         imgadd.setImage(new Image(getClass().getResource("/images/add-1.png").toExternalForm()));
+    }
+
+    @FXML
+    void test() {
+        System.out.println("Proveedor: " + columnProveedor.getWidth() + " carta f:" + columNumCarta.getWidth() + " fecha: " + columnFecha.getWidth());
+        System.out.println("Prueba: " + columnprueba.getWidth() + " estado f:" + columnEstado.getWidth() + " importe: " + columnImporte.getWidth());
     }
 
 }
