@@ -155,7 +155,7 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <JFXButton onAction="#GuardarCarta" prefWidth="120.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="GUARDAR" GridPane.columnIndex="2">
+                                <JFXButton onAction="#GuardarCarta" prefWidth="120.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="MODIFICAR" GridPane.columnIndex="2">
                                     <font>
                                         <Font name="System Bold" size="15.0" />
                                     </font>
@@ -173,40 +173,6 @@
                                     <rowConstraints>
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
-                                    <children>
-                                        <ImageView fitHeight="32.0" fitWidth="35.0" onMouseClicked="#mostrarDetalle" pickOnBounds="true" preserveRatio="true">
-                                            <image>
-                                                <Image url="@../images/edit.png" />
-                                            </image>
-                                            <cursor>
-                                                <Cursor fx:constant="HAND" />
-                                            </cursor>
-                                        </ImageView>
-                                        <ImageView fitHeight="32.0" fitWidth="35.0" onMouseClicked="#mostrarEstado" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
-                                            <image>
-                                                <Image url="@../images/expired-1.png" />
-                                            </image>
-                                            <cursor>
-                                                <Cursor fx:constant="HAND" />
-                                            </cursor>
-                                        </ImageView>
-                              <ImageView fitHeight="32.0" fitWidth="35.0" onMouseClicked="#mostrarAviso" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
-                                 <image>
-                                    <Image url="@../images/clock.png" />
-                                 </image>
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                              </ImageView>
-                                        <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
-                                            <image>
-                                                <Image url="@../images/printing.png" />
-                                            </image>
-                                            <cursor>
-                                                <Cursor fx:constant="HAND" />
-                                            </cursor>
-                                        </ImageView>
-                                    </children>
                                 </GridPane>
                         <GridPane>
                            <columnConstraints>
@@ -218,24 +184,6 @@
                            <rowConstraints>
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
-                           <children>
-                              <Label fx:id="lblnumVencido" style="-fx-background-color: #ff002b;" text="10" textFill="WHITE" GridPane.columnIndex="3">
-                                 <GridPane.margin>
-                                    <Insets left="30.0" top="40.0" />
-                                 </GridPane.margin>
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                              <Label style="-fx-background-color: #5443a8;" text="10" textFill="WHITE" GridPane.columnIndex="2">
-                                 <GridPane.margin>
-                                    <Insets left="30.0" top="40.0" />
-                                 </GridPane.margin>
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                           </children>
                         </GridPane>
                             </children>
                         </GridPane>

@@ -12,11 +12,8 @@ import emergente.AlertController;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -25,8 +22,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -48,8 +43,6 @@ public class CartaController implements Initializable {
     @FXML
     private AnchorPane ap;
     @FXML
-    private Label lblnumVencido;
-    @FXML
     private JFXComboBox<String> jcbestado;
     private Stage stagePrincipal;
     private Proveedor oProveedor;
@@ -66,7 +59,6 @@ public class CartaController implements Initializable {
         jtfdia.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
         jtfmes.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
         jtfanio.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
-        actualizarPorVencer();
         ObservableList<String> ESTADO = FXCollections.observableArrayList("VIGENTE", "VENCIDO", "POR DEVOLVER", "DEVUELTO", "SUSTITUIDA POR RI");
         jcbestado.setItems(ESTADO);
     }
@@ -181,37 +173,6 @@ public class CartaController implements Initializable {
     }
 
     @FXML
-    void mostrarAviso() throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(AvisoController.class.getResource("Aviso.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);//instancia el controlador (!)
-        scene.getStylesheets().add(EstadoController.class.getResource("/css/bootstrap3.css").toExternalForm());;
-        Stage stage = new Stage();//creando la base vací
-        stage.initStyle(StageStyle.UNDECORATED);
-        stage.initOwner(stagePrincipal);
-        stage.setScene(scene);
-        AvisoController oAvisocontroller = (AvisoController) loader.getController(); //esto depende de (1)
-        oAvisocontroller.setController(this);
-        oAvisocontroller.sendListVencido(listCartaVencida);
-        root.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                x = event.getX();
-                y = event.getY();
-            }
-        });
-        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                stage.setX(event.getScreenX() - x);
-                stage.setY(event.getScreenY() - y);
-            }
-        });
-        stage.show();
-    }
-
-    @FXML
     void cerrar() {
         ((Stage) ap.getScene().getWindow()).close();
     }
@@ -241,6 +202,7 @@ public class CartaController implements Initializable {
             App.jpa.persist(oCarta);
             App.jpa.getTransaction().commit();
             oDetalleController.updateListaComprobante();
+            oDetalleController.actualizarPorVencer();
             oAlert.Mostrar("successful", "Modificado");
             cerrar();
         }
@@ -334,13 +296,6 @@ public class CartaController implements Initializable {
         jtfreferencia.setText("");
         jtfobra.setText("");
         jtfimporte.setText("");
-    }
-
-    //funcion importante 
-    void actualizarPorVencer() {
-        listCartaVencida = App.jpa.createQuery(""
-                + "select p from Carta p where estado = 'VIGENTE'  and fechavencimiento  <='" + LocalDate.now() + "'").getResultList();
-        lblnumVencido.setText(listCartaVencida.size() + "");
     }
 
     void setController(DetalleController aThis) {

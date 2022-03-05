@@ -115,6 +115,9 @@ public class DetalleController implements Initializable {
     @FXML
     private ImageView imgadd, imglimpiar, imagporexpirar, imageditar, imgvencido;
 
+    @FXML
+    private Label lblnumVencido;
+
     Stage stagePrincipal;
     CartaController cartaController;
     ObservableList<Carta> listCarta = FXCollections.observableArrayList();
@@ -122,10 +125,12 @@ public class DetalleController implements Initializable {
     private double y = 0;
     Proveedor oProveedor;
     AlertController oAlert = new AlertController();
+    private List<Carta> listCartaVencida;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        actualizarPorVencer();
         updateListaComprobante();
         initTableView();
         tableCarta.setItems(listCarta);
@@ -197,6 +202,7 @@ public class DetalleController implements Initializable {
             App.jpa.persist(oCarta);
             App.jpa.getTransaction().commit();
             updateListaComprobante();
+            actualizarPorVencer();
             getItem();
         }
     }
@@ -273,6 +279,37 @@ public class DetalleController implements Initializable {
     }
 
     @FXML
+    void mostrarAviso() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(AvisoController.class.getResource("Aviso.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);//instancia el controlador (!)
+        scene.getStylesheets().add(EstadoController.class.getResource("/css/bootstrap3.css").toExternalForm());;
+        Stage stage = new Stage();//creando la base vací
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initOwner(stagePrincipal);
+        stage.setScene(scene);
+        AvisoController oAvisocontroller = (AvisoController) loader.getController(); //esto depende de (1)
+        oAvisocontroller.setController(this);
+        oAvisocontroller.sendListVencido(listCartaVencida);
+        root.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                x = event.getX();
+                y = event.getY();
+            }
+        });
+        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                stage.setX(event.getScreenX() - x);
+                stage.setY(event.getScreenY() - y);
+            }
+        });
+        stage.show();
+    }
+
+    @FXML
     void limpiar() {
         jtfnumCarta.setText("");
         jtfdia.setText("");
@@ -282,10 +319,21 @@ public class DetalleController implements Initializable {
         jtfobra.setText("");
         jtfimporte.setText("");
     }
-    
+
     @FXML
-    void minimizar(){
+    void minimizar() {
         ((Stage) ap.getScene().getWindow()).setIconified(true);
+    }
+
+    public void actualizarPorVencer() {
+        listCartaVencida = App.jpa.createQuery(""
+                + "select p from Carta p where estado = 'VIGENTE'  and fechavencimiento  <='" + LocalDate.now() + "'").getResultList();
+        if (listCartaVencida.isEmpty()) {
+            lblnumVencido.setVisible(false);
+        } else {
+            lblnumVencido.setVisible(true);
+        }
+        lblnumVencido.setText(listCartaVencida.size() + "");
     }
 
     void initTableView() {
@@ -407,7 +455,7 @@ public class DetalleController implements Initializable {
                         HBox managebtn = new HBox(editIcon, deleteIcon);
                         managebtn.setStyle("-fx-alignment:center");
                         HBox.setMargin(deleteIcon, new Insets(0, 0, 0, 5));
-                        HBox.setMargin(editIcon, new Insets(0, 5, 0, 0));                
+                        HBox.setMargin(editIcon, new Insets(0, 5, 0, 0));
                         setGraphic(managebtn);
                         setText(null);
                     }
@@ -473,6 +521,7 @@ public class DetalleController implements Initializable {
                             App.jpa.remove(carta);
                             App.jpa.getTransaction().commit();
                             listCarta.remove(i);
+                            actualizarPorVencer();
                             updateListaComprobante();
                             //getitem para limpiar
                             getItem();
@@ -493,7 +542,7 @@ public class DetalleController implements Initializable {
 
                 private void imagModificarMoved(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
-                    imag.setImage(new Image(getClass().getResource("/images/modify-2.png").toExternalForm()));   
+                    imag.setImage(new Image(getClass().getResource("/images/modify-2.png").toExternalForm()));
                 }
 
                 private void imagModificarFuera(MouseEvent event) {

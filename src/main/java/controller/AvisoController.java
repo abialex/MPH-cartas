@@ -44,7 +44,7 @@ public class AvisoController implements Initializable {
     @FXML
     private TableColumn<Carta, LocalDate> columnFecha;
 
-    CartaController oCartaController;
+    DetalleController oDetalleController;
     ObservableList<Carta> listCarta = FXCollections.observableArrayList();
 
     @Override
@@ -54,8 +54,8 @@ public class AvisoController implements Initializable {
         tableCarta.setItems(listCarta);
     }
 
-    void setController(CartaController aThis) {
-        this.oCartaController = aThis;
+    void setController(DetalleController aThis) {
+        this.oDetalleController = aThis;
 
     }
 

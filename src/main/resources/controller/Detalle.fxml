@@ -264,7 +264,7 @@
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
                                     </ImageView>
-                                    <ImageView fx:id="imgvencido" fitHeight="32.0" fitWidth="35.0" onMouseExited="#imagVencidoFuera" onMouseMoved="#imagVencidoDentro" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                    <ImageView fx:id="imgvencido" fitHeight="32.0" fitWidth="35.0" onMouseClicked="#mostrarAviso" onMouseExited="#imagVencidoFuera" onMouseMoved="#imagVencidoDentro" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1">
                                        <image>
                                           <Image url="@../images/caution-1.png" />
                                        </image>
