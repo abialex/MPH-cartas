@@ -25,7 +25,7 @@ public class Carta {
     private int id;
     
     @JoinColumn( insertable = true,updatable = true,name="idproveedor",nullable = false)
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Proveedor proveedor;
     
     @Column(name = "numCartaConfianza", nullable = false)
@@ -45,6 +45,9 @@ public class Carta {
     
     @Column(name = "estado", nullable = false)
     private String estado;
+    
+    @Column(name = "visto", nullable = false)
+    private boolean visto;
     
 
     public Carta(Proveedor proveedor, String numCartaConfianza, LocalDate fechaVencimiento, String referencia, String obra, String importe, String estado) {
