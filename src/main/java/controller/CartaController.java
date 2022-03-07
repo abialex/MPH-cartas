@@ -140,39 +140,6 @@ public class CartaController implements Initializable {
     }
 
     @FXML
-    void mostrarEstado() throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(EstadoController.class.getResource("Estado.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);//instancia el controlador (!)
-        scene.getStylesheets().add(EstadoController.class.getResource("/css/bootstrap3.css").toExternalForm());;
-        Stage stage = new Stage();//creando la base vací
-        stage.initStyle(StageStyle.UNDECORATED);
-        // stage.initOwner(stagePrincipal);
-        stage.setScene(scene);
-        EstadoController oDetalleController = (EstadoController) loader.getController(); //esto depende de (1)
-        oDetalleController.setController(this);
-        root.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                x = event.getX();
-                y = event.getY();
-            }
-        });
-        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                stage.setX(event.getScreenX() - x);
-                stage.setY(event.getScreenY() - y);
-            }
-        });
-        stage.show();
-
-        cerrar();
-        //((Stage) ap.getScene().getWindow()).close();//cerrando la ventanada anterior
-    }
-
-    @FXML
     void cerrar() {
         ((Stage) ap.getScene().getWindow()).close();
     }

@@ -256,7 +256,7 @@
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
                                     </ImageView>
-                                    <ImageView fx:id="imagporexpirar" fitHeight="32.0" fitWidth="35.0" onMouseExited="#imagPorexpirarFuera" onMouseMoved="#imagPorexpirarDentro" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                    <ImageView fx:id="imagporexpirar" fitHeight="32.0" fitWidth="35.0" onMouseClicked="#mostrarEstado" onMouseExited="#imagPorexpirarFuera" onMouseMoved="#imagPorexpirarDentro" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                        <image>
                                           <Image url="@../images/expired-1.png" />
                                        </image>

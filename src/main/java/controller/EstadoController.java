@@ -21,6 +21,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -32,6 +34,9 @@ public class EstadoController implements Initializable {
     /**
      * Initializes the controller class.
      */
+    @FXML
+    private AnchorPane ap;
+
     @FXML
     private JFXTextField jtfbuscar;
 
@@ -60,7 +65,7 @@ public class EstadoController implements Initializable {
     private TableColumn<?, ?> columnImporte;
 
     ObservableList<Carta> listCarta = FXCollections.observableArrayList();
-    CartaController oCartaController;
+    DetalleController oCartaController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -71,36 +76,39 @@ public class EstadoController implements Initializable {
         jcbtiempo.setItems(ESTADO);
     }
 
-    public void setController(CartaController cpc) {
+    public void setController(DetalleController cpc) {
         this.oCartaController = cpc;
 
     }
 
     @FXML
     void test() {
-       LocalDate local=LocalDate.parse(jtfbuscar.getText().trim());
-       LocalDate local2=local.minusDays(1+1);
-       local2=local.minusDays(2+1);
-       local2=local.minusDays(3+1);
-       local2=local.minusDays(7+1);
-       local2=local.minusDays(30+1);
-           System.out.println( local2.toString()+" / "+LocalDate.now().toString()+" : " +local2.isBefore(LocalDate.now()));
-           
-       //para cambiar de vigente a vencido minusday(1) y luego comparar before;
-                
-     
+        LocalDate local = LocalDate.parse(jtfbuscar.getText().trim());
+        LocalDate local2 = local.minusDays(1 + 1);
+        local2 = local.minusDays(2 + 1);
+        local2 = local.minusDays(3 + 1);
+        local2 = local.minusDays(7 + 1);
+        local2 = local.minusDays(30 + 1);
+        System.out.println(local2.toString() + " / " + LocalDate.now().toString() + " : " + local2.isBefore(LocalDate.now()));
+
+        //para cambiar de vigente a vencido minusday(1) y luego comparar before;
+    }
+
+    @FXML
+    void cerrar() {
+        ((Stage) ap.getScene().getWindow()).close();//cerrando la ventanada anterior
     }
 
     @FXML
     void updateListaComprobante() {
         List<Carta> olistAlarma = App.jpa.createQuery("select p from Carta p where estado = 'VIGENTE' ORDER BY fechavencimiento asc").getResultList();
-        List<Carta> listFilter=new ArrayList<Carta>();
+        List<Carta> listFilter = new ArrayList<Carta>();
         listCarta.clear();
         for (Carta oCarta : olistAlarma) {
-            if(oCarta.getFechaVencimiento().minusDays(3+1).isBefore(LocalDate.now())){
+            if (oCarta.getFechaVencimiento().minusDays(3 + 1).isBefore(LocalDate.now())) {
                 listCarta.add(oCarta);
             }
-            
+
         }
     }
 
@@ -110,8 +118,8 @@ public class EstadoController implements Initializable {
         columnFecha.setCellValueFactory(new PropertyValueFactory<Carta, LocalDate>("fechaVencimiento"));
     }
     void filtrarBy(List<Carta> list){
-        
-        
+
+
     }
 
 }
