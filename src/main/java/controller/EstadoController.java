@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -64,15 +67,27 @@ public class EstadoController implements Initializable {
     @FXML
     private TableColumn<?, ?> columnImporte;
 
+    @FXML
+    private TableColumn<Carta, LocalDate> columnEn;
+
+    @FXML
+    private Label lbl1d, lbl3d, lbl7d, lbl30d;
+
     ObservableList<Carta> listCarta = FXCollections.observableArrayList();
     DetalleController oCartaController;
+    List<Carta> listCarta1D;
+    List<Carta> listCarta3D;
+    List<Carta> listCarta7D;
+    List<Carta> listCarta30D;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initTableView();
+        getListas();
+        cargarDatoaPantalla();
         tableCarta.setItems(listCarta);
-        updateListaComprobante();
-        ObservableList<String> ESTADO = FXCollections.observableArrayList("1 DÍA", "3 DÍAS", "1 SEMANA", "1 MES");
+        //updateListaComprobante();
+        ObservableList<String> ESTADO = FXCollections.observableArrayList("MAÑANA", "3 DÍAS A MENOS", "1 SEMANA A MENOS", "1 MES A MENOS");
         jcbtiempo.setItems(ESTADO);
     }
 
@@ -116,10 +131,79 @@ public class EstadoController implements Initializable {
         columnProveedor.setCellValueFactory(new PropertyValueFactory<Carta, Proveedor>("proveedor"));
         columNumCarta.setCellValueFactory(new PropertyValueFactory<Carta, String>("numCartaConfianza"));
         columnFecha.setCellValueFactory(new PropertyValueFactory<Carta, LocalDate>("fechaVencimiento"));
+        columnEn.setCellValueFactory(new PropertyValueFactory<Carta, LocalDate>("fechaVencimiento"));
+
+        columnEn.setCellFactory(column -> {
+            TableCell<Carta, LocalDate> cell = new TableCell<Carta, LocalDate>() {
+                @Override
+                protected void updateItem(LocalDate item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+
+                        Period period = Period.between(LocalDate.now(), item);
+                        long diffDays = period.getDays();
+                        Label oLabel = new Label();
+                        oLabel.setText(diffDays + " Día(s)");
+                        String style = "-fx-font-size: 11; -fx-alignment: center; -fx-max-width:999;";
+                        if (3 >= diffDays) {
+                            style=style + " -fx-text-fill: RED;";
+                        }
+                        oLabel.setStyle(style);
+                        setGraphic(oLabel);
+                    }
+                }
+            };
+
+            return cell;
+        });
     }
-    void filtrarBy(List<Carta> list){
 
+    void filtrarBy(List<Carta> list) {
 
+    }
+
+    void getListas() {
+        LocalDate lc = LocalDate.now();
+        listCarta1D = App.jpa.createQuery("select p from Carta p where fechavencimiento BETWEEN '"
+                + lc.plusDays(1).toString() + "' and '" + lc.plusDays(1) + "' order by fechavencimiento asc").getResultList();
+        listCarta3D = App.jpa.createQuery("select p from Carta p where fechavencimiento BETWEEN '"
+                + lc.plusDays(1).toString() + "' and '" + lc.plusDays(3) + "' order by fechavencimiento asc").getResultList();
+        listCarta7D = App.jpa.createQuery("select p from Carta p where fechavencimiento BETWEEN '"
+                + lc.plusDays(1).toString() + "' and '" + lc.plusDays(7) + "' order by fechavencimiento asc").getResultList();
+        listCarta30D = App.jpa.createQuery("select p from Carta p where fechavencimiento BETWEEN '"
+                + lc.plusDays(1).toString() + "' and '" + lc.plusDays(30) + "' order by fechavencimiento asc").getResultList();
+    }
+
+    void cargarDatoaPantalla() {
+        lbl1d.setText(listCarta1D.size() + "");
+        lbl3d.setText(listCarta3D.size() + "");
+        lbl7d.setText(listCarta7D.size() + "");
+        lbl30d.setText(listCarta30D.size() + "");
+    }
+
+    @FXML
+    void seleccionarRango() {
+        listCarta.clear();
+        if (jcbtiempo.getSelectionModel().getSelectedItem().equals("MAÑANA")) {
+            for (Carta carta : listCarta1D) {
+                listCarta.add(carta);
+            }
+        } else if (jcbtiempo.getSelectionModel().getSelectedItem().equals("3 DÍAS A MENOS")) {
+            for (Carta carta : listCarta3D) {
+                listCarta.add(carta);
+            }
+        } else if (jcbtiempo.getSelectionModel().getSelectedItem().equals("1 SEMANA A MENOS")) {
+            for (Carta carta : listCarta7D) {
+                listCarta.add(carta);
+            }
+        } else {
+            for (Carta carta : listCarta30D) {
+                listCarta.add(carta);
+            }
+        }
     }
 
 }

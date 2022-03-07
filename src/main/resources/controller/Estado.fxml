@@ -47,7 +47,7 @@
                               <Insets left="10.0" right="10.0" />
                            </GridPane.margin>
                         </JFXTextField>
-                        <JFXComboBox fx:id="jcbtiempo" labelFloat="true" maxWidth="1.7976931348623157E308" onAction="#test" promptText="Rango de tiempo" GridPane.columnIndex="1">
+                        <JFXComboBox fx:id="jcbtiempo" labelFloat="true" maxWidth="1.7976931348623157E308" onAction="#seleccionarRango" promptText="Rango de tiempo" GridPane.columnIndex="1">
                            <GridPane.margin>
                               <Insets left="5.0" right="5.0" />
                            </GridPane.margin>
@@ -64,42 +64,42 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label text="1 DÍA: ">
+                              <Label text="MAÑANA">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <Label text="3 DÍAS: " GridPane.rowIndex="1">
+                              <Label text="3 - 1 DÍA(S)" GridPane.rowIndex="1">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <Label text="1 SEMANA: " GridPane.rowIndex="2">
+                              <Label text="7 - 1 DÍA(S)" GridPane.rowIndex="2">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <Label text="1 MES: " GridPane.rowIndex="3">
+                              <Label text="30 - 1 DÍA(S)" GridPane.rowIndex="3">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <Label text="2" GridPane.columnIndex="1">
+                              <Label fx:id="lbl1d" text="2" GridPane.columnIndex="1">
                                  <GridPane.margin>
                                     <Insets left="4.0" />
                                  </GridPane.margin>
                               </Label>
-                              <Label text="3" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <Label fx:id="lbl3d" text="3" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets left="4.0" />
                                  </GridPane.margin>
                               </Label>
-                              <Label text="4" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <Label fx:id="lbl7d" text="4" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="4.0" />
                                  </GridPane.margin>
                               </Label>
-                              <Label text="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                              <Label fx:id="lbl30d" text="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                  <GridPane.margin>
                                     <Insets left="4.0" />
                                  </GridPane.margin>
@@ -120,9 +120,10 @@
                   </JFXButton>
                   <TableView fx:id="tableCarta" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                      <columns>
-                        <TableColumn fx:id="columnProveedor" prefWidth="196.0" text="Proveedor" />
+                        <TableColumn fx:id="columnEn" prefWidth="58.0" text="En" />
+                        <TableColumn fx:id="columnFecha" prefWidth="82.0" text="Fecha" />
+                        <TableColumn fx:id="columnProveedor" prefWidth="211.0" text="Proveedor" />
                         <TableColumn fx:id="columNumCarta" prefWidth="109.0" text="N° Carta F." />
-                        <TableColumn fx:id="columnFecha" text="Fecha" />
                         <TableColumn fx:id="columnReferencia" prefWidth="81.0" text="Referencia" />
                         <TableColumn fx:id="columnObra" prefWidth="60.0" text="Obra" />
                         <TableColumn fx:id="columnImporte" prefWidth="129.0" text="Importe" />
