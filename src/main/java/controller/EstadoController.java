@@ -89,6 +89,8 @@ public class EstadoController implements Initializable {
         //updateListaComprobante();
         ObservableList<String> ESTADO = FXCollections.observableArrayList("MAÑANA", "3 DÍAS A MENOS", "1 SEMANA A MENOS", "1 MES A MENOS");
         jcbtiempo.setItems(ESTADO);
+        jcbtiempo.getSelectionModel().select("3 DÍAS A MENOS");
+        seleccionarRango();
     }
 
     public void setController(DetalleController cpc) {

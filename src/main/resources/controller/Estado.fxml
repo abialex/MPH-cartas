@@ -113,7 +113,7 @@
                         </Label>
                      </children>
                   </GridPane>
-                  <JFXButton onAction="#test" prefWidth="190.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="OK" GridPane.rowIndex="2">
+                  <JFXButton onAction="#cerrar" prefWidth="190.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="OK" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets right="10.0" />
                      </GridPane.margin>
@@ -121,7 +121,7 @@
                   <TableView fx:id="tableCarta" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                      <columns>
                         <TableColumn fx:id="columnEn" prefWidth="58.0" text="En" />
-                        <TableColumn fx:id="columnFecha" prefWidth="82.0" text="Fecha" />
+                        <TableColumn fx:id="columnFecha" prefWidth="82.0" text="Fecha V." />
                         <TableColumn fx:id="columnProveedor" prefWidth="211.0" text="Proveedor" />
                         <TableColumn fx:id="columNumCarta" prefWidth="109.0" text="N° Carta F." />
                         <TableColumn fx:id="columnReferencia" prefWidth="81.0" text="Referencia" />
