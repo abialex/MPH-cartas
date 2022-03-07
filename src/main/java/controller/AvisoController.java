@@ -68,6 +68,7 @@ public class AvisoController implements Initializable {
 
     @FXML
     void cerrar() {
+        vistear();
         ((Stage) ap.getScene().getWindow()).close();
     }
 
@@ -76,6 +77,22 @@ public class AvisoController implements Initializable {
             listCarta.add(oalarma);
         }
 
+    }
+
+    void vistear() {
+        try {
+            for (Carta carta : listCarta) {
+                carta.setVisto(true);
+                App.jpa.getTransaction().begin();
+                App.jpa.persist(carta);
+                App.jpa.getTransaction().commit();
+
+            }
+            oDetalleController.actualizarPorVencer();
+
+        } catch (Exception e) {
+            System.out.println(e.toString()+"problem en vistear()");
+        }
     }
 
     void initTableView() {

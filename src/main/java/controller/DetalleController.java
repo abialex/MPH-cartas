@@ -14,6 +14,7 @@ import java.awt.Button;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -57,67 +58,67 @@ public class DetalleController implements Initializable {
     private AnchorPane ap;
     @FXML
     private TableView<Carta> tableCarta;
-
+    
     @FXML
     private TableColumn<Carta, Proveedor> columnProveedor;
-
+    
     @FXML
     private TableColumn<Carta, String> columNumCarta;
-
+    
     @FXML
     private TableColumn<Carta, LocalDate> columnFecha;
-
+    
     @FXML
     private TableColumn<Carta, String> columnReferencia;
-
+    
     @FXML
     private TableColumn<Carta, String> columnObra;
-
+    
     @FXML
     private TableColumn<Carta, String> columnImporte;
-
+    
     @FXML
     private TableColumn<Carta, Integer> columnprueba;
-
+    
     @FXML
     private TableColumn<Carta, String> columnEstado;
-
+    
     @FXML
     private JFXTextField jtfbuscar;
-
+    
     @FXML
     private JFXTextField jtfproveedor;
-
+    
     @FXML
     private JFXTextField jtfnumCarta;
-
+    
     @FXML
     private JFXTextField jtfdia;
-
+    
     @FXML
     private JFXTextField jtfmes;
-
+    
     @FXML
     private JFXTextField jtfanio;
-
+    
     @FXML
     private JFXTextField jtfreferencia;
-
+    
     @FXML
     private JFXTextField jtfobra;
-
+    
     @FXML
     private JFXTextField jtfimporte;
-
+    
     @FXML
     private JFXComboBox<String> jcbestado;
-
+    
     @FXML
     private ImageView imgadd, imglimpiar, imagporexpirar, imageditar, imgvencido;
-
+    
     @FXML
     private Label lblnumVencido;
-
+    
     Stage stagePrincipal;
     CartaController cartaController;
     ObservableList<Carta> listCarta = FXCollections.observableArrayList();
@@ -125,8 +126,8 @@ public class DetalleController implements Initializable {
     private double y = 0;
     Proveedor oProveedor;
     AlertController oAlert = new AlertController();
-    private List<Carta> listCartaVencida;
-
+    private List<Carta> listCartaVencidaNoVista;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -141,12 +142,12 @@ public class DetalleController implements Initializable {
         jcbestado.setItems(ESTADO);
         jcbestado.getSelectionModel().select("VIGENTE");
     }
-
+    
     public void setController(CartaController cpc) {
         this.cartaController = cpc;
-
+        
     }
-
+    
     @FXML
     void updateListaComprobante() {
         List<Carta> olistCarta = App.jpa.createQuery("select p from Carta p where numCartaConfianza like '%" + jtfbuscar.getText().trim() + "%'"
@@ -156,10 +157,10 @@ public class DetalleController implements Initializable {
             listCarta.add(ocarta);
         }
     }
-
+    
     @FXML
     void getItem() {
-
+        
         int index = selectItem();
         if (index != -1) {
             oProveedor = listCarta.get(index).getProveedor();
@@ -185,7 +186,7 @@ public class DetalleController implements Initializable {
             jtfimporte.setText("");
         }
     }
-
+    
     @FXML
     void agregar() throws IOException {
         if (isCompleto()) {
@@ -206,12 +207,12 @@ public class DetalleController implements Initializable {
             getItem();
         }
     }
-
+    
     @FXML
     void modificar() throws IOException {
         int index = selectItem();
         if (index != -1 && isCompleto()) {
-
+            
             Carta oCarta = listCarta.get(index);
             oCarta.setProveedor(oProveedor);
             oCarta.setNumCartaConfianza(jtfnumCarta.getText().trim());
@@ -229,7 +230,7 @@ public class DetalleController implements Initializable {
             getItem();
         }
     }
-
+    
     @FXML
     void eliminar() {
         int index = selectItem();
@@ -244,7 +245,7 @@ public class DetalleController implements Initializable {
             getItem();
         }
     }
-
+    
     @FXML
     void mostrarAgregarProveedor() throws IOException {
         FXMLLoader loader = new FXMLLoader();
@@ -258,7 +259,7 @@ public class DetalleController implements Initializable {
         stage.setScene(scene);
         AgregarProveedorController oVerController = (AgregarProveedorController) loader.getController(); //esto depende de (1)
         oVerController.setController(this);
-
+        
         root.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -273,11 +274,11 @@ public class DetalleController implements Initializable {
                 stage.setY(event.getScreenY() - y);
             }
         });
-
+        
         stage.show();
         //((Stage) ap.getScene().getWindow()).close();//cerrando la ventanada anterior
     }
-
+    
     @FXML
     void mostrarAviso() throws IOException {
         FXMLLoader loader = new FXMLLoader();
@@ -291,7 +292,7 @@ public class DetalleController implements Initializable {
         stage.setScene(scene);
         AvisoController oAvisocontroller = (AvisoController) loader.getController(); //esto depende de (1)
         oAvisocontroller.setController(this);
-        oAvisocontroller.sendListVencido(listCartaVencida);
+        oAvisocontroller.sendListVencido(listCartaVencidaNoVista);
         root.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -308,7 +309,7 @@ public class DetalleController implements Initializable {
         });
         stage.show();
     }
-
+    
     @FXML
     void limpiar() {
         jtfnumCarta.setText("");
@@ -319,23 +320,42 @@ public class DetalleController implements Initializable {
         jtfobra.setText("");
         jtfimporte.setText("");
     }
-
+    
     @FXML
     void minimizar() {
         ((Stage) ap.getScene().getWindow()).setIconified(true);
     }
 
+    //traen la lista de cartas vencidas pero que no han sido vistas.
     public void actualizarPorVencer() {
-        listCartaVencida = App.jpa.createQuery(""
-                + "select p from Carta p where estado = 'VIGENTE'  and fechavencimiento  <='" + LocalDate.now() + "'").getResultList();
-        if (listCartaVencida.isEmpty()) {
+        listCartaVencidaNoVista = new ArrayList<>();
+        List<Carta> ListCartaVencida = App.jpa.createQuery(""
+                + "select p from Carta p where (estado <> 'VENCIDO' or visto = false) and fechavencimiento  <='" + LocalDate.now() + "' ").getResultList();
+        //cambiando todas las cartas a VENCIDO
+        for (Carta carta : ListCartaVencida) {
+            carta.setEstado("VENCIDO");
+            App.jpa.getTransaction().begin();
+            App.jpa.persist(carta);
+            App.jpa.getTransaction().commit();
+        }
+        mostrarNoVisto(ListCartaVencida);
+    }
+    
+    void mostrarNoVisto(List<Carta> ListCart) {
+        for (Carta carta : ListCart) {
+            //filtrando las cartas vencidas pero que no han sido vistas.
+            if (!carta.isVisto()) {
+                listCartaVencidaNoVista.add(carta);
+            }
+        }
+        if (listCartaVencidaNoVista.isEmpty()) {
             lblnumVencido.setVisible(false);
         } else {
             lblnumVencido.setVisible(true);
         }
-        lblnumVencido.setText(listCartaVencida.size() + "");
+        lblnumVencido.setText(listCartaVencidaNoVista.size() + "");    
     }
-
+    
     void initTableView() {
         columnprueba.setCellValueFactory(new PropertyValueFactory<Carta, Integer>("id"));
         columnProveedor.setCellValueFactory(new PropertyValueFactory<Carta, Proveedor>("proveedor"));
@@ -345,7 +365,7 @@ public class DetalleController implements Initializable {
         columnObra.setCellValueFactory(new PropertyValueFactory<Carta, String>("obra"));
         columnImporte.setCellValueFactory(new PropertyValueFactory<Carta, String>("importe"));
         columnEstado.setCellValueFactory(new PropertyValueFactory<Carta, String>("estado"));
-
+        
         columnObra.setCellFactory(column -> {
             TableCell<Carta, String> cell = new TableCell<Carta, String>() {
                 @Override
@@ -356,7 +376,7 @@ public class DetalleController implements Initializable {
                         setText("");
                     } else {
                         if (item.length() > 100) {
-
+                            
                         }
                         Label ola = new Label();
                         ola.setText("Sistem \n as de información \n ramani \n sincero");
@@ -366,10 +386,10 @@ public class DetalleController implements Initializable {
                     }
                 }
             };
-
+            
             return cell;
         });
-
+        
         columnReferencia.setCellFactory(column -> {
             TableCell<Carta, String> cell = new TableCell<Carta, String>() {
                 @Override
@@ -380,7 +400,7 @@ public class DetalleController implements Initializable {
                         setText("");
                     } else {
                         if (item.length() > 100) {
-
+                            
                         }
                         Label ola = new Label();
                         ola.setText(item);
@@ -390,7 +410,7 @@ public class DetalleController implements Initializable {
                     }
                 }
             };
-
+            
             return cell;
         });
         columnEstado.setCellFactory(column -> {
@@ -415,10 +435,10 @@ public class DetalleController implements Initializable {
                     }
                 }
             };
-
+            
             return cell;
         });
-
+        
         Callback<TableColumn<Carta, Integer>, TableCell<Carta, Integer>> cellFoctory = (TableColumn<Carta, Integer> param) -> {
             // make cell containing buttons
             final TableCell<Carta, Integer> cell = new TableCell<Carta, Integer>() {
@@ -449,7 +469,7 @@ public class DetalleController implements Initializable {
                         editIcon.setStyle(
                                 " -fx-cursor: hand ;"
                         );
-                        editIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> modificar(event));
+                        editIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarModificar(event));
                         editIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagModificarMoved(event));
                         editIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
                         HBox managebtn = new HBox(editIcon, deleteIcon);
@@ -460,12 +480,12 @@ public class DetalleController implements Initializable {
                         setText(null);
                     }
                 }
-
-                private void modificar(MouseEvent event) {
+                
+                private void mostrarModificar(MouseEvent event) {
                     ImageView buton = (ImageView) event.getSource();
                     for (Carta carta : listCarta) {
                         if (carta.getId() == (Integer) buton.getUserData()) {
-
+                            
                             FXMLLoader loader = new FXMLLoader();
                             loader.setLocation(AgregarProveedorController.class.getResource("Carta.fxml"));
                             Parent root = null;
@@ -503,12 +523,12 @@ public class DetalleController implements Initializable {
                         }
                     }
                 }
-
+                
                 private void eliminar(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
                     for (int i = 0; i < listCarta.size(); i++) {
                         if (listCarta.get(i).getId() == (Integer) imag.getUserData()) {
-
+                            
                             Carta carta = listCarta.get(i);
                             //si lo que eliminan es igual a lo que está seleccionado: eliminar
                             if (selectItem() != -1) {
@@ -529,22 +549,22 @@ public class DetalleController implements Initializable {
                         }
                     }
                 }
-
+                
                 private void imagEliminarMoved(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
                     imag.setImage(new Image(getClass().getResource("/images/delete-2.png").toExternalForm()));
                 }
-
+                
                 private void imagEliminarFuera(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
                     imag.setImage(new Image(getClass().getResource("/images/delete-1.png").toExternalForm()));
                 }
-
+                
                 private void imagModificarMoved(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
                     imag.setImage(new Image(getClass().getResource("/images/modify-2.png").toExternalForm()));
                 }
-
+                
                 private void imagModificarFuera(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
                     imag.setImage(new Image(getClass().getResource("/images/modify-1.png").toExternalForm()));
@@ -554,16 +574,16 @@ public class DetalleController implements Initializable {
         };
         columnprueba.setCellFactory(cellFoctory);
     }
-
+    
     int selectItem() {
         return listCarta.indexOf(tableCarta.getSelectionModel().getSelectedItem());
     }
-
+    
     void setProveedor(Proveedor get) {
         this.oProveedor = get;
         jtfproveedor.setText(oProveedor.getNombreProveedor());
     }
-
+    
     private void SoloNumerosEnteros(KeyEvent event) {
         JFXTextField o = (JFXTextField) event.getSource();
         char key = event.getCharacter().charAt(0);
@@ -574,7 +594,7 @@ public class DetalleController implements Initializable {
             event.consume();
         }
     }
-
+    
     boolean isCompleto() throws IOException {
         boolean aux = true;
         if (oProveedor == null) {
@@ -589,21 +609,21 @@ public class DetalleController implements Initializable {
         } else {
             jtfnumCarta.setStyle("");
         }
-
+        
         if (jtfreferencia.getText().trim().length() == 0) {
             jtfreferencia.setStyle("-fx-border-color: #ff052b");
             aux = false;
         } else {
             jtfreferencia.setStyle("");
         }
-
+        
         if (jtfobra.getText().trim().length() == 0) {
             jtfobra.setStyle("-fx-border-color: #ff052b");
             aux = false;
         } else {
             jtfobra.setStyle("");
         }
-
+        
         if (jtfimporte.getText().trim().length() == 0) {
             jtfimporte.setStyle("-fx-border-color: #ff052b");
             aux = false;
@@ -617,28 +637,28 @@ public class DetalleController implements Initializable {
         } else {
             jtfdia.setStyle("");
         }
-
+        
         if (jtfmes.getText().trim().length() == 0) {
             jtfmes.setStyle("-fx-border-color: #ff052b");
             auxfecha = false;
         } else {
             jtfmes.setStyle("");
         }
-
+        
         if (jtfanio.getText().trim().length() == 0) {
             jtfanio.setStyle("-fx-border-color: #ff052b");
             auxfecha = false;
         } else {
             jtfanio.setStyle("");
         }
-
+        
         if (!aux || !auxfecha) {
             oAlert.Mostrar("error", "Llene los cuadros en rojo");
         }
         aux = isfechavalid(auxfecha);
         return aux;
     }
-
+    
     boolean isfechavalid(boolean aux) throws IOException {
         try {
             if (aux) {
@@ -650,70 +670,70 @@ public class DetalleController implements Initializable {
         }
         return aux;
     }
-
+    
     void setStagePrincipall(Stage aThis) {
         this.stagePrincipal = aThis;
     }
-
+    
     @FXML
     void imagAddDentro() {
         imgadd.setImage(new Image(getClass().getResource("/images/add-2.png").toExternalForm()));
     }
-
+    
     @FXML
     void imagAddFuera() {
         imgadd.setImage(new Image(getClass().getResource("/images/add-1.png").toExternalForm()));
     }
-
+    
     @FXML
     void imaglimpiarDentro() {
         imglimpiar.setImage(new Image(getClass().getResource("/images/limpiar-2.png").toExternalForm()));
     }
-
+    
     @FXML
     void imaglimpiarFuera() {
         imglimpiar.setImage(new Image(getClass().getResource("/images/limpiar-1.png").toExternalForm()));
     }
-
+    
     @FXML
     void imagPorexpirarDentro() {
         imagporexpirar.setImage(new Image(getClass().getResource("/images/expired-2.png").toExternalForm()));
     }
-
+    
     @FXML
     void imagPorexpirarFuera() {
         imagporexpirar.setImage(new Image(getClass().getResource("/images/expired-1.png").toExternalForm()));
     }
-
+    
     @FXML
     void imagEditarDentro() {
         imageditar.setImage(new Image(getClass().getResource("/images/editar-2.png").toExternalForm()));
     }
-
+    
     @FXML
     void imagEditarFuera() {
         imageditar.setImage(new Image(getClass().getResource("/images/editar-1.png").toExternalForm()));
     }
-
+    
     @FXML
     void imagVencidoDentro() {
         imgvencido.setImage(new Image(getClass().getResource("/images/caution-2.png").toExternalForm()));
     }
-
+    
     @FXML
     void imagVencidoFuera() {
         imgvencido.setImage(new Image(getClass().getResource("/images/caution-1.png").toExternalForm()));
     }
-
+    
     @FXML
     void cerrar() {
         ((Stage) ap.getScene().getWindow()).close();//cerrando la ventanada anterior
     }
-
+    
     @FXML
     void test() {
         System.out.println("Proveedor: " + columnProveedor.getWidth() + " carta f:" + columNumCarta.getWidth() + " fecha: " + columnFecha.getWidth());
         System.out.println("Prueba: " + columnprueba.getWidth() + " estado f:" + columnEstado.getWidth() + " importe: " + columnImporte.getWidth());
     }
-
+    
 }

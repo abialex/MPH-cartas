@@ -201,6 +201,7 @@ public class CartaController implements Initializable {
             App.jpa.getTransaction().begin();
             App.jpa.persist(oCarta);
             App.jpa.getTransaction().commit();
+            //al guardar la modificación, recarga la lista de DetalleC y Recarga los que están vencido sin ser visto
             oDetalleController.updateListaComprobante();
             oDetalleController.actualizarPorVencer();
             oAlert.Mostrar("successful", "Modificado");

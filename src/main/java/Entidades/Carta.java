@@ -129,12 +129,12 @@ public class Carta {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-    
-    
-    
-    
-    
-    
-    
-    
+
+    public boolean isVisto() {
+        return visto;
+    }
+
+    public void setVisto(boolean visto) {
+        this.visto = visto;
+    } 
 }
