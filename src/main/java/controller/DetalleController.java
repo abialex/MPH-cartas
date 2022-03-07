@@ -173,13 +173,14 @@ public class DetalleController implements Initializable {
 
     @FXML
     void buscar() {
-        Proveedor oproveedor= jcbProveedorBuscar.getSelectionModel().getSelectedItem() == null ? new Proveedor() : jcbProveedorBuscar.getSelectionModel().getSelectedItem();
-        String fechaMes= jcbMesBuscar.getSelectionModel().getSelectedItem() == "ninguno" ? "" : "AND YEAR(fechavencimiento) = "+ jcbMesBuscar.getSelectionModel().getSelectedItem(); 
-        String fechaAnio= "AND MONTH(fechavencimiento) ="+  jcbAnioBuscar.getSelectionModel().getSelectedItem();
+        String oproveedor= jcbProveedorBuscar.getSelectionModel().getSelectedItem() == null ? " true " :" idproveedor = "+jcbProveedorBuscar.getSelectionModel().getSelectedItem();
+        String fechaMes= jcbMesBuscar.getSelectionModel().getSelectedItem() == "ninguno" ? "" : " AND YEAR(fechavencimiento) = "+ jcbMesBuscar.getSelectionModel().getSelectedItem(); 
+        String fechaAnio=jcbAnioBuscar.getSelectionModel().getSelectedItem() == "ninguno" ? "" : " AND MONTH(fechavencimiento) ="+  jcbAnioBuscar.getSelectionModel().getSelectedItem();
         List<Carta> olistCarta = App.jpa.createQuery("select p from Carta p where"
-                + " idproveedor = " + oproveedor.getId()
-                + "and  numcartaconfianza like '" + jtfNcartaBuscar.getText() + "%' "
-                + "order by id DESC").setMaxResults(10).getResultList();
+                + oproveedor
+                + fechaMes + fechaAnio
+                + " and  numcartaconfianza like '" + jtfNcartaBuscar.getText() + "%' "
+                + " order by id DESC").setMaxResults(10).getResultList();
         listCarta.clear();
         for (Carta ocarta : olistCarta) {
             listCarta.add(ocarta);
