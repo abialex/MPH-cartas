@@ -173,13 +173,18 @@ public class DetalleController implements Initializable {
 
     @FXML
     void buscar() {
-        String oproveedor= jcbProveedorBuscar.getSelectionModel().getSelectedItem() == null ? " true " :" idproveedor = "+jcbProveedorBuscar.getSelectionModel().getSelectedItem();
-        String fechaMes= jcbMesBuscar.getSelectionModel().getSelectedItem() == "ninguno" ? "" : " AND YEAR(fechavencimiento) = "+ jcbMesBuscar.getSelectionModel().getSelectedItem(); 
-        String fechaAnio=jcbAnioBuscar.getSelectionModel().getSelectedItem() == "ninguno" ? "" : " AND MONTH(fechavencimiento) ="+  jcbAnioBuscar.getSelectionModel().getSelectedItem();
+        String oproveedor= jcbProveedorBuscar.getSelectionModel().getSelectedItem().getNombreProveedor().equals("ninguno") ? " id>0 " :" idproveedor = "+jcbProveedorBuscar.getSelectionModel().getSelectedItem().getId();
+        String fechaMes= jcbMesBuscar.getSelectionModel().getSelectedItem() == "ninguno" ? "" : " AND MONTH(fechavencimiento) = "+ jcbMesBuscar.getSelectionModel().getSelectedItem(); 
+        String fechaAnio=jcbAnioBuscar.getSelectionModel().getSelectedItem() == "ninguno" ? "" : " AND YEAR(fechavencimiento) ="+  jcbAnioBuscar.getSelectionModel().getSelectedItem();
+        String estado = jcbEstadoBuscar.getSelectionModel().getSelectedItem() == "ninguno" ? "" : " AND estado= '"+ jcbEstadoBuscar.getSelectionModel().getSelectedItem()+"'";
+        String obra = jtfObraBuscar.getText().trim().length()==0 ? "" : "AND obra like '"+jtfObraBuscar.getText() +"%'";
+        String cartaconfianza= jtfNcartaBuscar.getText().trim().length()==0 ? "" : "AND numcartaconfianza like '"+jtfNcartaBuscar.getText()+"%'";
         List<Carta> olistCarta = App.jpa.createQuery("select p from Carta p where"
                 + oproveedor
                 + fechaMes + fechaAnio
-                + " and  numcartaconfianza like '" + jtfNcartaBuscar.getText() + "%' "
+                + cartaconfianza
+                + estado
+                + obra
                 + " order by id DESC").setMaxResults(10).getResultList();
         listCarta.clear();
         for (Carta ocarta : olistCarta) {
@@ -655,10 +660,13 @@ public class DetalleController implements Initializable {
     void cargarProveedores() {
         List<Proveedor> listProveedor = App.jpa.createQuery("select p from Proveedor p order by nombreproveedor ASC").getResultList();
         ObservableList<Proveedor> listProveedorO = FXCollections.observableArrayList();
+        Proveedor op=new Proveedor("ninguno");
+        listProveedorO.add(op);
         for (Proveedor proveedor : listProveedor) {
             listProveedorO.add(proveedor);
         }
         jcbProveedorBuscar.setItems(listProveedorO);
+        jcbProveedorBuscar.getSelectionModel().select(op);
 
     }
 
@@ -674,8 +682,9 @@ public class DetalleController implements Initializable {
     }
     
     void cargarEstado(){
-        ObservableList<String> ESTADO = FXCollections.observableArrayList("VIGENTE", "VENCIDO", "POR DEVOLVER", "DEVUELTO", "SUSTITUIDA POR RI");
+        ObservableList<String> ESTADO = FXCollections.observableArrayList("ninguno","VIGENTE", "VENCIDO", "POR DEVOLVER", "DEVUELTO", "SUSTITUIDA POR RI");
         jcbEstadoBuscar.setItems(ESTADO);
+        jcbEstadoBuscar.getSelectionModel().select("ninguno");
         
     }
 
