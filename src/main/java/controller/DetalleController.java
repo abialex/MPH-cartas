@@ -43,6 +43,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import javax.swing.JOptionPane;
 
 /**
  * FXML Controller class
@@ -173,12 +174,12 @@ public class DetalleController implements Initializable {
 
     @FXML
     void buscar() {
-        String oproveedor= jcbProveedorBuscar.getSelectionModel().getSelectedItem().getNombreProveedor().equals("ninguno") ? " id>0 " :" idproveedor = "+jcbProveedorBuscar.getSelectionModel().getSelectedItem().getId();
-        String fechaMes= jcbMesBuscar.getSelectionModel().getSelectedItem() == "ninguno" ? "" : " AND MONTH(fechavencimiento) = "+ jcbMesBuscar.getSelectionModel().getSelectedItem(); 
-        String fechaAnio=jcbAnioBuscar.getSelectionModel().getSelectedItem() == "ninguno" ? "" : " AND YEAR(fechavencimiento) ="+  jcbAnioBuscar.getSelectionModel().getSelectedItem();
-        String estado = jcbEstadoBuscar.getSelectionModel().getSelectedItem() == "ninguno" ? "" : " AND estado= '"+ jcbEstadoBuscar.getSelectionModel().getSelectedItem()+"'";
-        String obra = jtfObraBuscar.getText().trim().length()==0 ? "" : "AND obra like '"+jtfObraBuscar.getText() +"%'";
-        String cartaconfianza= jtfNcartaBuscar.getText().trim().length()==0 ? "" : "AND numcartaconfianza like '"+jtfNcartaBuscar.getText()+"%'";
+        String oproveedor = jcbProveedorBuscar.getSelectionModel().getSelectedItem().getNombreProveedor().equals("ninguno") ? " id>0 " : " idproveedor = " + jcbProveedorBuscar.getSelectionModel().getSelectedItem().getId();
+        String fechaMes = jcbMesBuscar.getSelectionModel().getSelectedItem() == "ninguno" ? "" : " AND MONTH(fechavencimiento) = " + jcbMesBuscar.getSelectionModel().getSelectedItem();
+        String fechaAnio = jcbAnioBuscar.getSelectionModel().getSelectedItem() == "ninguno" ? "" : " AND YEAR(fechavencimiento) =" + jcbAnioBuscar.getSelectionModel().getSelectedItem();
+        String estado = jcbEstadoBuscar.getSelectionModel().getSelectedItem() == "ninguno" ? "" : " AND estado= '" + jcbEstadoBuscar.getSelectionModel().getSelectedItem() + "'";
+        String obra = jtfObraBuscar.getText().trim().length() == 0 ? "" : "AND obra like '" + jtfObraBuscar.getText() + "%'";
+        String cartaconfianza = jtfNcartaBuscar.getText().trim().length() == 0 ? "" : "AND numcartaconfianza like '" + jtfNcartaBuscar.getText() + "%'";
         List<Carta> olistCarta = App.jpa.createQuery("select p from Carta p where"
                 + oproveedor
                 + fechaMes + fechaAnio
@@ -607,27 +608,29 @@ public class DetalleController implements Initializable {
                 }
 
                 private void eliminar(MouseEvent event) {
-                    ImageView imag = (ImageView) event.getSource();
-                    for (int i = 0; i < listCarta.size(); i++) {
-                        if (listCarta.get(i).getId() == (Integer) imag.getUserData()) {
+                    if (JOptionPane.showConfirmDialog(new java.awt.Label(), "¿ESTÁ SEGURO QUE DESEA ELIMINAR?") == 0) {
+                        ImageView imag = (ImageView) event.getSource();
+                        for (int i = 0; i < listCarta.size(); i++) {
+                            if (listCarta.get(i).getId() == (Integer) imag.getUserData()) {
 
-                            Carta carta = listCarta.get(i);
-                            //si lo que eliminan es igual a lo que está seleccionado: eliminar
-                            if (selectItem() != -1) {
-                                if (listCarta.get(selectItem()) == carta) {
-                                    limpiar();
+                                Carta carta = listCarta.get(i);
+                                //si lo que eliminan es igual a lo que está seleccionado: eliminar
+                                if (selectItem() != -1) {
+                                    if (listCarta.get(selectItem()) == carta) {
+                                        limpiar();
+                                    }
                                 }
+                                App.jpa.getTransaction().begin();
+                                App.jpa.refresh(carta);//recuperando enlace ORM
+                                App.jpa.remove(carta);
+                                App.jpa.getTransaction().commit();
+                                listCarta.remove(i);
+                                actualizarPorVencer();
+                                updateListaComprobante();
+                                //getitem para limpiar
+                                getItem();
+                                break;
                             }
-                            App.jpa.getTransaction().begin();
-                            App.jpa.refresh(carta);//recuperando enlace ORM
-                            App.jpa.remove(carta);
-                            App.jpa.getTransaction().commit();
-                            listCarta.remove(i);
-                            actualizarPorVencer();
-                            updateListaComprobante();
-                            //getitem para limpiar
-                            getItem();
-                            break;
                         }
                     }
                 }
@@ -660,7 +663,7 @@ public class DetalleController implements Initializable {
     void cargarProveedores() {
         List<Proveedor> listProveedor = App.jpa.createQuery("select p from Proveedor p order by nombreproveedor ASC").getResultList();
         ObservableList<Proveedor> listProveedorO = FXCollections.observableArrayList();
-        Proveedor op=new Proveedor("ninguno");
+        Proveedor op = new Proveedor("ninguno");
         listProveedorO.add(op);
         for (Proveedor proveedor : listProveedor) {
             listProveedorO.add(proveedor);
@@ -671,21 +674,21 @@ public class DetalleController implements Initializable {
     }
 
     void cargarMesAnio() {
-        ObservableList<String> MES = FXCollections.observableArrayList("ninguno","1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
-        ObservableList<String> ANIO = FXCollections.observableArrayList("ninguno","2022", "2023", "2024", "2025");
+        ObservableList<String> MES = FXCollections.observableArrayList("ninguno", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
+        ObservableList<String> ANIO = FXCollections.observableArrayList("ninguno", "2022", "2023", "2024", "2025");
         jcbMesBuscar.setItems(MES);
         jcbAnioBuscar.setItems(ANIO);
-        LocalDate lc= LocalDate.now();
+        LocalDate lc = LocalDate.now();
         jcbMesBuscar.getSelectionModel().select("ninguno");
-         jcbAnioBuscar.getSelectionModel().select("ninguno");
+        jcbAnioBuscar.getSelectionModel().select("ninguno");
 
     }
-    
-    void cargarEstado(){
-        ObservableList<String> ESTADO = FXCollections.observableArrayList("ninguno","VIGENTE", "VENCIDO", "POR DEVOLVER", "DEVUELTO", "SUSTITUIDA POR RI");
+
+    void cargarEstado() {
+        ObservableList<String> ESTADO = FXCollections.observableArrayList("ninguno", "VIGENTE", "VENCIDO", "POR DEVOLVER", "DEVUELTO", "SUSTITUIDA POR RI");
         jcbEstadoBuscar.setItems(ESTADO);
         jcbEstadoBuscar.getSelectionModel().select("ninguno");
-        
+
     }
 
     int selectItem() {
@@ -696,7 +699,7 @@ public class DetalleController implements Initializable {
         this.oProveedor = get;
         jtfproveedor.setText(oProveedor.getNombreProveedor());
         //actualizando la lista de proveedores
-        cargarProveedores();      
+        cargarProveedores();
     }
 
     private void SoloNumerosEnteros(KeyEvent event) {
