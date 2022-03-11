@@ -458,12 +458,18 @@ public class DetalleController implements Initializable {
                         setGraphic(null);
                         setText("");
                     } else {
-                        if (item.length() > 100) {
-
-                        }
                         Label ola = new Label();
-                        ola.setText("Sistem \n as de información \n ramani \n sincero");
-                        ola.setStyle("-fx-font-size: 8");
+                        //algoritmo para separar despues de 51 caracteres
+                        String cadena = item;
+                        String linea = "";
+                        int numCharacteres = 51;//20 primeros
+                        for (int i = 0; i < cadena.length() / numCharacteres; i++) {
+                            linea = linea + cadena.substring(i * numCharacteres, (i + 1) * numCharacteres) + "\n";
+                        }
+                        linea = linea + cadena.substring(cadena.length() - cadena.length() % numCharacteres, cadena.length());
+                        ola.setText(linea);
+                        //fin
+                        ola.setStyle("-fx-font-size: 9");
                         setGraphic(ola);
                         setText(null);
                     }
