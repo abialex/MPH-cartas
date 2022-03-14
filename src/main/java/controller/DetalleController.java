@@ -9,6 +9,7 @@ import Entidades.Proveedor;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import emergente.AlertConfirmarController;
 import emergente.AlertController;
 import java.awt.Button;
 import java.io.IOException;
@@ -137,6 +138,8 @@ public class DetalleController implements Initializable {
     Proveedor oProveedor;
     AlertController oAlert = new AlertController();
     private List<Carta> listCartaVencidaNoVista;
+    AlertConfirmarController oAlertConfimarController1 = new AlertConfirmarController();
+    DetalleController odc=this;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -612,25 +615,43 @@ public class DetalleController implements Initializable {
                         }
                     }
                 }
-
-                private void eliminar(MouseEvent event) {
-                    if (JOptionPane.showConfirmDialog(new java.awt.Label(), "¿ESTÁ SEGURO QUE DESEA ELIMINAR?") == 0) {
-                        ImageView imag = (ImageView) event.getSource();
+                void mostrar(String alerta, String mensaje) throws IOException {
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(AlertConfirmarController.class.getResource("/fxml/AlertConfirmar.fxml"));
+                    Scene scene = new Scene(loader.load());
+                    Stage stage = new Stage();//creando la base vacía
+                    stage.initOwner(stagePrincipal);
+                    stage.initStyle(StageStyle.UNDECORATED);
+                    stage.setScene(scene);
+                    //
+                    oAlertConfimarController1 = (AlertConfirmarController) loader.getController(); //esto depende de (1)
+                /*    oAlertConfimarController1.Asignar(alerta);
+                    oAlertConfimarController1.setMensaje(mensaje);
+                    oAlertConfimarController1.setController(odc);*/
+                    stage.show();
+                }
+                void eliminar(MouseEvent event)  {
+       
+                        ImageView imag = (ImageView) event.getSource();                        
                         for (int i = 0; i < listCarta.size(); i++) {
-                            if (listCarta.get(i).getId() == (Integer) imag.getUserData()) {
-
+                            if (listCarta.get(i).getId() == (Integer) imag.getUserData()) {                      
                                 Carta carta = listCarta.get(i);
+                                try {
+                                    mostrar("error", "¿Está seguro que desea eliminar?");
+                                } catch (IOException ex) {
+                                    Logger.getLogger(DetalleController.class.getName()).log(Level.SEVERE, null, ex);
+                                }                                
                                 //si lo que eliminan es igual a lo que está seleccionado: eliminar
                                 if (selectItem() != -1) {
                                     if (listCarta.get(selectItem()) == carta) {
                                         limpiar();
                                     }
                                 }
-                                App.jpa.getTransaction().begin();
+                               /* App.jpa.getTransaction().begin();
                                 App.jpa.refresh(carta);//recuperando enlace ORM
                                 App.jpa.remove(carta);
                                 App.jpa.getTransaction().commit();
-                                listCarta.remove(i);
+                                listCarta.remove(i);*/
                                 actualizarPorVencer();
                                 updateListaComprobante();
                                 //getitem para limpiar
@@ -639,7 +660,7 @@ public class DetalleController implements Initializable {
                             }
                         }
                     }
-                }
+                
 
                 private void imagEliminarMoved(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();

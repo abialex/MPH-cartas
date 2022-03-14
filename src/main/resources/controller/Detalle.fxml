@@ -377,7 +377,7 @@
                               </JFXComboBox>
                                     </children>
                                 </GridPane>
-                                <TableView fx:id="tableCarta" onMouseClicked="#getItem" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+                                <TableView fx:id="tableCarta" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
                                     <columns>
                                         <TableColumn fx:id="columnProveedor" prefWidth="222.0" text="Proveedor" />
                                         <TableColumn fx:id="columNumCarta" prefWidth="162.0" text="N° Carta F." />
