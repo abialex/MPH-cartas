@@ -80,8 +80,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <JFXButton onAction="#sendProveedor" prefWidth="120.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="Seleccionar" GridPane.columnIndex="1" />
-                        <JFXButton onAction="#eliminar" prefWidth="120.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="Eliminar" />
+                        <JFXButton onAction="#eliminar" prefWidth="120.0" style="-fx-background-color: #c70c0c; -fx-border-color: #000000;" text="Eliminar" />
                      </children>
                   </GridPane>
                </children>

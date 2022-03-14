@@ -249,7 +249,7 @@
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <ImageView fx:id="imageditar" fitHeight="32.0" fitWidth="35.0" onMouseExited="#imagEditarFuera" onMouseMoved="#imagEditarDentro" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                    <ImageView fx:id="imageditar" fitHeight="32.0" fitWidth="35.0" onMouseExited="#imagEditarFuera" onMouseMoved="#imagEditarDentro" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                        <image>
                                           <Image url="@../images/editar-1.png" />
                                        </image>
@@ -273,7 +273,7 @@
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
                                     </ImageView>
-                                    <ImageView fx:id="imgimprimir" fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <ImageView fx:id="imgimprimir" fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <image>
                                           <Image url="@../images/printing.png" />
                                        </image>
