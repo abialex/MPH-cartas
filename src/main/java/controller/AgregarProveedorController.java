@@ -4,6 +4,7 @@
  */
 package controller;
 
+import Entidades.Carta;
 import Entidades.Proveedor;
 import com.jfoenix.controls.JFXTextField;
 import emergente.AlertController;
@@ -84,19 +85,24 @@ public class AgregarProveedorController implements Initializable {
     }
 
     @FXML
-    void eliminar() {
+    void eliminar() throws IOException {
         int index = selectItem();
         if (index != -1) {
             Proveedor oProveedor = listProveedor.get(index);
-            App.jpa.getTransaction().begin();
-            App.jpa.remove(oProveedor);
-            App.jpa.getTransaction().commit();
-            listProveedor.remove(index);
-            updateListaProveedor();
-            if (cartaController != null) {
-                cartaController.setProveedor(new Proveedor(""));
-            } else {
-                oDetalleController.setProveedor(new Proveedor(""));
+            List<Carta> lista = App.jpa.createQuery("select p from Carta p where idproveedor = " + oProveedor.getId()).getResultList();
+            if (lista.isEmpty()) {
+                App.jpa.getTransaction().begin();
+                App.jpa.remove(oProveedor);
+                App.jpa.getTransaction().commit();
+                listProveedor.remove(index);
+                updateListaProveedor();
+                if (cartaController != null) {
+                    cartaController.setProveedor(new Proveedor(""));
+                } else {
+                    oDetalleController.setProveedor(new Proveedor(""));
+                }
+            }else{
+                oAlert.Mostrar("error", "no puede eliminar por que \n está incluido en una carta");
             }
 
         }
