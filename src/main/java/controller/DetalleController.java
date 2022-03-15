@@ -242,13 +242,14 @@ public class DetalleController implements Initializable {
             oCarta.setObra(jtfobra.getText().trim());
             oCarta.setImporte(jtfimporte.getText().trim());
             oCarta.setEstado(jcbestado.getSelectionModel().getSelectedItem());
-            oCarta.setUrl(oPdf==null ? "":oFileImagUtil.guardarPdf(oPdf));
+            oCarta.setUrl(oPdf == null ? "" : oFileImagUtil.guardarPdf(oPdf));
+            oCarta.setNameArchivo(oPdf == null ? "" : oPdf.getName());
             App.jpa.getTransaction().begin();
             App.jpa.persist(oCarta);
             App.jpa.getTransaction().commit();
             updateListaComprobante();
             actualizarPorVencer();
-            getItem();
+            limpiar();
         }
     }
 
@@ -394,7 +395,7 @@ public class DetalleController implements Initializable {
         jtfobra.setText("");
         jtfimporte.setText("");
         lblpdf.setText("pdf");
-        oPdf=null;
+        oPdf = null;
     }
 
     @FXML
@@ -577,14 +578,14 @@ public class DetalleController implements Initializable {
                         imprimirIcon.setStyle(
                                 " -fx-cursor: hand ;"
                         );
-                        imprimirIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> eliminar(event));
-                        HBox managebtn=null;
+                        imprimirIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> imprimir(event));
+                        HBox managebtn = null;
                         for (Carta carta : listCarta) {
                             if (carta.getId() == item) {
                                 if (carta.getUrl().isEmpty()) {
-                                    managebtn = new HBox( editIcon,deleteIcon);
+                                    managebtn = new HBox(editIcon, deleteIcon);
                                 } else {
-                                    managebtn = new HBox(imprimirIcon,editIcon, deleteIcon);
+                                    managebtn = new HBox(imprimirIcon, editIcon, deleteIcon);
                                 }
                             }
                         }
@@ -657,7 +658,7 @@ public class DetalleController implements Initializable {
                     stage.show();
                 }
 
-                void eliminar(MouseEvent event) {
+                void imprimir(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
                     for (int i = 0; i < listCarta.size(); i++) {
                         if (listCarta.get(i).getId() == (Integer) imag.getUserData()) {
@@ -678,12 +679,16 @@ public class DetalleController implements Initializable {
                     }
                 }
 
-                void imprimir(MouseEvent event) {
+                void eliminar(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
                     for (int i = 0; i < listCarta.size(); i++) {
                         if (listCarta.get(i).getId() == (Integer) imag.getUserData()) {
                             Carta carta = listCarta.get(i);
-
+                             try {
+                                mostrar(carta, i);
+                            } catch (IOException ex) {
+                                Logger.getLogger(DetalleController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                             //si lo que eliminan es igual a lo que está seleccionado: eliminar
                             if (selectItem() != -1) {
                                 if (listCarta.get(selectItem()) == carta) {
@@ -908,7 +913,7 @@ public class DetalleController implements Initializable {
     void imagVencidoFuera() {
         imgvencido.setImage(new Image(getClass().getResource("/images/caution-1.png").toExternalForm()));
     }
-    
+
     @FXML
     void imagImprimirDentro() {
         imgImprimir.setImage(new Image(getClass().getResource("/images/upload-2.png").toExternalForm()));

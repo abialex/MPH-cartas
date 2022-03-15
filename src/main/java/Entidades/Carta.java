@@ -52,7 +52,9 @@ public class Carta {
     @Column(name = "url", nullable = true)
     private String url;
     
-
+    @Column(name = "nameArchivo", nullable = true)
+    private String nameArchivo;
+    
     public Carta(Proveedor proveedor, String numCartaConfianza, LocalDate fechaVencimiento, String referencia, String obra, String importe, String estado) {
         this.proveedor = proveedor;
         this.numCartaConfianza = numCartaConfianza;
@@ -148,4 +150,14 @@ public class Carta {
     public void setUrl(String url) {
         this.url = url;
     } 
+
+    public String getNameArchivo() {
+        return nameArchivo;
+    }
+
+    public void setNameArchivo(String nameArchivo) {
+        this.nameArchivo = nameArchivo;
+    }
+    
+    
 }

@@ -6,9 +6,11 @@ package controller;
 
 import Entidades.Carta;
 import Entidades.Proveedor;
+import Util.FileImagUtil;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import emergente.AlertController;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -22,6 +24,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -44,6 +49,11 @@ public class CartaController implements Initializable {
     private AnchorPane ap;
     @FXML
     private JFXComboBox<String> jcbestado;
+    @FXML
+    private ImageView imgImprimir;
+    @FXML
+    private Label lblpdf;
+    
     private Stage stagePrincipal;
     private Proveedor oProveedor;
     private Carta oCarta;
@@ -53,7 +63,9 @@ public class CartaController implements Initializable {
     private double y = 0;
 
     AlertController oAlert = new AlertController();
-
+    File oPdf;
+    FileImagUtil oFileImagUtil = new FileImagUtil("user.home", "buscar pdf .pdf");
+  
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         jtfdia.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
@@ -165,6 +177,8 @@ public class CartaController implements Initializable {
             oCarta.setObra(jtfobra.getText().trim());
             oCarta.setImporte(jtfimporte.getText().trim());
             oCarta.setEstado(jcbestado.getSelectionModel().getSelectedItem());
+            oCarta.setUrl(oPdf == null ? "" : oFileImagUtil.guardarPdf(oPdf));
+            oCarta.setNameArchivo(oPdf == null ? "" : oPdf.getName());
             App.jpa.getTransaction().begin();
             App.jpa.persist(oCarta);
             App.jpa.getTransaction().commit();
@@ -281,6 +295,22 @@ public class CartaController implements Initializable {
         jtfobra.setText(carta.getObra());
         jtfimporte.setText(carta.getImporte());
         jcbestado.getSelectionModel().select(carta.getEstado());
+        lblpdf.setText(carta.getNameArchivo());
+        oPdf=new File(carta.getUrl());
+    }
+    @FXML
+    void seleccionarPdf() throws IOException {
+        oPdf = oFileImagUtil.buscarPdf();
+        lblpdf.setText(oPdf.getName());
+    }
 
+    @FXML
+    void imagImprimirDentro() {
+        imgImprimir.setImage(new Image(getClass().getResource("/images/upload-2.png").toExternalForm()));
+    }
+
+    @FXML
+    void imagImprimirFuera() {
+        imgImprimir.setImage(new Image(getClass().getResource("/images/upload-1.png").toExternalForm()));
     }
 }
