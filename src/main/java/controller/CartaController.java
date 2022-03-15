@@ -169,7 +169,7 @@ public class CartaController implements Initializable {
             App.jpa.persist(oCarta);
             App.jpa.getTransaction().commit();
             //al guardar la modificación, recarga la lista de DetalleC y Recarga los que están vencido sin ser visto
-            oDetalleController.updateListaComprobante();
+            oDetalleController.buscar();
             oDetalleController.actualizarPorVencer();
             oAlert.Mostrar("successful", "Modificado");
             cerrar();
@@ -232,13 +232,12 @@ public class CartaController implements Initializable {
         } else {
             jtfanio.setStyle("");
         }
-
-        if (!aux || !auxfecha) {
+        auxfecha = isfechavalid(auxfecha);
+        if (!aux) {
             oAlert.Mostrar("error", "Llene los cuadros en rojo");
         }
-        aux = isfechavalid(auxfecha);
 
-        return aux;
+        return aux && auxfecha;
     }
 
     boolean isfechavalid(boolean aux) throws IOException {

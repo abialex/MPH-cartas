@@ -176,7 +176,7 @@ public class DetalleController implements Initializable {
     }
 
     @FXML
-    void buscar() {
+    public void buscar() {
         String oproveedor = jcbProveedorBuscar.getSelectionModel().getSelectedItem().getNombreProveedor().equals("ninguno") ? " id>0 " : " idproveedor = " + jcbProveedorBuscar.getSelectionModel().getSelectedItem().getId();
         String fechaMes = jcbMesBuscar.getSelectionModel().getSelectedItem() == "ninguno" ? "" : " AND MONTH(fechavencimiento) = " + jcbMesBuscar.getSelectionModel().getSelectedItem();
         String fechaAnio = jcbAnioBuscar.getSelectionModel().getSelectedItem() == "ninguno" ? "" : " AND YEAR(fechavencimiento) =" + jcbAnioBuscar.getSelectionModel().getSelectedItem();
@@ -786,12 +786,12 @@ public class DetalleController implements Initializable {
         } else {
             jtfanio.setStyle("");
         }
-
-        if (!aux || !auxfecha) {
+        auxfecha = isfechavalid(auxfecha);
+        if (!aux) {
             oAlert.Mostrar("error", "Llene los cuadros en rojo");
         }
-        aux = isfechavalid(auxfecha);
-        return aux;
+
+        return aux && auxfecha;
     }
 
     boolean isfechavalid(boolean aux) throws IOException {
