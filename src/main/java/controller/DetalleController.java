@@ -139,7 +139,7 @@ public class DetalleController implements Initializable {
     AlertController oAlert = new AlertController();
     private List<Carta> listCartaVencidaNoVista;
     AlertConfirmarController oAlertConfimarController1 = new AlertConfirmarController();
-    DetalleController odc=this;
+    DetalleController odc = this;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -269,16 +269,14 @@ public class DetalleController implements Initializable {
         }
     }
 
-    @FXML
-    void eliminar() {
-        int index = selectItem();
+    public void eliminar(Carta oCarta, int index) {
         if (index != -1) {
-            Carta oCarta = listCarta.get(index);
             App.jpa.getTransaction().begin();
             App.jpa.remove(oCarta);
             App.jpa.getTransaction().commit();
             listCarta.remove(index);
             updateListaComprobante();
+            actualizarPorVencer();
             //getitem para limpiar
             getItem();
         }
@@ -314,7 +312,6 @@ public class DetalleController implements Initializable {
         });
 
         stage.show();
-        //((Stage) ap.getScene().getWindow()).close();//cerrando la ventanada anterior
     }
 
     @FXML
@@ -615,7 +612,8 @@ public class DetalleController implements Initializable {
                         }
                     }
                 }
-                void mostrar(String alerta, String mensaje) throws IOException {
+
+                void mostrar(Carta oCarta, int index) throws IOException {
                     FXMLLoader loader = new FXMLLoader();
                     loader.setLocation(AlertConfirmarController.class.getResource("/fxml/AlertConfirmar.fxml"));
                     Scene scene = new Scene(loader.load());
@@ -625,42 +623,34 @@ public class DetalleController implements Initializable {
                     stage.setScene(scene);
                     //
                     oAlertConfimarController1 = (AlertConfirmarController) loader.getController(); //esto depende de (1)
-                /*    oAlertConfimarController1.Asignar(alerta);
-                    oAlertConfimarController1.setMensaje(mensaje);
-                    oAlertConfimarController1.setController(odc);*/
+                    oAlertConfimarController1.setController(odc);
+                    oAlertConfimarController1.setMensaje(" ¿Está seguro de eliminar?");
+                    oAlertConfimarController1.setCartaIndex(oCarta, index);
+
                     stage.show();
                 }
-                void eliminar(MouseEvent event)  {
-       
-                        ImageView imag = (ImageView) event.getSource();                        
-                        for (int i = 0; i < listCarta.size(); i++) {
-                            if (listCarta.get(i).getId() == (Integer) imag.getUserData()) {                      
-                                Carta carta = listCarta.get(i);
-                                try {
-                                    mostrar("error", "¿Está seguro que desea eliminar?");
-                                } catch (IOException ex) {
-                                    Logger.getLogger(DetalleController.class.getName()).log(Level.SEVERE, null, ex);
-                                }                                
-                                //si lo que eliminan es igual a lo que está seleccionado: eliminar
-                                if (selectItem() != -1) {
-                                    if (listCarta.get(selectItem()) == carta) {
-                                        limpiar();
-                                    }
-                                }
-                               /* App.jpa.getTransaction().begin();
-                                App.jpa.refresh(carta);//recuperando enlace ORM
-                                App.jpa.remove(carta);
-                                App.jpa.getTransaction().commit();
-                                listCarta.remove(i);*/
-                                actualizarPorVencer();
-                                updateListaComprobante();
-                                //getitem para limpiar
-                                getItem();
-                                break;
+
+                void eliminar(MouseEvent event) {
+
+                    ImageView imag = (ImageView) event.getSource();
+                    for (int i = 0; i < listCarta.size(); i++) {
+                        if (listCarta.get(i).getId() == (Integer) imag.getUserData()) {
+                            Carta carta = listCarta.get(i);
+                            try {
+                                mostrar(carta, i);
+                            } catch (IOException ex) {
+                                Logger.getLogger(DetalleController.class.getName()).log(Level.SEVERE, null, ex);
                             }
+                            //si lo que eliminan es igual a lo que está seleccionado: eliminar
+                            if (selectItem() != -1) {
+                                if (listCarta.get(selectItem()) == carta) {
+                                    limpiar();
+                                }
+                            }
+                            break;
                         }
                     }
-                
+                }
 
                 private void imagEliminarMoved(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();

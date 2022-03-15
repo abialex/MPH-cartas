@@ -13,7 +13,9 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -29,6 +31,12 @@ public class AlertConfirmarController implements Initializable {
      */
     @FXML
     AnchorPane ap;
+    @FXML
+    Label lblmensaje;
+    
+    DetalleController oDetalleController;
+    Carta oCarta;
+    int index;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -36,20 +44,26 @@ public class AlertConfirmarController implements Initializable {
     }    
 
     public void setMensaje(String mensaje) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public void Asignar(String alerta) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public void setController(DetalleController odc) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        lblmensaje.setText(mensaje);
     }
     
-     @FXML
-    void cerrar(ActionEvent event) throws FileNotFoundException, IOException {
+    public void setController(DetalleController odc) {
+        this.oDetalleController = odc;
+    }
+    public void setCartaIndex(Carta oCarta, int index) {
+        this.index = index;
+        this.oCarta = oCarta;
+    }
+
+    @FXML
+    void eliminar() {
+        oDetalleController.eliminar(oCarta, index);
+        cerrar();
+    }
+
+    @FXML
+    void cerrar() {
         ((Stage) ap.getScene().getWindow()).close();
     }
-    
+
 }
