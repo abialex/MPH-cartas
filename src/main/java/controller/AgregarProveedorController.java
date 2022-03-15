@@ -102,7 +102,7 @@ public class AgregarProveedorController implements Initializable {
                     oDetalleController.setProveedor(new Proveedor(""));
                 }
             }else{
-                oAlert.Mostrar("error", "no puede eliminar por que \n está incluido en una carta");
+                oAlert.Mostrar("error", "no puede eliminar porque \n está incluido en una carta");
             }
 
         }
