@@ -18,8 +18,8 @@ import javafx.stage.FileChooser;
 public class FileImagUtil {
 
     FileChooser filechooserImagPerfil = new FileChooser();
-    byte[] imagen = new byte[1024 * 100];
-    String URLdestino="images/";
+    byte[] imagen = new byte[1024 * 1024];
+    String URLdestino="pdf/";
     
     String initialDirectory;
     String title;
@@ -32,10 +32,10 @@ public class FileImagUtil {
     
     
 
-    public File buscarImagen() throws FileNotFoundException, IOException {
+    public File buscarPdf() throws FileNotFoundException, IOException {
         filechooserImagPerfil.setInitialDirectory(new File(System.getProperty(initialDirectory)));//para iniciar la carpeta
         filechooserImagPerfil.getExtensionFilters().clear();
-        filechooserImagPerfil.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imágenes", "*.jpg*", "*.png*"));
+        filechooserImagPerfil.getExtensionFilters().add(new FileChooser.ExtensionFilter("pdf", "*.pdf*"));
         filechooserImagPerfil.setTitle(title);
         File fileImag = filechooserImagPerfil.showOpenDialog(null);
         FileInputStream FileEntrada = new FileInputStream(fileImag);
@@ -50,7 +50,7 @@ public class FileImagUtil {
         return fileImag;
     }
 
-    public String guardarImagen(File file) throws FileNotFoundException, IOException {
+    public String guardarPdf(File file) throws FileNotFoundException, IOException {
         File fileImagSalida = new File(URLdestino + file.getName());
         FileOutputStream FileSalida = new FileOutputStream(fileImagSalida);
         FileSalida.write(imagen);

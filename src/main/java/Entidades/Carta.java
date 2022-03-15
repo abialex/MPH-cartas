@@ -49,6 +49,9 @@ public class Carta {
     @Column(name = "visto", nullable = false)
     private boolean visto;
     
+    @Column(name = "url", nullable = true)
+    private String url;
+    
 
     public Carta(Proveedor proveedor, String numCartaConfianza, LocalDate fechaVencimiento, String referencia, String obra, String importe, String estado) {
         this.proveedor = proveedor;
@@ -136,5 +139,13 @@ public class Carta {
 
     public void setVisto(boolean visto) {
         this.visto = visto;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     } 
 }

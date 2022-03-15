@@ -6,12 +6,15 @@ package controller;
 
 import Entidades.Carta;
 import Entidades.Proveedor;
+import Util.FileImagUtil;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import emergente.AlertConfirmarController;
 import emergente.AlertController;
 import java.awt.Button;
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -113,10 +116,10 @@ public class DetalleController implements Initializable {
     private JFXComboBox<String> jcbestado;
 
     @FXML
-    private ImageView imgadd, imglimpiar, imagporexpirar, imageditar, imgvencido;
+    private ImageView imgadd, imglimpiar, imagporexpirar, imageditar, imgvencido, imgImprimir;
 
     @FXML
-    private Label lblnumVencido, lblPorVencer;
+    private Label lblnumVencido, lblPorVencer, lblpdf;
 
     @FXML
     private JFXComboBox<String> jcbMesBuscar, jcbAnioBuscar;
@@ -140,6 +143,8 @@ public class DetalleController implements Initializable {
     private List<Carta> listCartaVencidaNoVista;
     AlertConfirmarController oAlertConfimarController1 = new AlertConfirmarController();
     DetalleController odc = this;
+    FileImagUtil oFileImagUtil = new FileImagUtil("user.home", "buscar pdf .pdf");
+    File oPdf;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -237,6 +242,7 @@ public class DetalleController implements Initializable {
             oCarta.setObra(jtfobra.getText().trim());
             oCarta.setImporte(jtfimporte.getText().trim());
             oCarta.setEstado(jcbestado.getSelectionModel().getSelectedItem());
+            oCarta.setUrl(oPdf==null ? "":oFileImagUtil.guardarPdf(oPdf));
             App.jpa.getTransaction().begin();
             App.jpa.persist(oCarta);
             App.jpa.getTransaction().commit();
@@ -387,6 +393,8 @@ public class DetalleController implements Initializable {
         jtfreferencia.setText("");
         jtfobra.setText("");
         jtfimporte.setText("");
+        lblpdf.setText("pdf");
+        oPdf=null;
     }
 
     @FXML
@@ -561,8 +569,27 @@ public class DetalleController implements Initializable {
                         editIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarModificar(event));
                         editIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagModificarMoved(event));
                         editIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
-                        HBox managebtn = new HBox(editIcon, deleteIcon);
+
+                        ImageView imprimirIcon = new ImageView(new Image(getClass().getResource("/images/pdf.png").toExternalForm()));
+                        imprimirIcon.setFitHeight(35);
+                        imprimirIcon.setFitWidth(35);
+                        imprimirIcon.setUserData(item);
+                        imprimirIcon.setStyle(
+                                " -fx-cursor: hand ;"
+                        );
+                        imprimirIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> eliminar(event));
+                        HBox managebtn=null;
+                        for (Carta carta : listCarta) {
+                            if (carta.getId() == item) {
+                                if (carta.getUrl().isEmpty()) {
+                                    managebtn = new HBox( editIcon,deleteIcon);
+                                } else {
+                                    managebtn = new HBox(imprimirIcon,editIcon, deleteIcon);
+                                }
+                            }
+                        }
                         managebtn.setStyle("-fx-alignment:center");
+                        HBox.setMargin(imprimirIcon, new Insets(0, 5, 0, 0));
                         HBox.setMargin(deleteIcon, new Insets(0, 0, 0, 5));
                         HBox.setMargin(editIcon, new Insets(0, 5, 0, 0));
                         setGraphic(managebtn);
@@ -631,16 +658,32 @@ public class DetalleController implements Initializable {
                 }
 
                 void eliminar(MouseEvent event) {
-
                     ImageView imag = (ImageView) event.getSource();
                     for (int i = 0; i < listCarta.size(); i++) {
                         if (listCarta.get(i).getId() == (Integer) imag.getUserData()) {
                             Carta carta = listCarta.get(i);
+                            File file = new File(carta.getUrl());
                             try {
-                                mostrar(carta, i);
+                                Desktop.getDesktop().open(file);
                             } catch (IOException ex) {
                                 Logger.getLogger(DetalleController.class.getName()).log(Level.SEVERE, null, ex);
                             }
+                            if (selectItem() != -1) {
+                                if (listCarta.get(selectItem()) == carta) {
+                                    limpiar();
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                void imprimir(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    for (int i = 0; i < listCarta.size(); i++) {
+                        if (listCarta.get(i).getId() == (Integer) imag.getUserData()) {
+                            Carta carta = listCarta.get(i);
+
                             //si lo que eliminan es igual a lo que está seleccionado: eliminar
                             if (selectItem() != -1) {
                                 if (listCarta.get(selectItem()) == carta) {
@@ -811,6 +854,12 @@ public class DetalleController implements Initializable {
     }
 
     @FXML
+    void seleccionarPdf() throws IOException {
+        oPdf = oFileImagUtil.buscarPdf();
+        lblpdf.setText(oPdf.getName());
+    }
+
+    @FXML
     void imagAddDentro() {
         imgadd.setImage(new Image(getClass().getResource("/images/add-2.png").toExternalForm()));
     }
@@ -858,6 +907,16 @@ public class DetalleController implements Initializable {
     @FXML
     void imagVencidoFuera() {
         imgvencido.setImage(new Image(getClass().getResource("/images/caution-1.png").toExternalForm()));
+    }
+    
+    @FXML
+    void imagImprimirDentro() {
+        imgImprimir.setImage(new Image(getClass().getResource("/images/upload-2.png").toExternalForm()));
+    }
+
+    @FXML
+    void imagImprimirFuera() {
+        imgImprimir.setImage(new Image(getClass().getResource("/images/upload-1.png").toExternalForm()));
     }
 
     @FXML

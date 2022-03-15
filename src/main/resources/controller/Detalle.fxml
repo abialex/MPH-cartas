@@ -150,24 +150,27 @@
                                 </JFXComboBox>
                         <GridPane GridPane.columnIndex="2">
                           <columnConstraints>
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="121.0" minWidth="10.0" prefWidth="82.0" />
+                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="181.0" minWidth="10.0" prefWidth="181.0" />
+                            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="125.0" minWidth="10.0" prefWidth="94.0" />
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="85.0" />
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                                      <ImageView fx:id="imgadd" fitHeight="56.0" fitWidth="76.0" onMouseClicked="#agregar" onMouseExited="#imagAddFuera" onMouseMoved="#imagAddDentro" pickOnBounds="true" preserveRatio="true">
+                                      <ImageView fx:id="imgadd" fitHeight="56.0" fitWidth="76.0" onMouseClicked="#agregar" onMouseExited="#imagAddFuera" onMouseMoved="#imagAddDentro" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
                                           <image>
                                               <Image url="@../images/add-1.png" />
                                           </image>
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
+                                 <GridPane.margin>
+                                    <Insets left="5.0" />
+                                 </GridPane.margin>
                                       </ImageView>
-                              <ImageView fx:id="imglimpiar" fitHeight="56.0" fitWidth="76.0" onMouseClicked="#limpiar" onMouseExited="#imaglimpiarFuera" onMouseMoved="#imaglimpiarDentro" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
+                              <ImageView fx:id="imglimpiar" fitHeight="50.0" fitWidth="60.0" onMouseClicked="#limpiar" onMouseExited="#imaglimpiarFuera" onMouseMoved="#imaglimpiarDentro" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
                                  <image>
                                     <Image url="@../images/limpiar-1.png" />
                                  </image>
@@ -175,6 +178,19 @@
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </ImageView>
+                              <ImageView fx:id="imgImprimir" fitHeight="56.0" fitWidth="76.0" onMouseClicked="#seleccionarPdf" onMouseExited="#imagImprimirFuera" onMouseMoved="#imagImprimirDentro" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/upload-1.png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ImageView>
+                              <Label fx:id="lblpdf" maxWidth="1.7976931348623157E308" style="-fx-border-color: #000000;" text="pdf" GridPane.columnIndex="1">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </GridPane>
                             </children>
