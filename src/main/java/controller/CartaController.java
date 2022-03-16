@@ -179,7 +179,7 @@ public class CartaController implements Initializable {
             oCarta.setObra(jtfobra.getText().trim());
             oCarta.setImporte(jtfimporte.getText().trim());
             oCarta.setEstado(jcbestado.getSelectionModel().getSelectedItem());
-            oCarta.setUrl(oPdf == null ? "" : oFileImagUtil.guardarPdf(oPdf));
+            oCarta.setUrl(url);
             oCarta.setNameArchivo(oPdf == null ? "" : oPdf.getName());
             App.jpa.getTransaction().begin();
             App.jpa.persist(oCarta);
