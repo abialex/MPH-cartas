@@ -14,6 +14,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -39,7 +41,7 @@ public class AvisoController implements Initializable {
     private TableColumn<Carta, Proveedor> columnProveedor;
 
     @FXML
-    private TableColumn<Carta, String> columNumCarta;
+    private TableColumn<Carta, String> columNumCarta, columnObra, columnEstado, columnImporte;
 
     @FXML
     private TableColumn<Carta, LocalDate> columnFecha;
@@ -99,5 +101,37 @@ public class AvisoController implements Initializable {
         columnProveedor.setCellValueFactory(new PropertyValueFactory<Carta, Proveedor>("proveedor"));
         columNumCarta.setCellValueFactory(new PropertyValueFactory<Carta, String>("numCartaConfianza"));
         columnFecha.setCellValueFactory(new PropertyValueFactory<Carta, LocalDate>("fechaVencimiento"));
+        columnObra.setCellValueFactory(new PropertyValueFactory<Carta, String>("obra"));     
+        columnEstado.setCellValueFactory(new PropertyValueFactory<Carta, String>("estado"));    
+        columnImporte.setCellValueFactory(new PropertyValueFactory<Carta, String>("importe")); 
+        columnObra.setCellFactory(column -> {
+            TableCell<Carta, String> cell = new TableCell<Carta, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        Label ola = new Label();
+                        //algoritmo para separar despues de 51 caracteres
+                        String cadena = item;
+                        String linea = "";
+                        int numCharacteres = 51;//20 primeros
+                        for (int i = 0; i < cadena.length() / numCharacteres; i++) {
+                            linea = linea + cadena.substring(i * numCharacteres, (i + 1) * numCharacteres) + "\n";
+                        }
+                        linea = linea + cadena.substring(cadena.length() - cadena.length() % numCharacteres, cadena.length());
+                        ola.setText(linea);
+                        //fin
+                        ola.setStyle("-fx-font-size: 9");
+                        setGraphic(ola);
+                        setText(null);
+                    }
+                }
+            };
+
+            return cell;
+        });
     }
 }

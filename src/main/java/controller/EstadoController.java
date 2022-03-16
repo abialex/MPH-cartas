@@ -53,7 +53,7 @@ public class EstadoController implements Initializable {
     private TableColumn<Carta, Proveedor> columnProveedor;
 
     @FXML
-    private TableColumn<Carta, String> columNumCarta;
+    private TableColumn<Carta, String> columNumCarta, columnEstado, columnObra, columnImporte;
 
     @FXML
     private TableColumn<Carta, LocalDate> columnFecha;
@@ -62,23 +62,17 @@ public class EstadoController implements Initializable {
     private TableColumn<?, ?> columnReferencia;
 
     @FXML
-    private TableColumn<?, ?> columnObra;
-
-    @FXML
-    private TableColumn<?, ?> columnImporte;
-
-    @FXML
     private TableColumn<Carta, LocalDate> columnEn;
 
     @FXML
-    private Label lbl1d, lbl3d, lbl7d, lbl30d;
+    private Label lbl1d, lbl2d, lbl7d, lbl15d;
 
     ObservableList<Carta> listCarta = FXCollections.observableArrayList();
     DetalleController oCartaController;
     List<Carta> listCarta1D;
-    List<Carta> listCarta3D;
+    List<Carta> listCarta2D;
     List<Carta> listCarta7D;
-    List<Carta> listCarta30D;
+    List<Carta> listCarta15D;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -87,9 +81,9 @@ public class EstadoController implements Initializable {
         cargarDatoaPantalla();
         tableCarta.setItems(listCarta);
         //updateListaComprobante();
-        ObservableList<String> ESTADO = FXCollections.observableArrayList("MAÑANA", "3 DÍAS A MENOS", "1 SEMANA A MENOS", "1 MES A MENOS");
+        ObservableList<String> ESTADO = FXCollections.observableArrayList("MAÑANA", "2 DÍAS A MENOS", "1 SEMANA A MENOS", "15 MES A MENOS");
         jcbtiempo.setItems(ESTADO);
-        jcbtiempo.getSelectionModel().select("3 DÍAS A MENOS");
+        jcbtiempo.getSelectionModel().select("2 DÍAS A MENOS");
         seleccionarRango();
     }
 
@@ -134,7 +128,39 @@ public class EstadoController implements Initializable {
         columNumCarta.setCellValueFactory(new PropertyValueFactory<Carta, String>("numCartaConfianza"));
         columnFecha.setCellValueFactory(new PropertyValueFactory<Carta, LocalDate>("fechaVencimiento"));
         columnEn.setCellValueFactory(new PropertyValueFactory<Carta, LocalDate>("fechaVencimiento"));
+        columnEstado.setCellValueFactory(new PropertyValueFactory<Carta, String>("estado"));
+        columnObra.setCellValueFactory(new PropertyValueFactory<Carta, String>("obra"));
+        columnImporte.setCellValueFactory(new PropertyValueFactory<Carta, String>("importe"));
 
+        columnObra.setCellFactory(column -> {
+            TableCell<Carta, String> cell = new TableCell<Carta, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        Label ola = new Label();
+                        //algoritmo para separar despues de 51 caracteres
+                        String cadena = item;
+                        String linea = "";
+                        int numCharacteres = 51;//20 primeros
+                        for (int i = 0; i < cadena.length() / numCharacteres; i++) {
+                            linea = linea + cadena.substring(i * numCharacteres, (i + 1) * numCharacteres) + "\n";
+                        }
+                        linea = linea + cadena.substring(cadena.length() - cadena.length() % numCharacteres, cadena.length());
+                        ola.setText(linea);
+                        //fin
+                        ola.setStyle("-fx-font-size: 9");
+                        setGraphic(ola);
+                        setText(null);
+                    }
+                }
+            };
+
+            return cell;
+        });
         columnEn.setCellFactory(column -> {
             TableCell<Carta, LocalDate> cell = new TableCell<Carta, LocalDate>() {
                 @Override
@@ -150,15 +176,14 @@ public class EstadoController implements Initializable {
                         Label oLabel = new Label();
                         oLabel.setText(diffDays + " Día(s)");
                         String style = "-fx-font-size: 11; -fx-alignment: center; -fx-max-width:999;";
-                        if (3 >= diffDays) {
-                            style=style + " -fx-text-fill: RED;";
+                        if (2 >= diffDays) {
+                            style = style + " -fx-text-fill: RED;";
                         }
                         oLabel.setStyle(style);
                         setGraphic(oLabel);
                     }
                 }
             };
-
             return cell;
         });
     }
@@ -171,19 +196,19 @@ public class EstadoController implements Initializable {
         LocalDate lc = LocalDate.now();
         listCarta1D = App.jpa.createQuery("select p from Carta p where fechavencimiento BETWEEN '"
                 + lc.plusDays(1).toString() + "' and '" + lc.plusDays(1) + "' order by fechavencimiento asc").getResultList();
-        listCarta3D = App.jpa.createQuery("select p from Carta p where fechavencimiento BETWEEN '"
-                + lc.plusDays(1).toString() + "' and '" + lc.plusDays(3) + "' order by fechavencimiento asc").getResultList();
+        listCarta2D = App.jpa.createQuery("select p from Carta p where fechavencimiento BETWEEN '"
+                + lc.plusDays(1).toString() + "' and '" + lc.plusDays(2) + "' order by fechavencimiento asc").getResultList();
         listCarta7D = App.jpa.createQuery("select p from Carta p where fechavencimiento BETWEEN '"
                 + lc.plusDays(1).toString() + "' and '" + lc.plusDays(7) + "' order by fechavencimiento asc").getResultList();
-        listCarta30D = App.jpa.createQuery("select p from Carta p where fechavencimiento BETWEEN '"
-                + lc.plusDays(1).toString() + "' and '" + lc.plusDays(30) + "' order by fechavencimiento asc").getResultList();
+        listCarta15D = App.jpa.createQuery("select p from Carta p where fechavencimiento BETWEEN '"
+                + lc.plusDays(1).toString() + "' and '" + lc.plusDays(15) + "' order by fechavencimiento asc").getResultList();
     }
 
     void cargarDatoaPantalla() {
         lbl1d.setText(listCarta1D.size() + "");
-        lbl3d.setText(listCarta3D.size() + "");
+        lbl2d.setText(listCarta2D.size() + "");
         lbl7d.setText(listCarta7D.size() + "");
-        lbl30d.setText(listCarta30D.size() + "");
+        lbl15d.setText(listCarta15D.size() + "");
     }
 
     @FXML
@@ -193,8 +218,8 @@ public class EstadoController implements Initializable {
             for (Carta carta : listCarta1D) {
                 listCarta.add(carta);
             }
-        } else if (jcbtiempo.getSelectionModel().getSelectedItem().equals("3 DÍAS A MENOS")) {
-            for (Carta carta : listCarta3D) {
+        } else if (jcbtiempo.getSelectionModel().getSelectedItem().equals("2 DÍAS A MENOS")) {
+            for (Carta carta : listCarta2D) {
                 listCarta.add(carta);
             }
         } else if (jcbtiempo.getSelectionModel().getSelectedItem().equals("1 SEMANA A MENOS")) {
@@ -202,7 +227,7 @@ public class EstadoController implements Initializable {
                 listCarta.add(carta);
             }
         } else {
-            for (Carta carta : listCarta30D) {
+            for (Carta carta : listCarta15D) {
                 listCarta.add(carta);
             }
         }
