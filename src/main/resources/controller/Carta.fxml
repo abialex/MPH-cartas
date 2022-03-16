@@ -210,7 +210,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </ImageView>
-                        <Label fx:id="lblpdf" maxWidth="1.7976931348623157E308" text="pdf" GridPane.columnIndex="1">
+                        <Label fx:id="lblpdf" maxWidth="1.7976931348623157E308" text="pdf" textOverrun="LEADING_ELLIPSIS" GridPane.columnIndex="1">
                            <padding>
                               <Insets left="5.0" right="5.0" />
                            </padding>
