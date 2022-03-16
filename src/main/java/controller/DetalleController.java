@@ -584,15 +584,17 @@ public class DetalleController implements Initializable {
                             if (carta.getId() == item) {
                                 if (carta.getUrl().isEmpty()) {
                                     managebtn = new HBox(editIcon, deleteIcon);
+                                    HBox.setMargin(deleteIcon, new Insets(0, 0, 0, 5));
+                                    HBox.setMargin(editIcon, new Insets(0, 5, 0, 40));
                                 } else {
                                     managebtn = new HBox(imprimirIcon, editIcon, deleteIcon);
+                                    HBox.setMargin(imprimirIcon, new Insets(0, 5, 0, 0));
+                                    HBox.setMargin(deleteIcon, new Insets(0, 0, 0, 5));
+                                    HBox.setMargin(editIcon, new Insets(0, 5, 0, 0));
                                 }
                             }
                         }
                         managebtn.setStyle("-fx-alignment:center");
-                        HBox.setMargin(imprimirIcon, new Insets(0, 5, 0, 0));
-                        HBox.setMargin(deleteIcon, new Insets(0, 0, 0, 5));
-                        HBox.setMargin(editIcon, new Insets(0, 5, 0, 0));
                         setGraphic(managebtn);
                         setText(null);
                     }
@@ -684,7 +686,7 @@ public class DetalleController implements Initializable {
                     for (int i = 0; i < listCarta.size(); i++) {
                         if (listCarta.get(i).getId() == (Integer) imag.getUserData()) {
                             Carta carta = listCarta.get(i);
-                             try {
+                            try {
                                 mostrar(carta, i);
                             } catch (IOException ex) {
                                 Logger.getLogger(DetalleController.class.getName()).log(Level.SEVERE, null, ex);
