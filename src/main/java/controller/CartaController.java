@@ -61,6 +61,7 @@ public class CartaController implements Initializable {
     private DetalleController oDetalleController;
     private double x = 0;
     private double y = 0;
+    private boolean selecc= false;
 
     AlertController oAlert = new AlertController();
     File oPdf;
@@ -169,7 +170,8 @@ public class CartaController implements Initializable {
 
     @FXML
     void GuardarCarta() throws IOException {
-        if (isCompleto()) {
+        if (isCompleto()) {   
+            String url=oPdf == null ? "" : selecc ? oPdf.getAbsolutePath() : oFileImagUtil.guardarPdf(oPdf);
             oCarta.setProveedor(oProveedor);
             oCarta.setNumCartaConfianza(jtfnumCarta.getText().trim());
             oCarta.setFechaVencimiento(LocalDate.of(Integer.parseInt(jtfanio.getText().trim()) + 2000, Integer.parseInt(jtfmes.getText().trim()), Integer.parseInt(jtfdia.getText().trim())));
@@ -302,6 +304,7 @@ public class CartaController implements Initializable {
     void seleccionarPdf() throws IOException {
         oPdf = oFileImagUtil.buscarPdf();
         lblpdf.setText(oPdf.getName());
+        selecc=true;
     }
 
     @FXML
