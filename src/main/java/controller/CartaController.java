@@ -172,7 +172,7 @@ public class CartaController implements Initializable {
     @FXML
     void GuardarCarta() throws IOException {
         if (isCompleto()) {
-            String url = oPdf == null ? "" : selecc ? oPdf.getAbsolutePath() : oFileImagUtil.guardarPdf(oPdf);
+            String url = oPdf == null ? "" : selecc ? oFileImagUtil.guardarPdf(oPdf) : oPdf.getAbsolutePath();
             oCarta.setProveedor(oProveedor);
             oCarta.setNumCartaConfianza(jtfnumCarta.getText().trim());
             oCarta.setFechaVencimiento(LocalDate.of(Integer.parseInt(jtfanio.getText().trim()) + 2000, Integer.parseInt(jtfmes.getText().trim()), Integer.parseInt(jtfdia.getText().trim())));
@@ -300,14 +300,19 @@ public class CartaController implements Initializable {
         jtfimporte.setText(carta.getImporte());
         jcbestado.getSelectionModel().select(carta.getEstado());
         lblpdf.setText(carta.getNameArchivo());
-        oPdf = carta.getUrl().length()==0 ? null : new File(carta.getUrl());
+        oPdf = carta.getUrl().length() == 0 ? null : new File(carta.getUrl());
     }
 
     @FXML
     void seleccionarPdf() throws IOException {
-        oPdf = oFileImagUtil.buscarPdf();
-        lblpdf.setText(oPdf.getName());
-        selecc = true;
+        File pdf = oFileImagUtil.buscarPdf();
+        if (pdf != null) {
+            oPdf = pdf;
+            lblpdf.setText(oPdf.getName());
+            selecc = true;
+        } else {
+            selecc = false;
+        }
     }
 
     @FXML
