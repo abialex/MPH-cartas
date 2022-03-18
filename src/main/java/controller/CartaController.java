@@ -154,6 +154,7 @@ public class CartaController implements Initializable {
 
     @FXML
     void cerrar() {
+        oDetalleController.ap.setDisable(false);
         ((Stage) ap.getScene().getWindow()).close();
     }
 
