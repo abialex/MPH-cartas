@@ -53,7 +53,7 @@ public class CartaController implements Initializable {
     private ImageView imgImprimir;
     @FXML
     private Label lblpdf;
-    
+
     private Stage stagePrincipal;
     private Proveedor oProveedor;
     private Carta oCarta;
@@ -61,12 +61,12 @@ public class CartaController implements Initializable {
     private DetalleController oDetalleController;
     private double x = 0;
     private double y = 0;
-    private boolean selecc= false;
+    private boolean selecc = false;
 
     AlertController oAlert = new AlertController();
-    File oPdf;
+    File oPdf = null;
     FileImagUtil oFileImagUtil = new FileImagUtil("user.home", "buscar pdf .pdf");
-  
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         jtfdia.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
@@ -170,8 +170,8 @@ public class CartaController implements Initializable {
 
     @FXML
     void GuardarCarta() throws IOException {
-        if (isCompleto()) {   
-            String url=oPdf == null ? "" : selecc ? oPdf.getAbsolutePath() : oFileImagUtil.guardarPdf(oPdf);
+        if (isCompleto()) {
+            String url = oPdf == null ? "" : selecc ? oPdf.getAbsolutePath() : oFileImagUtil.guardarPdf(oPdf);
             oCarta.setProveedor(oProveedor);
             oCarta.setNumCartaConfianza(jtfnumCarta.getText().trim());
             oCarta.setFechaVencimiento(LocalDate.of(Integer.parseInt(jtfanio.getText().trim()) + 2000, Integer.parseInt(jtfmes.getText().trim()), Integer.parseInt(jtfdia.getText().trim())));
@@ -188,6 +188,7 @@ public class CartaController implements Initializable {
             oDetalleController.buscar();
             oDetalleController.actualizarPorVencer();
             oAlert.Mostrar("successful", "Modificado");
+            oDetalleController.ap.setDisable(false);
             cerrar();
         }
     }
@@ -298,13 +299,14 @@ public class CartaController implements Initializable {
         jtfimporte.setText(carta.getImporte());
         jcbestado.getSelectionModel().select(carta.getEstado());
         lblpdf.setText(carta.getNameArchivo());
-        oPdf=new File(carta.getUrl());
+        oPdf = carta.getUrl().length()==0 ? null : new File(carta.getUrl());
     }
+
     @FXML
     void seleccionarPdf() throws IOException {
         oPdf = oFileImagUtil.buscarPdf();
         lblpdf.setText(oPdf.getName());
-        selecc=true;
+        selecc = true;
     }
 
     @FXML

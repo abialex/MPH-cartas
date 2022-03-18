@@ -60,7 +60,7 @@ public class DetalleController implements Initializable {
      * Initializes the controller class.
      */
     @FXML
-    private AnchorPane ap;
+    public AnchorPane ap;
     @FXML
     private TableView<Carta> tableCarta;
 
@@ -277,17 +277,17 @@ public class DetalleController implements Initializable {
     }
 
     public void eliminar(Carta oCarta, int index) {
-        if (index != -1) {
-            App.jpa.getTransaction().begin();
-            App.jpa.remove(oCarta);
-            App.jpa.getTransaction().commit();
-            listCarta.remove(index);
-            updateListaComprobante();
-            actualizarPorVencer();
-            //getitem para limpiar
-            getItem();
+            if (index != -1) {
+                App.jpa.getTransaction().begin();
+                App.jpa.remove(oCarta);
+                App.jpa.getTransaction().commit();
+                listCarta.remove(index);
+                updateListaComprobante();
+                actualizarPorVencer();
+                //getitem para limpiar
+                getItem();
+            }
         }
-    }
 
     @FXML
     void mostrarAgregarProveedor() throws IOException {
@@ -601,6 +601,7 @@ public class DetalleController implements Initializable {
                 }
 
                 private void mostrarModificar(MouseEvent event) {
+                    ap.setDisable(true);
                     ImageView buton = (ImageView) event.getSource();
                     for (Carta carta : listCarta) {
                         if (carta.getId() == (Integer) buton.getUserData()) {
@@ -682,6 +683,7 @@ public class DetalleController implements Initializable {
                 }
 
                 void eliminar(MouseEvent event) {
+                    ap.setDisable(true);
                     ImageView imag = (ImageView) event.getSource();
                     for (int i = 0; i < listCarta.size(); i++) {
                         if (listCarta.get(i).getId() == (Integer) imag.getUserData()) {

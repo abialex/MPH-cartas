@@ -56,14 +56,16 @@ public class AlertConfirmarController implements Initializable {
     }
 
     @FXML
-    void eliminar() {
+    void eliminar() {  
         oDetalleController.eliminar(oCarta, index);
+        oDetalleController.ap.setDisable(false);
         cerrar();
     }
 
     @FXML
     void cerrar() {
         ((Stage) ap.getScene().getWindow()).close();
+        oDetalleController.ap.setDisable(false);
     }
 
 }
