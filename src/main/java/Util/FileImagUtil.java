@@ -19,18 +19,16 @@ public class FileImagUtil {
 
     FileChooser filechooserImagPerfil = new FileChooser();
     byte[] imagen = new byte[1024 * 1024];
-    String URLdestino="pdf/";
-    
+    String URLdestino = "pdf/";
+
     String initialDirectory;
     String title;
-    
-   public FileImagUtil(String id,String title){
-       this.initialDirectory=id;
-       this.title=title;
-       
-   }
-    
-    
+
+    public FileImagUtil(String id, String title) {
+        this.initialDirectory = id;
+        this.title = title;
+
+    }
 
     public File buscarPdf() throws FileNotFoundException, IOException {
         filechooserImagPerfil.setInitialDirectory(new File(System.getProperty(initialDirectory)));//para iniciar la carpeta
@@ -38,14 +36,16 @@ public class FileImagUtil {
         filechooserImagPerfil.getExtensionFilters().add(new FileChooser.ExtensionFilter("pdf", "*.pdf*"));
         filechooserImagPerfil.setTitle(title);
         File fileImag = filechooserImagPerfil.showOpenDialog(null);
-        FileInputStream FileEntrada = new FileInputStream(fileImag);
-        FileEntrada.read(imagen);
-         try {
-            if (FileEntrada != null) {
-                FileEntrada.close();
+        if (fileImag != null) {
+            FileInputStream FileEntrada = new FileInputStream(fileImag);
+            FileEntrada.read(imagen);
+            try {
+                if (FileEntrada != null) {
+                    FileEntrada.close();
+                }
+            } catch (IOException E) {
+                System.out.println("problema cerrando File entrada");
             }
-        } catch (IOException E) {
-            System.out.println("problema cerrando File entrada");
         }
         return fileImag;
     }
