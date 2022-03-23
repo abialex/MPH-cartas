@@ -277,17 +277,17 @@ public class DetalleController implements Initializable {
     }
 
     public void eliminar(Carta oCarta, int index) {
-            if (index != -1) {
-                App.jpa.getTransaction().begin();
-                App.jpa.remove(oCarta);
-                App.jpa.getTransaction().commit();
-                listCarta.remove(index);
-                updateListaComprobante();
-                actualizarPorVencer();
-                //getitem para limpiar
-                getItem();
-            }
+        if (index != -1) {
+            App.jpa.getTransaction().begin();
+            App.jpa.remove(oCarta);
+            App.jpa.getTransaction().commit();
+            listCarta.remove(index);
+            updateListaComprobante();
+            actualizarPorVencer();
+            //getitem para limpiar
+            getItem();
         }
+    }
 
     @FXML
     void mostrarAgregarProveedor() throws IOException {
@@ -323,66 +323,15 @@ public class DetalleController implements Initializable {
 
     @FXML
     void mostrarAviso() throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(AvisoController.class.getResource("Aviso.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);//instancia el controlador (!)
-        scene.getStylesheets().add(EstadoController.class.getResource("/css/bootstrap3.css").toExternalForm());;
-        Stage stage = new Stage();//creando la base vací
-        stage.initStyle(StageStyle.UNDECORATED);
-        stage.initOwner(stagePrincipal);
-        stage.setScene(scene);
-        AvisoController oAvisocontroller = (AvisoController) loader.getController(); //esto depende de (1)
+        AvisoController oAvisocontroller = (AvisoController) mostrarVentana(AvisoController.class, "Aviso");     
         oAvisocontroller.setController(this);
         oAvisocontroller.sendListVencido(listCartaVencidaNoVista);
-        root.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                x = event.getX();
-                y = event.getY();
-            }
-        });
-        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                stage.setX(event.getScreenX() - x);
-                stage.setY(event.getScreenY() - y);
-            }
-        });
-        stage.show();
     }
 
     @FXML
     void mostrarEstado() throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(AgregarProveedorController.class.getResource("Estado.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);//instancia el controlador (!)
-        scene.getStylesheets().add(AgregarProveedorController.class.getResource("/css/bootstrap3.css").toExternalForm());;
-        Stage stage = new Stage();//creando la base vací
-        stage.initStyle(StageStyle.UNDECORATED);
-        stage.initOwner(stagePrincipal);
-        stage.setScene(scene);
-        EstadoController oVerController = (EstadoController) loader.getController(); //esto depende de (1)
+        EstadoController oVerController = (EstadoController) mostrarVentana(EstadoController.class, "Estado");
         oVerController.setController(this);
-
-        root.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                x = event.getX();
-                y = event.getY();
-            }
-        });
-        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                stage.setX(event.getScreenX() - x);
-                stage.setY(event.getScreenY() - y);
-            }
-        });
-
-        stage.show();
-        //((Stage) ap.getScene().getWindow()).close();//cerrando la ventanada anterior
     }
 
     @FXML
@@ -437,7 +386,7 @@ public class DetalleController implements Initializable {
     void mostrarporVencer3Days() {
         LocalDate lc = LocalDate.now();
         List<Carta> listCarta3D = App.jpa.createQuery("select p from Carta p where fechavencimiento BETWEEN '"
-                + lc.plusDays(1).toString() + "' and '" + lc.plusDays(3).toString() + "' order by fechavencimiento asc").getResultList();
+                + lc.plusDays(1).toString() + "' and '" + lc.plusDays(2).toString() + "' order by fechavencimiento asc").getResultList();
 
         if (listCarta3D.isEmpty()) {
             lblPorVencer.setVisible(false);
@@ -605,60 +554,19 @@ public class DetalleController implements Initializable {
                     ImageView buton = (ImageView) event.getSource();
                     for (Carta carta : listCarta) {
                         if (carta.getId() == (Integer) buton.getUserData()) {
-
-                            FXMLLoader loader = new FXMLLoader();
-                            loader.setLocation(AgregarProveedorController.class.getResource("Carta.fxml"));
-                            Parent root = null;
-                            try {
-                                root = loader.load();
-                            } catch (IOException ex) {
-                                Logger.getLogger(CartaController.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            Scene scene = new Scene(root);//instancia el controlador (!)
-                            scene.getStylesheets().add(CartaController.class.getResource("/css/bootstrap3.css").toExternalForm());;
-                            Stage stage = new Stage();//creando la base vací
-                            stage.initStyle(StageStyle.UNDECORATED);
-                            stage.initOwner(stagePrincipal);
-                            stage.setScene(scene);
-                            CartaController oDetalleController = (CartaController) loader.getController(); //esto depende de (1)
-                            oDetalleController.setController(DetalleController.this);
+                            CartaController oDetalleController=(CartaController) mostrarVentana(CartaController.class,"Carta" );
+                            oDetalleController.setController(odc);
                             oDetalleController.setCarta(carta);
-                            root.setOnMousePressed(new EventHandler<MouseEvent>() {
-                                @Override
-                                public void handle(MouseEvent event) {
-                                    x = event.getX();
-                                    y = event.getY();
-                                }
-                            });
-                            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-                                @Override
-                                public void handle(MouseEvent event) {
-                                    stage.setX(event.getScreenX() - x);
-                                    stage.setY(event.getScreenY() - y);
-                                }
-                            });
-                            stage.show();
-                            //((Stage) ap.getScene().getWindow()).close();//cerrando la ventanada anterior
                             break;
                         }
                     }
                 }
 
                 void mostrar(Carta oCarta, int index) throws IOException {
-                    FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(AlertConfirmarController.class.getResource("/fxml/AlertConfirmar.fxml"));
-                    Scene scene = new Scene(loader.load());
-                    Stage stage = new Stage();//creando la base vacía
-                    stage.initOwner(stagePrincipal);
-                    stage.initStyle(StageStyle.UNDECORATED);
-                    stage.setScene(scene);
-                    //
-                    oAlertConfimarController1 = (AlertConfirmarController) loader.getController(); //esto depende de (1)
+                    oAlertConfimarController1 = (AlertConfirmarController) mostrarVentana(AlertConfirmarController.class, "/fxml/AlertConfirmar");
                     oAlertConfimarController1.setController(odc);
                     oAlertConfimarController1.setMensaje(" ¿Está seguro de eliminar?");
                     oAlertConfimarController1.setCartaIndex(oCarta, index);
-
-                    stage.show();
                 }
 
                 void imprimir(MouseEvent event) {
@@ -838,12 +746,12 @@ public class DetalleController implements Initializable {
         } else {
             jtfanio.setStyle("");
         }
-        auxfecha = isfechavalid(auxfecha);
+        boolean auxfecha2 = isfechavalid(auxfecha);
         if (!aux) {
             oAlert.Mostrar("error", "Llene los cuadros en rojo");
         }
 
-        return aux && auxfecha;
+        return aux && auxfecha && auxfecha2;
     }
 
     boolean isfechavalid(boolean aux) throws IOException {
@@ -937,6 +845,39 @@ public class DetalleController implements Initializable {
     void test() {
         System.out.println("Proveedor: " + columnProveedor.getWidth() + " carta f:" + columNumCarta.getWidth() + " fecha: " + columnFecha.getWidth());
         System.out.println("Prueba: " + columnprueba.getWidth() + " estado f:" + columnEstado.getWidth() + " importe: " + columnImporte.getWidth());
+    }
+
+    public Object mostrarVentana(Class generico, String nameFXML) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(generico.getResource(nameFXML + ".fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException ex) {
+            Logger.getLogger(generico.getName()).log(Level.SEVERE, null, ex);
+        }
+        Scene scene = new Scene(root);//instancia el controlador (!)
+        scene.getStylesheets().add(generico.getResource("/css/bootstrap3.css").toExternalForm());;
+        Stage stage = new Stage();//creando la base vací
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initOwner(stagePrincipal);
+        stage.setScene(scene);
+        root.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                x = event.getX();
+                y = event.getY();
+            }
+        });
+        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                stage.setX(event.getScreenX() - x);
+                stage.setY(event.getScreenY() - y);
+            }
+        });
+        stage.show();
+        return loader.getController();
     }
 
 }
