@@ -173,7 +173,7 @@ public class DetalleController implements Initializable {
 
     @FXML
     void updateListaComprobante() {
-        List<Carta> olistCarta = App.jpa.createQuery("select p from Carta p order by id DESC").setMaxResults(10).getResultList();
+        List<Carta> olistCarta = App.jpa.createQuery("select p from Carta p order by id DESC").getResultList();
         listCarta.clear();
         for (Carta ocarta : olistCarta) {
             listCarta.add(ocarta);
