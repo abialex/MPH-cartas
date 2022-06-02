@@ -46,7 +46,7 @@ public class CartaController implements Initializable {
      * Initializes the controller class.
      */
     @FXML
-    private JFXTextField jtfproveedor, jtfdia, jtfmes, jtfanio, jtfnumCarta, jtfreferencia, jtfobra, jtfimporte;
+    private JFXTextField jtfproveedor, jtfdia, jtfmes, jtfanio, jtfnumCarta, jtfreferencia, jtfobra, jtfimporte, jtfNumCartaDevuelta;
     @FXML
     private AnchorPane ap;
     @FXML
@@ -184,6 +184,7 @@ public class CartaController implements Initializable {
             oCarta.setObra(jtfobra.getText().trim());
             oCarta.setImporte(objNF.format(Integer.parseInt(jtfimporte.getText().trim()))+".00");
             oCarta.setImporteInt(Integer.parseInt(jtfimporte.getText().trim()));
+            oCarta.setNumCartaDevuelta(jtfNumCartaDevuelta.getText());
             oCarta.setEstado(jcbestado.getSelectionModel().getSelectedItem());
             oCarta.setUrl(url);
             oCarta.setNameArchivo(oPdf == null ? "" : oPdf.getName());
