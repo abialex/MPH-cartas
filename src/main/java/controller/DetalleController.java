@@ -6,6 +6,7 @@ package controller;
 
 import Entidades.Carta;
 import Entidades.Proveedor;
+import Pdf.Citapdf;
 import Util.FileImagUtil;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -112,7 +113,7 @@ public class DetalleController implements Initializable {
     private JFXTextField jtfobra;
 
     @FXML
-    private JFXTextField jtfimporte, jtfNumCartaDevuelta; 
+    private JFXTextField jtfimporte, jtfNumCartaDevuelta;
 
     @FXML
     private JFXComboBox<String> jcbestado;
@@ -182,6 +183,7 @@ public class DetalleController implements Initializable {
             listCarta.add(ocarta);
         }
     }
+    String filtro = "";
 
     @FXML
     public void buscar() {
@@ -197,7 +199,7 @@ public class DetalleController implements Initializable {
                 + cartaconfianza
                 + estado
                 + obra
-                + " order by id DESC").setMaxResults(10).getResultList();
+                + " order by id DESC").getResultList();
         listCarta.clear();
         for (Carta ocarta : olistCarta) {
             listCarta.add(ocarta);
@@ -218,7 +220,7 @@ public class DetalleController implements Initializable {
             jtfreferencia.setText(listCarta.get(index).getReferencia());
             jtfobra.setText(listCarta.get(index).getObra());
             jtfimporte.setText(listCarta.get(index).getImporteInt() + "");
-            jtfNumCartaDevuelta.setText(listCarta.get(index).getNumCartaDevuelta() + "");
+            jtfNumCartaDevuelta.setText(listCarta.get(index).getNumCartaDevuelta() == null ? "" : listCarta.get(index).getNumCartaDevuelta() + "");
             //jcbestado.getSelectionModel().select(listCarta.get(index).getEstado());
 
         } else {
@@ -272,6 +274,16 @@ public class DetalleController implements Initializable {
         char key = event.getCharacter().charAt(0);
         if (!Character.isDigit(key)) {
             event.consume();
+        }
+    }
+
+    @FXML
+    void imprimir() {
+        File file = new File(Citapdf.ImprimirCartas(listCarta, "s"));
+        try {
+            Desktop.getDesktop().open(file);
+        } catch (IOException ex) {
+            Logger.getLogger(DetalleController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -521,7 +533,7 @@ public class DetalleController implements Initializable {
                         setGraphic(null);
                         setText(null);
                     } else {
-                        int tam=20;
+                        int tam = 20;
 
                         ImageView deleteIcon = new ImageView(new Image(getClass().getResource("/images/delete-1.png").toExternalForm()));
                         deleteIcon.setFitHeight(tam);
