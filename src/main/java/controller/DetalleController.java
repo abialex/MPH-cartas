@@ -376,7 +376,7 @@ public class DetalleController implements Initializable {
     public void actualizarPorVencer() {
         listCartaVencidaNoVista = new ArrayList<>();
         List<Carta> ListCartaVencida = App.jpa.createQuery(""
-                + "select p from Carta p where (estado <> 'VENCIDO' or visto = false) and fechavencimiento  <='" + LocalDate.now() + "' ").getResultList();
+                + "select p from Carta p where (estado <> 'VENCIDO' or estado <> 'DEVUELTO' or visto = false) and fechavencimiento  <='" + LocalDate.now() + "' ").getResultList();
         //cambiando todas las cartas a VENCIDO
         for (Carta carta : ListCartaVencida) {
             carta.setEstado("VENCIDO");
