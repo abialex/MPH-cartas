@@ -88,7 +88,7 @@ public class DetalleController implements Initializable {
     private TableColumn<Carta, Integer> columnprueba;
 
     @FXML
-    private TableColumn<Carta, String> columnEstado;
+    private TableColumn<Carta, String> columnEstado,columnNumCartaDevuelta;
 
     @FXML
     private JFXTextField jtfproveedor;
@@ -112,7 +112,7 @@ public class DetalleController implements Initializable {
     private JFXTextField jtfobra;
 
     @FXML
-    private JFXTextField jtfimporte;
+    private JFXTextField jtfimporte, jtfNumCartaDevuelta; 
 
     @FXML
     private JFXComboBox<String> jcbestado;
@@ -218,6 +218,7 @@ public class DetalleController implements Initializable {
             jtfreferencia.setText(listCarta.get(index).getReferencia());
             jtfobra.setText(listCarta.get(index).getObra());
             jtfimporte.setText(listCarta.get(index).getImporteInt() + "");
+            jtfNumCartaDevuelta.setText(listCarta.get(index).getNumCartaDevuelta() + "");
             //jcbestado.getSelectionModel().select(listCarta.get(index).getEstado());
 
         } else {
@@ -249,6 +250,7 @@ public class DetalleController implements Initializable {
             oCarta.setImporte(objNF.format(Integer.parseInt(jtfimporte.getText().trim())) + ".00");
             oCarta.setImporteInt(Integer.parseInt(jtfimporte.getText().trim()));
             oCarta.setEstado(jcbestado.getSelectionModel().getSelectedItem());
+            oCarta.setNumCartaDevuelta(jtfNumCartaDevuelta.getText());
             oCarta.setUrl(oPdf == null ? "" : oFileImagUtil.guardarPdf(oPdf));
             oCarta.setNameArchivo(oPdf == null ? "" : oPdf.getName());
             App.jpa.getTransaction().begin();
@@ -363,6 +365,7 @@ public class DetalleController implements Initializable {
         jtfreferencia.setText("");
         jtfobra.setText("");
         jtfimporte.setText("");
+        jtfNumCartaDevuelta.setText("");
         lblpdf.setText("pdf");
         oPdf = null;
     }
@@ -426,6 +429,7 @@ public class DetalleController implements Initializable {
         columnObra.setCellValueFactory(new PropertyValueFactory<Carta, String>("obra"));
         columnImporte.setCellValueFactory(new PropertyValueFactory<Carta, String>("importe"));
         columnEstado.setCellValueFactory(new PropertyValueFactory<Carta, String>("estado"));
+        columnNumCartaDevuelta.setCellValueFactory(new PropertyValueFactory<Carta, String>("numCartaDevuelta"));
 
         columnObra.setCellFactory(column -> {
             TableCell<Carta, String> cell = new TableCell<Carta, String>() {
@@ -517,9 +521,11 @@ public class DetalleController implements Initializable {
                         setGraphic(null);
                         setText(null);
                     } else {
+                        int tam=20;
+
                         ImageView deleteIcon = new ImageView(new Image(getClass().getResource("/images/delete-1.png").toExternalForm()));
-                        deleteIcon.setFitHeight(35);
-                        deleteIcon.setFitWidth(35);
+                        deleteIcon.setFitHeight(tam);
+                        deleteIcon.setFitWidth(tam);
                         deleteIcon.setUserData(item);
                         deleteIcon.setStyle(
                                 " -fx-cursor: hand;"
@@ -530,8 +536,8 @@ public class DetalleController implements Initializable {
                         //deleteIcon.setText("Eliminar");
 
                         ImageView editIcon = new ImageView(new Image(getClass().getResource("/images/modify-1.png").toExternalForm()));
-                        editIcon.setFitHeight(35);
-                        editIcon.setFitWidth(35);
+                        editIcon.setFitHeight(tam);
+                        editIcon.setFitWidth(tam);
                         editIcon.setUserData(item);
                         editIcon.setStyle(
                                 " -fx-cursor: hand ;"
@@ -541,8 +547,8 @@ public class DetalleController implements Initializable {
                         editIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
 
                         ImageView imprimirIcon = new ImageView(new Image(getClass().getResource("/images/pdf.png").toExternalForm()));
-                        imprimirIcon.setFitHeight(35);
-                        imprimirIcon.setFitWidth(35);
+                        imprimirIcon.setFitHeight(tam);
+                        imprimirIcon.setFitWidth(tam);
                         imprimirIcon.setUserData(item);
                         imprimirIcon.setStyle(
                                 " -fx-cursor: hand ;"
@@ -554,7 +560,7 @@ public class DetalleController implements Initializable {
                                 if (carta.getUrl().isEmpty()) {
                                     managebtn = new HBox(editIcon, deleteIcon);
                                     HBox.setMargin(deleteIcon, new Insets(0, 0, 0, 5));
-                                    HBox.setMargin(editIcon, new Insets(0, 5, 0, 40));
+                                    HBox.setMargin(editIcon, new Insets(0, 5, 0, 27));
                                 } else {
                                     managebtn = new HBox(imprimirIcon, editIcon, deleteIcon);
                                     HBox.setMargin(imprimirIcon, new Insets(0, 5, 0, 0));

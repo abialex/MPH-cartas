@@ -47,6 +47,9 @@ public class Carta {
     @Column(name = "importeInt", nullable = true)
     private int importeInt;
 
+    @Column(name = "numCartaDevuelta", nullable = true)
+    private String numCartaDevuelta;
+
     @Column(name = "estado", nullable = false)
     private String estado;
 
@@ -59,7 +62,7 @@ public class Carta {
     @Column(name = "nameArchivo", nullable = true)
     private String nameArchivo;
 
-    public Carta(Proveedor proveedor, String numCartaConfianza, LocalDate fechaVencimiento, String referencia, String obra, String importe, int importeInt, String estado) {
+    public Carta(Proveedor proveedor, String numCartaConfianza, LocalDate fechaVencimiento, String referencia, String obra, String importe, int importeInt, String estado, String numCartaDevuelta) {
         this.proveedor = proveedor;
         this.numCartaConfianza = numCartaConfianza;
         this.fechaVencimiento = fechaVencimiento;
@@ -67,6 +70,7 @@ public class Carta {
         this.obra = obra;
         this.importe = importe;
         this.importeInt = importeInt;
+        this.numCartaDevuelta = numCartaDevuelta;
         this.estado = estado;
     }
 
@@ -168,4 +172,13 @@ public class Carta {
     public void setImporteInt(int importeInt) {
         this.importeInt = importeInt;
     }
+
+    public String getNumCartaDevuelta() {
+        return numCartaDevuelta;
+    }
+
+    public void setNumCartaDevuelta(String numCartaDevuelta) {
+        this.numCartaDevuelta = numCartaDevuelta;
+    }
+
 }
