@@ -13,8 +13,10 @@ import emergente.AlertController;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -172,13 +174,16 @@ public class CartaController implements Initializable {
     @FXML
     void GuardarCarta() throws IOException {
         if (isCompleto()) {
+            Locale locale = new Locale("en", "UK");
+            NumberFormat objNF = NumberFormat.getInstance(locale);
             String url = oPdf == null ? "" : selecc ? oFileImagUtil.guardarPdf(oPdf) : oPdf.getAbsolutePath();
             oCarta.setProveedor(oProveedor);
             oCarta.setNumCartaConfianza(jtfnumCarta.getText().trim());
             oCarta.setFechaVencimiento(LocalDate.of(Integer.parseInt(jtfanio.getText().trim()) + 2000, Integer.parseInt(jtfmes.getText().trim()), Integer.parseInt(jtfdia.getText().trim())));
             oCarta.setReferencia(jtfreferencia.getText().trim());
             oCarta.setObra(jtfobra.getText().trim());
-            oCarta.setImporte(jtfimporte.getText().trim());
+            oCarta.setImporte(objNF.format(Integer.parseInt(jtfimporte.getText().trim()))+".00");
+            oCarta.setImporteInt(Integer.parseInt(jtfimporte.getText().trim()));
             oCarta.setEstado(jcbestado.getSelectionModel().getSelectedItem());
             oCarta.setUrl(url);
             oCarta.setNameArchivo(oPdf == null ? "" : oPdf.getName());
@@ -191,6 +196,18 @@ public class CartaController implements Initializable {
             oAlert.Mostrar("successful", "Modificado");
             oDetalleController.ap.setDisable(false);
             cerrar();
+        }
+    }
+
+    void initRestricciones() {
+        jtfimporte.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEntero(event));
+    }
+
+    void SoloNumerosEntero(KeyEvent event) {
+        JFXTextField o = (JFXTextField) event.getSource();
+        char key = event.getCharacter().charAt(0);
+        if (!Character.isDigit(key)) {
+            event.consume();
         }
     }
 
@@ -297,7 +314,7 @@ public class CartaController implements Initializable {
         jtfanio.setText((carta.getFechaVencimiento().getYear() - 2000) + "");
         jtfreferencia.setText(carta.getReferencia());
         jtfobra.setText(carta.getObra());
-        jtfimporte.setText(carta.getImporte());
+        jtfimporte.setText(carta.getImporteInt() + "");
         jcbestado.getSelectionModel().select(carta.getEstado());
         lblpdf.setText(carta.getNameArchivo());
         oPdf = carta.getUrl().length() == 0 ? null : new File(carta.getUrl());
