@@ -17,9 +17,11 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -149,6 +151,7 @@ public class DetalleController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        initRestricciones();
         actualizarPorVencer();
         updateListaComprobante();
         initTableView();
@@ -214,7 +217,7 @@ public class DetalleController implements Initializable {
             jtfanio.setText((listCarta.get(index).getFechaVencimiento().getYear() - 2000) + "");
             jtfreferencia.setText(listCarta.get(index).getReferencia());
             jtfobra.setText(listCarta.get(index).getObra());
-            jtfimporte.setText(listCarta.get(index).getImporte());
+            jtfimporte.setText(listCarta.get(index).getImporteInt() + "");
             //jcbestado.getSelectionModel().select(listCarta.get(index).getEstado());
 
         } else {
@@ -233,6 +236,9 @@ public class DetalleController implements Initializable {
     @FXML
     void agregar() throws IOException {
         if (isCompleto()) {
+            Locale locale = new Locale("en", "UK");
+            NumberFormat objNF = NumberFormat.getInstance(locale);
+            String cadena = objNF.format(999999.99);
             Carta oCarta = new Carta();
             oCarta.setProveedor(oProveedor);
             oCarta.setNumCartaConfianza(jtfnumCarta.getText().trim());
@@ -240,7 +246,8 @@ public class DetalleController implements Initializable {
                     Integer.parseInt(jtfmes.getText().trim()), Integer.parseInt(jtfdia.getText().trim())));
             oCarta.setReferencia(jtfreferencia.getText().trim());
             oCarta.setObra(jtfobra.getText().trim());
-            oCarta.setImporte(jtfimporte.getText().trim());
+            oCarta.setImporte(objNF.format(Integer.parseInt(jtfimporte.getText().trim())) + ".00");
+            oCarta.setImporteInt(Integer.parseInt(jtfimporte.getText().trim()));
             oCarta.setEstado(jcbestado.getSelectionModel().getSelectedItem());
             oCarta.setUrl(oPdf == null ? "" : oFileImagUtil.guardarPdf(oPdf));
             oCarta.setNameArchivo(oPdf == null ? "" : oPdf.getName());
@@ -250,6 +257,19 @@ public class DetalleController implements Initializable {
             updateListaComprobante();
             actualizarPorVencer();
             limpiar();
+        }
+    }
+
+    void initRestricciones() {
+        jtfimporte.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEntero(event));
+
+    }
+
+    void SoloNumerosEntero(KeyEvent event) {
+        JFXTextField o = (JFXTextField) event.getSource();
+        char key = event.getCharacter().charAt(0);
+        if (!Character.isDigit(key)) {
+            event.consume();
         }
     }
 
@@ -323,7 +343,7 @@ public class DetalleController implements Initializable {
 
     @FXML
     void mostrarAviso() throws IOException {
-        AvisoController oAvisocontroller = (AvisoController) mostrarVentana(AvisoController.class, "Aviso");     
+        AvisoController oAvisocontroller = (AvisoController) mostrarVentana(AvisoController.class, "Aviso");
         oAvisocontroller.setController(this);
         oAvisocontroller.sendListVencido(listCartaVencidaNoVista);
     }
@@ -554,7 +574,7 @@ public class DetalleController implements Initializable {
                     ImageView buton = (ImageView) event.getSource();
                     for (Carta carta : listCarta) {
                         if (carta.getId() == (Integer) buton.getUserData()) {
-                            CartaController oDetalleController=(CartaController) mostrarVentana(CartaController.class,"Carta" );
+                            CartaController oDetalleController = (CartaController) mostrarVentana(CartaController.class, "Carta");
                             oDetalleController.setController(odc);
                             oDetalleController.setCarta(carta);
                             break;

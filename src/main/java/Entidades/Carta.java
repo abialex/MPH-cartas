@@ -20,53 +20,55 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class Carta {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
-    @JoinColumn( insertable = true,updatable = true,name="idproveedor",nullable = false)
+
+    @JoinColumn(insertable = true, updatable = true, name = "idproveedor", nullable = false)
     @ManyToOne
     private Proveedor proveedor;
-    
+
     @Column(name = "numCartaConfianza", nullable = false)
     private String numCartaConfianza;
-    
+
     @Column(name = "fechaVencimiento", nullable = false)
     private LocalDate fechaVencimiento;
-    
+
     @Column(name = "referencia", nullable = false)
     private String referencia;
-    
+
     @Column(name = "obra", nullable = false)
     private String obra;
-    
+
     @Column(name = "importe", nullable = false)
     private String importe;
-    
+
+    @Column(name = "importeInt", nullable = true)
+    private int importeInt;
+
     @Column(name = "estado", nullable = false)
     private String estado;
-    
+
     @Column(name = "visto", nullable = false)
     private boolean visto;
-    
+
     @Column(name = "url", nullable = true)
     private String url;
-    
+
     @Column(name = "nameArchivo", nullable = true)
     private String nameArchivo;
-    
-    public Carta(Proveedor proveedor, String numCartaConfianza, LocalDate fechaVencimiento, String referencia, String obra, String importe, String estado) {
+
+    public Carta(Proveedor proveedor, String numCartaConfianza, LocalDate fechaVencimiento, String referencia, String obra, String importe, int importeInt, String estado) {
         this.proveedor = proveedor;
         this.numCartaConfianza = numCartaConfianza;
         this.fechaVencimiento = fechaVencimiento;
         this.referencia = referencia;
         this.obra = obra;
         this.importe = importe;
+        this.importeInt = importeInt;
         this.estado = estado;
     }
-    
-
-    
 
     public Carta() {
     }
@@ -102,7 +104,7 @@ public class Carta {
     public void setImporte(String importe) {
         this.importe = importe;
     }
-     
+
     public int getId() {
         return id;
     }
@@ -149,7 +151,7 @@ public class Carta {
 
     public void setUrl(String url) {
         this.url = url;
-    } 
+    }
 
     public String getNameArchivo() {
         return nameArchivo;
@@ -158,6 +160,12 @@ public class Carta {
     public void setNameArchivo(String nameArchivo) {
         this.nameArchivo = nameArchivo;
     }
-    
-    
+
+    public int getImporteInt() {
+        return importeInt;
+    }
+
+    public void setImporteInt(int importeInt) {
+        this.importeInt = importeInt;
+    }
 }
