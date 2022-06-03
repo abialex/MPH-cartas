@@ -125,7 +125,8 @@
                         <GridPane GridPane.rowIndex="5">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="522.0" minWidth="10.0" prefWidth="59.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="563.0" minWidth="10.0" prefWidth="541.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="563.0" minWidth="10.0" prefWidth="407.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="563.0" minWidth="10.0" prefWidth="140.0" />
                             </columnConstraints>
                             <rowConstraints>
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -141,9 +142,14 @@
                                 </Label>
                                 <JFXTextField fx:id="jtfimporte" labelFloat="true" promptText="IMPORTE" GridPane.columnIndex="1">
                                     <GridPane.margin>
-                                        <Insets right="30.0" />
+                                        <Insets right="5.0" />
                                     </GridPane.margin>
                                 </JFXTextField>
+                        <JFXTextField fx:id="jtfDecimal" labelFloat="true" promptText="Decimal" GridPane.columnIndex="2">
+                           <GridPane.margin>
+                              <Insets right="30.0" />
+                           </GridPane.margin>
+                        </JFXTextField>
                             </children>
                         </GridPane>
                         <GridPane prefHeight="42.0" prefWidth="600.0" GridPane.rowIndex="9">

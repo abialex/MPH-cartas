@@ -83,13 +83,13 @@ public class DetalleController implements Initializable {
     private TableColumn<Carta, String> columnObra;
 
     @FXML
-    private TableColumn<Carta, String> columnImporte;
+    private TableColumn<Carta, Carta> columnImporte;
 
     @FXML
     private TableColumn<Carta, Integer> columnprueba;
 
     @FXML
-    private TableColumn<Carta, String> columnEstado,columnNumCartaDevuelta;
+    private TableColumn<Carta, String> columnEstado, columnNumCartaDevuelta;
 
     @FXML
     private JFXTextField jtfproveedor;
@@ -134,7 +134,7 @@ public class DetalleController implements Initializable {
     private JFXComboBox<String> jcbEstadoBuscar;
 
     @FXML
-    private JFXTextField jtfObraBuscar, jtfNcartaBuscar;
+    private JFXTextField jtfObraBuscar, jtfNcartaBuscar, jtfDecimal;
 
     Stage stagePrincipal;
     CartaController cartaController;
@@ -220,6 +220,7 @@ public class DetalleController implements Initializable {
             jtfreferencia.setText(listCarta.get(index).getReferencia());
             jtfobra.setText(listCarta.get(index).getObra());
             jtfimporte.setText(listCarta.get(index).getImporteInt() + "");
+            jtfDecimal.setText(listCarta.get(index).getDecimal() + "");
             jtfNumCartaDevuelta.setText(listCarta.get(index).getNumCartaDevuelta() == null ? "" : listCarta.get(index).getNumCartaDevuelta() + "");
             //jcbestado.getSelectionModel().select(listCarta.get(index).getEstado());
 
@@ -249,8 +250,9 @@ public class DetalleController implements Initializable {
                     Integer.parseInt(jtfmes.getText().trim()), Integer.parseInt(jtfdia.getText().trim())));
             oCarta.setReferencia(jtfreferencia.getText().trim());
             oCarta.setObra(jtfobra.getText().trim());
-            oCarta.setImporte(objNF.format(Integer.parseInt(jtfimporte.getText().trim())) + ".00");
+            oCarta.setImporte(objNF.format(Integer.parseInt(jtfimporte.getText().trim())));
             oCarta.setImporteInt(Integer.parseInt(jtfimporte.getText().trim()));
+            oCarta.setDecimal(Integer.parseInt(jtfDecimal.getText()));
             oCarta.setEstado(jcbestado.getSelectionModel().getSelectedItem());
             oCarta.setNumCartaDevuelta(jtfNumCartaDevuelta.getText());
             oCarta.setUrl(oPdf == null ? "" : oFileImagUtil.guardarPdf(oPdf));
@@ -266,7 +268,19 @@ public class DetalleController implements Initializable {
 
     void initRestricciones() {
         jtfimporte.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEntero(event));
+        jtfDecimal.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros2(event));
 
+    }
+
+    void SoloNumerosEnteros2(KeyEvent event) {
+        JFXTextField o = (JFXTextField) event.getSource();
+        char key = event.getCharacter().charAt(0);
+        if (!Character.isDigit(key)) {
+            event.consume();
+        }
+        if (o.getText().length() >= 2) {
+            event.consume();
+        }
     }
 
     void SoloNumerosEntero(KeyEvent event) {
@@ -439,9 +453,30 @@ public class DetalleController implements Initializable {
         columnFecha.setCellValueFactory(new PropertyValueFactory<Carta, LocalDate>("fechaVencimiento"));
         columnReferencia.setCellValueFactory(new PropertyValueFactory<Carta, String>("referencia"));
         columnObra.setCellValueFactory(new PropertyValueFactory<Carta, String>("obra"));
-        columnImporte.setCellValueFactory(new PropertyValueFactory<Carta, String>("importe"));
+        columnImporte.setCellValueFactory(new PropertyValueFactory<Carta, Carta>("carta"));
         columnEstado.setCellValueFactory(new PropertyValueFactory<Carta, String>("estado"));
         columnNumCartaDevuelta.setCellValueFactory(new PropertyValueFactory<Carta, String>("numCartaDevuelta"));
+
+        columnImporte.setCellFactory(column -> {
+            TableCell<Carta, Carta> cell = new TableCell<Carta, Carta>() {
+                @Override
+                protected void updateItem(Carta item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        Label ola = new Label();
+                        String decimal = item.getDecimal() < 10 ? "0" + item.getDecimal() : item.getDecimal() + "";
+                        ola.setText(item.getImporte() + "." + decimal);
+                        setGraphic(ola);
+                        setText(null);
+                    }
+                }
+            };
+
+            return cell;
+        });
 
         columnObra.setCellFactory(column -> {
             TableCell<Carta, String> cell = new TableCell<Carta, String>() {

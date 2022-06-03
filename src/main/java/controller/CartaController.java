@@ -46,7 +46,7 @@ public class CartaController implements Initializable {
      * Initializes the controller class.
      */
     @FXML
-    private JFXTextField jtfproveedor, jtfdia, jtfmes, jtfanio, jtfnumCarta, jtfreferencia, jtfobra, jtfimporte, jtfNumCartaDevuelta;
+    private JFXTextField jtfproveedor, jtfdia, jtfmes, jtfanio, jtfnumCarta, jtfreferencia, jtfobra, jtfimporte, jtfNumCartaDevuelta, jtfDecimal;
     @FXML
     private AnchorPane ap;
     @FXML
@@ -71,6 +71,7 @@ public class CartaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        initRestricciones();
         jtfdia.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
         jtfmes.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
         jtfanio.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros(event));
@@ -182,10 +183,11 @@ public class CartaController implements Initializable {
             oCarta.setFechaVencimiento(LocalDate.of(Integer.parseInt(jtfanio.getText().trim()) + 2000, Integer.parseInt(jtfmes.getText().trim()), Integer.parseInt(jtfdia.getText().trim())));
             oCarta.setReferencia(jtfreferencia.getText().trim());
             oCarta.setObra(jtfobra.getText().trim());
-            oCarta.setImporte(objNF.format(Integer.parseInt(jtfimporte.getText().trim()))+".00");
+            oCarta.setImporte(objNF.format(Integer.parseInt(jtfimporte.getText().trim())));
             oCarta.setImporteInt(Integer.parseInt(jtfimporte.getText().trim()));
             oCarta.setNumCartaDevuelta(jtfNumCartaDevuelta.getText());
-            oCarta.setEstado(jcbestado.getSelectionModel().getSelectedItem());
+            oCarta.setEstado(jcbestado.getSelectionModel().getSelectedItem());  
+            oCarta.setDecimal(Integer.parseInt(jtfDecimal.getText()));
             oCarta.setUrl(url);
             oCarta.setNameArchivo(oPdf == null ? "" : oPdf.getName());
             App.jpa.getTransaction().begin();
@@ -202,12 +204,23 @@ public class CartaController implements Initializable {
 
     void initRestricciones() {
         jtfimporte.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEntero(event));
+        jtfDecimal.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros2(event));
     }
 
     void SoloNumerosEntero(KeyEvent event) {
         JFXTextField o = (JFXTextField) event.getSource();
         char key = event.getCharacter().charAt(0);
         if (!Character.isDigit(key)) {
+            event.consume();
+        }
+    }
+     void SoloNumerosEnteros2(KeyEvent event) {
+        JFXTextField o = (JFXTextField) event.getSource();
+        char key = event.getCharacter().charAt(0);
+        if (!Character.isDigit(key)) {
+            event.consume();
+        }
+        if (o.getText().length() >= 2) {
             event.consume();
         }
     }
@@ -316,6 +329,7 @@ public class CartaController implements Initializable {
         jtfreferencia.setText(carta.getReferencia());
         jtfobra.setText(carta.getObra());
         jtfimporte.setText(carta.getImporteInt() + "");
+        jtfDecimal.setText(carta.getDecimal() + "");
         jcbestado.getSelectionModel().select(carta.getEstado());
         lblpdf.setText(carta.getNameArchivo());
         oPdf = carta.getUrl().length() == 0 ? null : new File(carta.getUrl());
