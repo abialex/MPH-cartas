@@ -30,9 +30,9 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
@@ -126,7 +126,7 @@
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="522.0" minWidth="10.0" prefWidth="59.0" />
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="563.0" minWidth="10.0" prefWidth="407.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="563.0" minWidth="10.0" prefWidth="140.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="563.0" minWidth="10.0" prefWidth="140.0" />
                             </columnConstraints>
                             <rowConstraints>
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -145,13 +145,23 @@
                                         <Insets right="5.0" />
                                     </GridPane.margin>
                                 </JFXTextField>
-                        <JFXTextField fx:id="jtfDecimal" labelFloat="true" promptText="Decimal" GridPane.columnIndex="2">
-                           <GridPane.margin>
-                              <Insets right="30.0" />
-                           </GridPane.margin>
-                        </JFXTextField>
+                                <JFXTextField fx:id="jtfDecimal" labelFloat="true" promptText="Decimal" GridPane.columnIndex="2">
+                                    <GridPane.margin>
+                                        <Insets right="30.0" />
+                                    </GridPane.margin>
+                                </JFXTextField>
                             </children>
                         </GridPane>
+                        <JFXComboBox fx:id="jcbestado" labelFloat="true" maxWidth="1.7976931348623157E308" promptText="ESTADO" GridPane.rowIndex="6">
+                            <GridPane.margin>
+                                <Insets left="30.0" right="30.0" />
+                            </GridPane.margin>
+                        </JFXComboBox>
+                        <JFXTextField fx:id="jtfNumCartaDevuelta" labelFloat="true" promptText="N° DE CARTA DEVUELTA" GridPane.rowIndex="7">
+                            <GridPane.margin>
+                                <Insets left="30.0" right="30.0" />
+                            </GridPane.margin>
+                        </JFXTextField>
                         <GridPane prefHeight="42.0" prefWidth="600.0" GridPane.rowIndex="9">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -176,59 +186,51 @@
                                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
                                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
                                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="113.0" minWidth="10.0" prefWidth="40.0" />
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="103.0" minWidth="10.0" prefWidth="40.0" />
+                                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="103.0" minWidth="10.0" prefWidth="40.0" />
                                     </columnConstraints>
                                     <rowConstraints>
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                 </GridPane>
-                        <GridPane>
-                           <columnConstraints>
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="113.0" minWidth="10.0" prefWidth="40.0" />
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="103.0" minWidth="10.0" prefWidth="40.0" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                           </rowConstraints>
-                        </GridPane>
+                                <GridPane>
+                                    <columnConstraints>
+                                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+                                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+                                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="113.0" minWidth="10.0" prefWidth="40.0" />
+                                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="103.0" minWidth="10.0" prefWidth="40.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                </GridPane>
                             </children>
                         </GridPane>
-                  <JFXComboBox fx:id="jcbestado" labelFloat="true" maxWidth="1.7976931348623157E308" promptText="ESTADO" GridPane.rowIndex="6">
-                     <GridPane.margin>
-                        <Insets left="30.0" right="30.0" />
-                     </GridPane.margin>
-                  </JFXComboBox>
-                  <GridPane GridPane.rowIndex="8">
-                    <columnConstraints>
-                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="323.0" minWidth="10.0" prefWidth="131.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="469.0" minWidth="10.0" prefWidth="469.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <ImageView fx:id="imgImprimir" fitHeight="56.0" fitWidth="76.0" onMouseClicked="#seleccionarPdf" onMouseExited="#imagImprimirFuera" onMouseMoved="#imagImprimirDentro" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/upload-1.png" />
-                           </image>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </ImageView>
-                        <Label fx:id="lblpdf" maxWidth="1.7976931348623157E308" text="pdf" textOverrun="LEADING_ELLIPSIS" GridPane.columnIndex="1">
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                        </Label>
-                     </children>
-                  </GridPane>
-                  <JFXTextField fx:id="jtfNumCartaDevuelta" labelFloat="true" promptText="N° DE CARTA DEVUELTA" GridPane.rowIndex="7">
-                     <GridPane.margin>
-                        <Insets left="30.0" right="30.0" />
-                     </GridPane.margin>
-                  </JFXTextField>
+                 
+                        <GridPane GridPane.rowIndex="8">
+                            <columnConstraints>
+                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="323.0" minWidth="10.0" prefWidth="131.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="469.0" minWidth="10.0" prefWidth="469.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <ImageView fx:id="imgImprimir" fitHeight="56.0" fitWidth="76.0" onMouseClicked="#seleccionarPdf" onMouseExited="#imagImprimirFuera" onMouseMoved="#imagImprimirDentro" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/upload-1.png" />
+                                    </image>
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                </ImageView>
+                                <Label fx:id="lblpdf" maxWidth="1.7976931348623157E308" text="pdf" textOverrun="LEADING_ELLIPSIS" GridPane.columnIndex="1">
+                                    <padding>
+                                        <Insets left="5.0" right="5.0" />
+                                    </padding>
+                                </Label>
+                            </children>
+                        </GridPane>
+                       
                  
                     </children>
                 </GridPane>

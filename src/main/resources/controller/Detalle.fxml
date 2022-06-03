@@ -26,7 +26,7 @@
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="548.0" />
                     </columnConstraints>
                     <rowConstraints>
-                  <RowConstraints minHeight="80.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="80.0" prefHeight="80.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="112.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="114.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
@@ -131,9 +131,9 @@
                         <GridPane GridPane.rowIndex="3">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="299.0" minWidth="10.0" prefWidth="299.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="70.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="70.0" />
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="327.0" minWidth="10.0" prefWidth="327.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="224.0" minWidth="10.0" prefWidth="179.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="224.0" minWidth="10.0" prefWidth="179.0" />
                                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="393.0" minWidth="10.0" prefWidth="351.0" />
                             </columnConstraints>
                             <rowConstraints>
@@ -145,192 +145,193 @@
                                         <Insets left="10.0" right="10.0" />
                                     </GridPane.margin>
                                 </JFXTextField>
+                                <JFXTextField fx:id="jtfDecimal" labelFloat="true" promptText="DECIMAL" GridPane.columnIndex="1">
+                                    <GridPane.margin>
+                                        <Insets right="5.0" />
+                                    </GridPane.margin>
+                                </JFXTextField>
                                 <JFXComboBox fx:id="jcbestado" labelFloat="true" maxWidth="1.7976931348623157E308" promptText="ESTADO" GridPane.columnIndex="2">
                                     <GridPane.margin>
                                         <Insets left="10.0" right="10.0" />
                                     </GridPane.margin>
                                 </JFXComboBox>
-                        <GridPane GridPane.columnIndex="4">
-                          <columnConstraints>
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="121.0" minWidth="10.0" prefWidth="82.0" />
-                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="181.0" minWidth="10.0" prefWidth="181.0" />
-                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="125.0" minWidth="10.0" prefWidth="94.0" />
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="85.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                                      <ImageView fx:id="imgadd" fitHeight="56.0" fitWidth="76.0" onMouseClicked="#agregar" onMouseExited="#imagAddFuera" onMouseMoved="#imagAddDentro" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
-                                          <image>
-                                              <Image url="@../images/add-1.png" />
-                                          </image>
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                                 <GridPane.margin>
-                                    <Insets left="5.0" />
-                                 </GridPane.margin>
-                                      </ImageView>
-                              <ImageView fx:id="imglimpiar" fitHeight="50.0" fitWidth="60.0" onMouseClicked="#limpiar" onMouseExited="#imaglimpiarFuera" onMouseMoved="#imaglimpiarDentro" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
-                                 <image>
-                                    <Image url="@../images/limpiar-1.png" />
-                                 </image>
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                              </ImageView>
-                              <ImageView fx:id="imgImprimir" fitHeight="56.0" fitWidth="76.0" onMouseClicked="#seleccionarPdf" onMouseExited="#imagImprimirFuera" onMouseMoved="#imagImprimirDentro" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/upload-1.png" />
-                                 </image>
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                              </ImageView>
-                              <Label fx:id="lblpdf" maxWidth="1.7976931348623157E308" style="-fx-border-color: #000000;" text="pdf" textOverrun="LEADING_ELLIPSIS" GridPane.columnIndex="1">
-                                 <font>
-                                    <Font size="11.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </GridPane>
-                        <JFXTextField fx:id="jtfNumCartaDevuelta" labelFloat="true" promptText="N° DE CARTA (DEVUELTA)" GridPane.columnIndex="3">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </JFXTextField>
-                        <JFXTextField fx:id="jtfDecimal" labelFloat="true" promptText="DECIMAL" GridPane.columnIndex="1">
-                           <GridPane.margin>
-                              <Insets right="5.0" />
-                           </GridPane.margin>
-                        </JFXTextField>
+                                <GridPane GridPane.columnIndex="4">
+                                    <columnConstraints>
+                                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="121.0" minWidth="10.0" prefWidth="82.0" />
+                                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="181.0" minWidth="10.0" prefWidth="181.0" />
+                                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="125.0" minWidth="10.0" prefWidth="94.0" />
+                                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="85.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                                        <ImageView fx:id="imgadd" fitHeight="56.0" fitWidth="76.0" onMouseClicked="#agregar" onMouseExited="#imagAddFuera" onMouseMoved="#imagAddDentro" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                                            <image>
+                                                <Image url="@../images/add-1.png" />
+                                            </image>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                            <GridPane.margin>
+                                                <Insets left="5.0" />
+                                            </GridPane.margin>
+                                        </ImageView>
+                                        <ImageView fx:id="imglimpiar" fitHeight="50.0" fitWidth="60.0" onMouseClicked="#limpiar" onMouseExited="#imaglimpiarFuera" onMouseMoved="#imaglimpiarDentro" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
+                                            <image>
+                                                <Image url="@../images/limpiar-1.png" />
+                                            </image>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </ImageView>
+                                        <ImageView fx:id="imgImprimir" fitHeight="56.0" fitWidth="76.0" onMouseClicked="#seleccionarPdf" onMouseExited="#imagImprimirFuera" onMouseMoved="#imagImprimirDentro" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../images/upload-1.png" />
+                                            </image>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </ImageView>
+                                        <Label fx:id="lblpdf" maxWidth="1.7976931348623157E308" style="-fx-border-color: #000000;" text="pdf" textOverrun="LEADING_ELLIPSIS" GridPane.columnIndex="1">
+                                            <font>
+                                                <Font size="11.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </GridPane>
+                                <JFXTextField fx:id="jtfNumCartaDevuelta" labelFloat="true" promptText="N° DE CARTA (DEVUELTA)" GridPane.columnIndex="3">
+                                    <GridPane.margin>
+                                        <Insets left="10.0" right="10.0" />
+                                    </GridPane.margin>
+                                </JFXTextField>
+                               
                             </children>
                         </GridPane>
-                  <GridPane>
-                    <columnConstraints>
-                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="479.0" minWidth="10.0" prefWidth="471.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="840.0" minWidth="10.0" prefWidth="629.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="454.0" minWidth="0.0" prefWidth="0.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
+                        <GridPane>
+                            <columnConstraints>
+                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="479.0" minWidth="10.0" prefWidth="471.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="840.0" minWidth="10.0" prefWidth="629.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="454.0" minWidth="0.0" prefWidth="0.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
                                 <ImageView fitHeight="69.0" fitWidth="233.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@../images/logoMUNI-1.png" />
                                     </image>
                                 </ImageView>
-                        <GridPane prefHeight="91.0" prefWidth="64.0" GridPane.columnIndex="2">
-                          <columnConstraints>
-                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="20.0" />
-                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="20.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints maxHeight="41.0" minHeight="10.0" prefHeight="24.0" valignment="CENTER" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="67.0" minHeight="10.0" prefHeight="67.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <ImageView fitHeight="19.0" fitWidth="21.0" onMouseClicked="#cerrar" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
-                                 <image>
-                                    <Image url="@../images/error.png" />
-                                 </image>
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                                 <GridPane.margin>
-                                    <Insets right="7.0" />
-                                 </GridPane.margin>
-                              </ImageView>
-                              <ImageView fitHeight="19.0" fitWidth="21.0" onMouseClicked="#minimizar" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/minimizar.png" />
-                                 </image>
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                                 <GridPane.margin>
-                                    <Insets right="5.0" />
-                                 </GridPane.margin>
-                              </ImageView>
-                           </children>
+                                <GridPane prefHeight="91.0" prefWidth="64.0" GridPane.columnIndex="2">
+                                    <columnConstraints>
+                                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="20.0" />
+                                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="20.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints maxHeight="41.0" minHeight="10.0" prefHeight="24.0" valignment="CENTER" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="67.0" minHeight="10.0" prefHeight="67.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                                        <ImageView fitHeight="19.0" fitWidth="21.0" onMouseClicked="#cerrar" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+                                            <image>
+                                                <Image url="@../images/error.png" />
+                                            </image>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                            <GridPane.margin>
+                                                <Insets right="7.0" />
+                                            </GridPane.margin>
+                                        </ImageView>
+                                        <ImageView fitHeight="19.0" fitWidth="21.0" onMouseClicked="#minimizar" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../images/minimizar.png" />
+                                            </image>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                            <GridPane.margin>
+                                                <Insets right="5.0" />
+                                            </GridPane.margin>
+                                        </ImageView>
+                                    </children>
+                                </GridPane>
+                                <GridPane GridPane.columnIndex="1">
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="63.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                                        <GridPane>
+                                            <columnConstraints>
+                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="476.0" minWidth="10.0" prefWidth="465.0" />
+                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="191.0" minWidth="0.0" prefWidth="50.0" />
+                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="239.0" minWidth="5.0" prefWidth="50.0" />
+                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="196.0" minWidth="10.0" prefWidth="50.0" />
+                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="103.0" minWidth="10.0" prefWidth="50.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                            <children>
+                                                <ImageView fx:id="imageditar" fitHeight="32.0" fitWidth="35.0" onMouseExited="#imagEditarFuera" onMouseMoved="#imagEditarDentro" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                                    <image>
+                                                        <Image url="@../images/editar-1.png" />
+                                                    </image>
+                                                    <cursor>
+                                                        <Cursor fx:constant="HAND" />
+                                                    </cursor>
+                                                </ImageView>
+                                                <ImageView fx:id="imagporexpirar" fitHeight="32.0" fitWidth="35.0" onMouseClicked="#mostrarEstado" onMouseExited="#imagPorexpirarFuera" onMouseMoved="#imagPorexpirarDentro" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                                    <image>
+                                                        <Image url="@../images/expired-1.png" />
+                                                    </image>
+                                                    <cursor>
+                                                        <Cursor fx:constant="HAND" />
+                                                    </cursor>
+                                                </ImageView>
+                                                <ImageView fx:id="imgvencido" fitHeight="32.0" fitWidth="35.0" onMouseClicked="#mostrarAviso" onMouseExited="#imagVencidoFuera" onMouseMoved="#imagVencidoDentro" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                                    <image>
+                                                        <Image url="@../images/caution-1.png" />
+                                                    </image>
+                                                    <cursor>
+                                                        <Cursor fx:constant="HAND" />
+                                                    </cursor>
+                                                </ImageView>
+                                                <ImageView fx:id="imgimprimir" fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                    <image>
+                                                        <Image url="@../images/printing.png" />
+                                                    </image>
+                                                    <cursor>
+                                                        <Cursor fx:constant="HAND" />
+                                                    </cursor>
+                                                </ImageView>
+                                                <Label fx:id="lblnumVencido" prefWidth="20.0" style="-fx-background-color: #ff002b; -fx-alignment: center;" text="99" textFill="WHITE" GridPane.columnIndex="4">
+                                                    <font>
+                                                        <Font size="16.0" />
+                                                    </font>
+                                                    <GridPane.margin>
+                                                        <Insets left="30.0" top="50.0" />
+                                                    </GridPane.margin>
+                                                </Label>
+                                                <Label fx:id="lblPorVencer" prefWidth="20.0" style="-fx-background-color: #5443a8; -fx-alignment: center;" text="99" textFill="WHITE" GridPane.columnIndex="3">
+                                                    <font>
+                                                        <Font size="16.0" />
+                                                    </font>
+                                                    <GridPane.margin>
+                                                        <Insets left="30.0" top="50.0" />
+                                                    </GridPane.margin>
+                                                </Label>
+                                            </children>
+                                        </GridPane>
+                                    </children>
+                                </GridPane>
+                            </children>
                         </GridPane>
-                        <GridPane GridPane.columnIndex="1">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                              <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="63.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <GridPane>
-                                 <columnConstraints>
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="476.0" minWidth="10.0" prefWidth="465.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="191.0" minWidth="0.0" prefWidth="50.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="239.0" minWidth="5.0" prefWidth="50.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="196.0" minWidth="10.0" prefWidth="50.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="103.0" minWidth="10.0" prefWidth="50.0" />
-                                 </columnConstraints>
-                                 <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 </rowConstraints>
-                                 <children>
-                                    <ImageView fx:id="imageditar" fitHeight="32.0" fitWidth="35.0" onMouseExited="#imagEditarFuera" onMouseMoved="#imagEditarDentro" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                       <image>
-                                          <Image url="@../images/editar-1.png" />
-                                       </image>
-                                       <cursor>
-                                          <Cursor fx:constant="HAND" />
-                                       </cursor>
-                                    </ImageView>
-                                    <ImageView fx:id="imagporexpirar" fitHeight="32.0" fitWidth="35.0" onMouseClicked="#mostrarEstado" onMouseExited="#imagPorexpirarFuera" onMouseMoved="#imagPorexpirarDentro" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                                       <image>
-                                          <Image url="@../images/expired-1.png" />
-                                       </image>
-                                       <cursor>
-                                          <Cursor fx:constant="HAND" />
-                                       </cursor>
-                                    </ImageView>
-                                    <ImageView fx:id="imgvencido" fitHeight="32.0" fitWidth="35.0" onMouseClicked="#mostrarAviso" onMouseExited="#imagVencidoFuera" onMouseMoved="#imagVencidoDentro" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1">
-                                       <image>
-                                          <Image url="@../images/caution-1.png" />
-                                       </image>
-                                       <cursor>
-                                          <Cursor fx:constant="HAND" />
-                                       </cursor>
-                                    </ImageView>
-                                    <ImageView fx:id="imgimprimir" fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                       <image>
-                                          <Image url="@../images/printing.png" />
-                                       </image>
-                                       <cursor>
-                                          <Cursor fx:constant="HAND" />
-                                       </cursor>
-                                    </ImageView>
-                                    <Label fx:id="lblnumVencido" prefWidth="20.0" style="-fx-background-color: #ff002b; -fx-alignment: center;" text="99" textFill="WHITE" GridPane.columnIndex="4">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                       <GridPane.margin>
-                                          <Insets left="30.0" top="50.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <Label fx:id="lblPorVencer" prefWidth="20.0" style="-fx-background-color: #5443a8; -fx-alignment: center;" text="99" textFill="WHITE" GridPane.columnIndex="3">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                       <GridPane.margin>
-                                          <Insets left="30.0" top="50.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                 </children>
-                              </GridPane>
-                           </children>
-                        </GridPane>
-                     </children>
-                  </GridPane>
                      
                         
                     </children>
@@ -349,12 +350,12 @@
                                 <RowConstraints maxHeight="373.0" minHeight="10.0" prefHeight="337.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                  <GridPane GridPane.rowIndex="1">
+                                <GridPane GridPane.rowIndex="1">
                                     <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="200.0" />
                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="200.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="200.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="200.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="200.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="200.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="200.0" />
                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="200.0" />
                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="815.0" minWidth="10.0" prefWidth="100.0" />
                                     </columnConstraints>
@@ -363,46 +364,47 @@
                                     </rowConstraints>
                                     <children>
                                         <JFXTextField fx:id="jtfNcartaBuscar" labelFloat="true" promptText="N° carta de confianza" GridPane.columnIndex="1">
-                                 <GridPane.margin>
-                                    <Insets left="10.0" right="10.0" />
-                                 </GridPane.margin></JFXTextField>
-                              <GridPane GridPane.columnIndex="2">
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                                 <children>
-                                    <JFXComboBox fx:id="jcbMesBuscar" labelFloat="true" maxWidth="1.7976931348623157E308" promptText="Mes">
-                                       <GridPane.margin>
-                                          <Insets left="10.0" right="5.0" />
-                                       </GridPane.margin>
-                                    </JFXComboBox>
-                                    <JFXComboBox fx:id="jcbAnioBuscar" labelFloat="true" maxWidth="1.7976931348623157E308" promptText="Año" GridPane.columnIndex="1">
-                                       <GridPane.margin>
-                                          <Insets left="5.0" right="10.0" />
-                                       </GridPane.margin>
-                                    </JFXComboBox>
-                                 </children>
-                              </GridPane>
-                              <JFXButton onAction="#buscar" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="Buscar" GridPane.columnIndex="5" />
-                              <JFXTextField fx:id="jtfObraBuscar" labelFloat="true" promptText="Obra" GridPane.columnIndex="3">
-                                 <GridPane.margin>
-                                    <Insets left="10.0" right="10.0" />
-                                 </GridPane.margin>
-                              </JFXTextField>
-                              <JFXComboBox fx:id="jcbEstadoBuscar" labelFloat="true" maxWidth="1.7976931348623157E308" promptText="ESTADO" GridPane.columnIndex="4">
-                                 <GridPane.margin>
-                                    <Insets left="10.0" right="10.0" />
-                                 </GridPane.margin>
-                              </JFXComboBox>
-                              <JFXComboBox fx:id="jcbProveedorBuscar" labelFloat="true" maxWidth="1.7976931348623157E308" promptText="Proveedor">
-                                 <GridPane.margin>
-                                    <Insets left="10.0" right="10.0" />
-                                 </GridPane.margin>
-                              </JFXComboBox>
+                                            <GridPane.margin>
+                                                <Insets left="10.0" right="10.0" />
+                                            </GridPane.margin>
+                                        </JFXTextField>
+                                        <GridPane GridPane.columnIndex="2">
+                                            <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                            <children>
+                                                <JFXComboBox fx:id="jcbMesBuscar" labelFloat="true" maxWidth="1.7976931348623157E308" promptText="Mes">
+                                                    <GridPane.margin>
+                                                        <Insets left="10.0" right="5.0" />
+                                                    </GridPane.margin>
+                                                </JFXComboBox>
+                                                <JFXComboBox fx:id="jcbAnioBuscar" labelFloat="true" maxWidth="1.7976931348623157E308" promptText="Año" GridPane.columnIndex="1">
+                                                    <GridPane.margin>
+                                                        <Insets left="5.0" right="10.0" />
+                                                    </GridPane.margin>
+                                                </JFXComboBox>
+                                            </children>
+                                        </GridPane>
+                                        <JFXButton onAction="#buscar" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="Buscar" GridPane.columnIndex="5" />
+                                        <JFXTextField fx:id="jtfObraBuscar" labelFloat="true" promptText="Obra" GridPane.columnIndex="3">
+                                            <GridPane.margin>
+                                                <Insets left="10.0" right="10.0" />
+                                            </GridPane.margin>
+                                        </JFXTextField>
+                                        <JFXComboBox fx:id="jcbEstadoBuscar" labelFloat="true" maxWidth="1.7976931348623157E308" promptText="ESTADO" GridPane.columnIndex="4">
+                                            <GridPane.margin>
+                                                <Insets left="10.0" right="10.0" />
+                                            </GridPane.margin>
+                                        </JFXComboBox>
+                                        <JFXComboBox fx:id="jcbProveedorBuscar" labelFloat="true" maxWidth="1.7976931348623157E308" promptText="Proveedor">
+                                            <GridPane.margin>
+                                                <Insets left="10.0" right="10.0" />
+                                            </GridPane.margin>
+                                        </JFXComboBox>
                                     </children>
                                 </GridPane>
                                 <TableView fx:id="tableCarta" onMouseClicked="#getItem" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
@@ -414,7 +416,7 @@
                                         <TableColumn fx:id="columnObra" editable="false" prefWidth="265.0" sortable="false" text="Obra" />
                                         <TableColumn fx:id="columnImporte" editable="false" prefWidth="86.0" sortable="false" text="Importe" />
                                         <TableColumn fx:id="columnEstado" editable="false" prefWidth="113.0" sortable="false" text="ESTADO" />
-                              <TableColumn fx:id="columnNumCartaDevuelta" editable="false" prefWidth="140.0" sortable="false" text="N° Carta Devuelta" />
+                                        <TableColumn fx:id="columnNumCartaDevuelta" editable="false" prefWidth="140.0" sortable="false" text="N° Carta Devuelta" />
                                         <TableColumn fx:id="columnprueba" editable="false" maxWidth="90.0" prefWidth="85.0" sortable="false" />
                                     </columns>
                                     <GridPane.margin>
@@ -437,7 +439,7 @@
                         <GridPane prefHeight="42.0" prefWidth="1260.0" BorderPane.alignment="CENTER">
                             <columnConstraints>
                                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1269.0" minWidth="10.0" prefWidth="1131.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="648.0" minWidth="10.0" prefWidth="178.0" />
+                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="648.0" minWidth="10.0" prefWidth="178.0" />
                             </columnConstraints>
                             <rowConstraints>
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -451,7 +453,7 @@
                                         <Font name="System Bold" size="15.0" />
                                     </font>
                                 </Label>
-                        <JFXButton onAction="#imprimir" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="Imprimir" GridPane.columnIndex="1" />
+                                <JFXButton onAction="#imprimir" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="Imprimir" GridPane.columnIndex="1" />
                             </children>
                         </GridPane>
                     </bottom>
