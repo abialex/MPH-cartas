@@ -151,7 +151,7 @@ public class style2 implements IEventHandler {
         /*--- tabla en cabezado ---*/
         Image img = null;
         try {
-            img = new Image(ImageDataFactory.create("images\\sanluisimag.jpg"));
+            img = new Image(ImageDataFactory.create("images\\logoUp.png"));
         } catch (MalformedURLException ex) {
             Logger.getLogger(style2.class.getName()).log(Level.SEVERE, null, ex);
         }

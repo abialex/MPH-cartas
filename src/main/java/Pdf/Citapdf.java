@@ -111,11 +111,11 @@ public class Citapdf {
         //table raya
         //Cabecera
         Table CabeceraParrafo1 = new Table(new float[]{volumen * 0.5f, volumen * 0.7f});
-        CabeceraParrafo1.addCell(getCell(":", styleTextRight, styleCell, subrayadoNo));
+        CabeceraParrafo1.addCell(getCell("", styleTextRight, styleCell, subrayadoNo));
         CabeceraParrafo1.addCell(getCell("" + "", styleTextCenter, styleCell, subrayadoNo));
 
         Table CabeceraParrafo2 = new Table(new float[]{volumen * 0.5f, volumen * 0.7f});
-        CabeceraParrafo2.addCell(getCell(":", styleTextRight, styleCell, subrayadoNo));
+        CabeceraParrafo2.addCell(getCell("", styleTextRight, styleCell, subrayadoNo));
         CabeceraParrafo2.addCell(getCell("" + "", styleTextCenter, styleCell, subrayadoNo));
 
         Image imgUp = null;
@@ -132,13 +132,14 @@ public class Citapdf {
         TableHC.addCell(new Cell().add(CabeceraParrafo2).addStyle(styleCell));
 
         Table Cabecera = new Table(new float[]{volumen * 1.786f, volumen * 1f, volumen * 1.786f});
-        Cabecera.addCell(getCell("CARTAS", styleTextCenter, styleCell, subrayadoNo).addStyle(styleTextCenterVertical));
+        Cabecera.addCell(getCell("CARTAS FIANZA", styleTextCenter, styleCell, subrayadoNo).addStyle(styleTextCenterVertical));
         Cabecera.addCell(new Cell().add(cellimagUp.setPaddingTop(-5)).addStyle(styleCell));
         Cabecera.addCell(new Cell().add(TableHC).addStyle(styleCell));
         Cabecera.setMarginBottom(2.5f);
 
         //Fin Cabecera
         // Tabla Cartas
+        int decimalTotal = 0;
         long importeTotal = 0;
         Table TableCartas = new Table(new float[]{volumen * 0.55f, volumen * 0.5f, volumen * 0.3f, volumen * 0.5f, volumen * 1.3f, volumen * 0.37f, volumen * 0.5f, volumen * 0.55f});
         TableCartas.addCell(getCell("Proveedor", styleTextCenter, styleTextCenter, subrayadoNo));
@@ -155,13 +156,18 @@ public class Citapdf {
             TableCartas.addCell(getCell(ocarta.getFechaVencimiento() + "", styleTextCenter, styleTextCenter, subrayadoNo));
             TableCartas.addCell(getCell(ocarta.getReferencia(), styleTextCenter, styleTextCenter, subrayadoNo));
             TableCartas.addCell(getCell(ocarta.getObra(), styleTextCenter, styleTextCenter, subrayadoNo));
-            TableCartas.addCell(getCell(ocarta.getImporte(), styleTextCenter, styleTextCenter, subrayadoNo));
+            TableCartas.addCell(getCell(ocarta.getImporte()+"." + (ocarta.getDecimal() < 10 ? "0" + ocarta.getDecimal() : ocarta.getDecimal()+""), styleTextCenter, styleTextCenter, subrayadoNo));
             TableCartas.addCell(getCell(ocarta.getEstado(), styleTextCenter, styleTextCenter, subrayadoNo));
             TableCartas.addCell(getCell(ocarta.getNumCartaDevuelta() == null ? "" : ocarta.getNumCartaDevuelta(), styleTextCenter, styleTextCenter, subrayadoNo));
             importeTotal = importeTotal + ocarta.getImporteInt();
+            decimalTotal = decimalTotal + ocarta.getDecimal();
         }
+        //convirtiendo el decimal 
+        int enteroDecimal = decimalTotal / 100;
+        decimalTotal = decimalTotal - enteroDecimal * 100;
+        String decimal = decimalTotal < 10 ? "0" + decimalTotal : decimalTotal + "";
         TableCartas.addCell(new Cell(1, 5).add(getCell("IMPORTE TOTAL", styleCell, styleTextCenter, subrayadoNo)));
-        TableCartas.addCell(new Cell(1, 3).add(getCell(objNF.format(importeTotal)+".00", styleTextCenter, styleTextCenter, subrayadoNo)));
+        TableCartas.addCell(new Cell(1, 3).add(getCell(objNF.format(importeTotal + enteroDecimal) + "." + decimal, styleTextCenter, styleTextCenter, subrayadoNo)));
         /* Cuerpo del documentos*/
         document.add(Cabecera);
         document.add(TableCartas);
